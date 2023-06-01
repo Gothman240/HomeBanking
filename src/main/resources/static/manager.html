@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <main  id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <!-- Manager -->
+                    <div class="row">
+                        <section class="col-12 py-5">
+                            <h1>Client Manager</h1>
+                            <form @submit.prevent="addData">
+                                <div v-if="postSuccess" class="alert alert-success py-1 text-center" role="alert">
+                                    Success!
+                                  </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" placeholder="David" v-model="form.firstName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name:</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Doe" v-model="form.lastName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address:</label>
+                                    <input type="email" class="form-control" id="email"  placeholder="david@aol.com" v-model="form.email">
+                                </div>                                
+                                <button class="btn btn-success" type="submit">Add Client</button>
+                            </form>
+                        </section>
+                    </div>
+                    <!-- List -->
+                    <section class="col-12 ">
+                        <h2>Client List</h2>
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="client of clients">
+                                    <td>{{client.firstName}}</td>
+                                    <td>{{client.lastName}}</td>
+                                    <td>{{client.email}}</td>
+                                    <td class="d-flex justify-content-evenly"><span class="trash" @click="deleteClient(client._links.self.href)"><i class="bi bi-trash3"></i></span> <span class="pencil"><i class="bi bi-pencil"></i></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div class="col-12 col-md-6">
+                    <pre>
+                        {{this.json}}
+                    </pre>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./manager.js"></script>
+</body>
+
+</html>
