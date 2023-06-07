@@ -1,0 +1,14 @@
+:root{
+    --color-oscuro: #1B2136;
+    /* --color-claro: #222A40; */
+    --color-claro: #424a5b;
+    --color-secundario: #fa6400;
+}
+
+#main-content{
+    background: var(--color-oscuro)!important;
+}
+
+.bg-claro{
+    background: var(--color-claro)!important;
+}
