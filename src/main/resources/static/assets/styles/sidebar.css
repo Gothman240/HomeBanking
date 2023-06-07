@@ -10,7 +10,7 @@ aside {
   position: sticky;
   top: 0;
   align-self: start;
-  background-image: url("./images/sidebar-bg.jpg") !important;
+  background-image: url("./../images/sidebar-bg.jpg") !important;
   background-repeat: no-repeat;
   background-size: cover;
   
