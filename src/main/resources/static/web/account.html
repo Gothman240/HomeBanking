@@ -105,7 +105,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(transaction, index) of transactions">
-                                        <td>{{index++}}</td>
+                                        <td>{{index+1}}</td>
                                         <td>{{formatDate(transaction.date)}}</td>
                                         <td>{{transaction.description}}</td>
                                         <td class="fila"><span class="fw-bold"
