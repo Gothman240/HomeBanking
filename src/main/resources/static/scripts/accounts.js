@@ -21,6 +21,7 @@ createApp({
             .then(response  => {
                 this.client = response.data;
                 this.accounts = response.data.accounts;
+                this.accounts.sort((a, b) => a.id - b.id);
                 this.totalBalance = this.accounts.reduce((acc, item) => {
                     return acc + item.balance
                 }, 0)

@@ -3,4 +3,13 @@
 }
 .card{
     width: 18rem;
+    .circle{
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background-color: var(--color-oscuro);
+        .material-icons{
+            color: #fff;
+        }
+    }
 }    

@@ -11,7 +11,7 @@ createApp({
                 lastName: "",
                 email: ""
             },
-            client: [],
+            client: [],            
         };
     },
     created() {
@@ -19,11 +19,11 @@ createApp({
     },
     methods: {
         loadData(){
-        axios.get('http://localhost:8080/clients')
+        axios.get('http://localhost:8080/api/clients')
         .then((response) => {
             
-            this.clients = response.data._embedded.clients;
-            this.json = response.data;
+            this.clients = response.data;
+            this.json = this.clients;
             console.log(response)
             console.log(this.clients)
             console.log(this.client)
@@ -39,7 +39,7 @@ createApp({
 
         },
         postClient(){
-            axios.post('http://localhost:8080/clients', this.form)
+            axios.post('http://localhost:8080/rest/clients', this.form)
             .then((response) => {
                 
 

@@ -9,6 +9,14 @@
     background: var(--color-oscuro)!important;
 }
 
+.color-oscuro{
+    color: var(--color-oscuro)!important;
+}
+
+.color-claro{
+    color: var(--color-claro)!important;
+}
+
 .bg-claro{
     background: var(--color-claro)!important;
 }

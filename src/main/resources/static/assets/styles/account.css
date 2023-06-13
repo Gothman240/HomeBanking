@@ -1,0 +1,19 @@
+.table {
+    .fila {
+        .fw-bold {
+            &.DEBIT {
+                color: red;
+
+            }
+            &.CREDIT{
+                color: green;
+            }
+        }
+        .CREDIT::before{
+            content: "+$";
+        }
+        .DEBIT::before{
+            content: "-$";
+        }
+    }
+}
