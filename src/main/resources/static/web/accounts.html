@@ -16,7 +16,7 @@
 
 <body>
 
-    <main id="app" class="container-fluid p-0 d-flex bg-secondary">
+    <main id="app" class="container-fluid p-0 d-flex bg-dark-subtle">
         <!-- sidebar -->
 
         <aside class="" :class="showSide ? 'expand-sidebar' : ''">
@@ -110,8 +110,8 @@
 
 
                     <div class="col-12 info-account  py-5">
-                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
-                            <div class="card shadow" v-for="account of accounts">
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-5">
+                            <div class="card" v-for="account of accounts">
                                 <div class="row">
                                     <div class="col-6 d-flex justify-content-center align-items-center">
                                         <span class="circle bg-oscuro d-flex justify-content-center align-items-center">

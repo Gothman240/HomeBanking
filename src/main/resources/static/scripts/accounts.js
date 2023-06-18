@@ -8,7 +8,7 @@ createApp({
             accounts: [],
             loans: [],
             totalBalance: 0,
-            showBal: false,
+            showBal: true,
         }
     },
     created(){
