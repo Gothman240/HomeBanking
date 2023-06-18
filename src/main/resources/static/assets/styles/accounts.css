@@ -1,6 +1,13 @@
-.client-name{
-    color: var(--color-claro)!important;
+.banner-account{
+    .balance-visibility{
+        cursor: pointer;
+    }
+
+    .client-name{
+        color: var(--color-claro)!important;
+    }
 }
+
 .card{
     width: 18rem;
     .circle{

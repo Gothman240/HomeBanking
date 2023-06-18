@@ -6,7 +6,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -22,7 +24,7 @@ public class Account {
     @JoinColumn(name = "client_id")
     private Client client;
     @OneToMany(mappedBy = "account" ,fetch = FetchType.EAGER)
-    private List<Transaction> transactions = new ArrayList<>();
+    private Set<Transaction> transactions = new HashSet<>();
 
     public Account() {
     }
@@ -69,7 +71,7 @@ public class Account {
         this.client = client;
     }
     @JsonIgnore
-    public List<Transaction> getTransactions() {
+    public Set<Transaction> getTransactions() {
         return transactions;
     }
 

@@ -1,6 +1,8 @@
 package com.mindhub.HomeBanking.dtos;
 
 import com.mindhub.HomeBanking.models.Client;
+import com.mindhub.HomeBanking.models.ClientLoan;
+import com.mindhub.HomeBanking.models.Loan;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +13,8 @@ public class ClientDTO {
     private String lastName;
     private String email;
     private Set<AccountDTO> accounts;
+
+    private Set<ClientLoanDTO> loans;
 
     public ClientDTO() {
     }
@@ -23,6 +27,11 @@ public class ClientDTO {
         this.accounts = client.getAccounts()
                 .stream()
                 .map(AccountDTO::new)
+                .collect(Collectors.toSet());
+
+        this.loans = client.getClientLoans()
+                .stream()
+                .map(ClientLoanDTO::new)
                 .collect(Collectors.toSet());
     }
 
@@ -44,5 +53,9 @@ public class ClientDTO {
 
     public Set<AccountDTO> getAccounts() {
         return accounts;
+    }
+
+    public Set<ClientLoanDTO> getLoans() {
+        return loans;
     }
 }

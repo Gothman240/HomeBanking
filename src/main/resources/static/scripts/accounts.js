@@ -3,10 +3,12 @@ const {createApp} = Vue;
 createApp({
     data(){
         return {
-            show: false,
+            showSide: false,
             client: [],
             accounts: [],
+            loans: [],
             totalBalance: 0,
+            showBal: false,
         }
     },
     created(){
@@ -14,20 +16,26 @@ createApp({
     },
     methods: {
         showSideBar(){
-            this.show = !this.show;
+            this.showSide = !this.showSide;
         },
         loadData(){
             axios.get("http://localhost:8080/api/clients/1")
             .then(response  => {
                 this.client = response.data;
                 this.accounts = response.data.accounts;
+                this.loans = response.data.loans
                 this.accounts.sort((a, b) => a.id - b.id);
                 this.totalBalance = this.accounts.reduce((acc, item) => {
                     return acc + item.balance
                 }, 0)
-                console.log(this.total)
+                
+                console.log(this.client.loans)
             })
             .catch(err => console.log(err))
+        },
+        showBalance(){
+            this.showBal = !this.showBal;
+            console.log(this.showBal)
         }
     },
     computed: {

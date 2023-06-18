@@ -1,12 +1,7 @@
 package com.mindhub.HomeBanking;
 
-import com.mindhub.HomeBanking.models.Account;
-import com.mindhub.HomeBanking.models.Client;
-import com.mindhub.HomeBanking.models.Transaction;
-import com.mindhub.HomeBanking.models.TransactionType;
-import com.mindhub.HomeBanking.repositories.AccountRepository;
-import com.mindhub.HomeBanking.repositories.ClientRepository;
-import com.mindhub.HomeBanking.repositories.TransactionRepository;
+import com.mindhub.HomeBanking.models.*;
+import com.mindhub.HomeBanking.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootApplication
 public class homebankingApplication {
@@ -23,7 +19,7 @@ public class homebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
 		return args -> {
 			Client melba = new Client("Melba","Morel","melba@mindhub.com");
 			Account account = new Account("VIN001", LocalDate.now(), 5000.0);
@@ -59,6 +55,26 @@ public class homebankingApplication {
 			transactionRepository.save(transaction5);
 			transactionRepository.save(transaction6);
 			transactionRepository.save(transaction7);
+
+			Loan mortgage = new Loan("Mortgage", 500000.0, List.of(12,24,36,48,60));
+			Loan personal = new Loan("Personal", 100000.0, List.of(6,12,24));
+			Loan automotive = new Loan("Automotive", 300000.0, List.of(6,12,24,36));
+
+			loanRepository.save(mortgage);
+			loanRepository.save(personal);
+			loanRepository.save(automotive);
+
+			ClientLoan clientLoan = new ClientLoan(400000.0, 60);
+			ClientLoan clientLoan1 = new ClientLoan(50000.0, 12);
+
+			mortgage.addClientLoan(clientLoan);
+			personal.addClientLoan(clientLoan1);
+			melba.addClientLoan(clientLoan);
+			melba.addClientLoan(clientLoan1);
+
+			clientLoanRepository.save(clientLoan);
+			clientLoanRepository.save(clientLoan1);
+
 		};
 	}
 

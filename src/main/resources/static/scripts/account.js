@@ -3,7 +3,7 @@ const { createApp } = Vue;
 createApp({
   data() {
     return {
-      show: false,
+      showSide: false,
       id: "",
       transactions: [],
     };
@@ -13,7 +13,7 @@ createApp({
   },
   methods: {
     showSideBar() {
-      this.show = !this.show;
+      this.showSide = !this.showSide;
     },
     loadData() {
       let param = new URLSearchParams(location.search);

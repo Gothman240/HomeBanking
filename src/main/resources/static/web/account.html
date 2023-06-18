@@ -19,7 +19,7 @@
     <main id="app" class="container-fluid p-0 bg-secondary d-flex">
         <!-- sidebar -->
 
-        <aside class="" :class="show ? 'expand-sidebar' : ''">
+        <aside class="" :class="showSide ? 'expand-sidebar' : ''">
             <div class="logo">
 
                 <span class="material-icons">
@@ -59,7 +59,7 @@
             <!-- nav -->
             <nav class="navbar navbar-expand-md ">
                 <div class="container-fluid d-flex justify-content-between align-items-center">
-                    <div class="menu-toggle-wrap" :class="show ? 'expand-sidebar' : ''">
+                    <div class="menu-toggle-wrap" :class="showSide ? 'expand-sidebar' : ''">
                         <span class="menu-toggle" @click="showSideBar">
                             <span class="material-icons">
                                 keyboard_double_arrow_right
@@ -105,7 +105,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(transaction, index) of transactions">
-                                        <td>{{index++}}</td>
+                                        <td>{{index+1}}</td>
                                         <td>{{formatDate(transaction.date)}}</td>
                                         <td>{{transaction.description}}</td>
                                         <td class="fila"><span class="fw-bold"

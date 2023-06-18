@@ -19,7 +19,7 @@
     <main id="app" class="container-fluid p-0 d-flex bg-secondary">
         <!-- sidebar -->
 
-        <aside class="" :class="show ? 'expand-sidebar' : ''">
+        <aside class="" :class="showSide ? 'expand-sidebar' : ''">
             <div class="logo">
 
                 <span class="material-icons">
@@ -27,7 +27,7 @@
                 </span>
 
             </div>
-            
+
 
             <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
             <div class="menu d-block">
@@ -53,11 +53,11 @@
         </aside>
 
 
-        <div  class="container-fluid p-0">
+        <div class="container-fluid p-0 overflow-auto">
             <!-- nav -->
             <nav class="navbar navbar-expand-md ">
                 <div class="container-fluid d-flex justify-content-between align-items-center">
-                    <div class="menu-toggle-wrap" :class="show ? 'expand-sidebar' : ''">
+                    <div class="menu-toggle-wrap" :class="showSide ? 'expand-sidebar' : ''">
                         <span class="menu-toggle" @click="showSideBar">
                             <span class="material-icons">
                                 keyboard_double_arrow_right
@@ -83,46 +83,86 @@
             <div class="container-fluid ">
                 <!-- Contenido principal -->
                 <div class="row px-0 ">
-                    <div class="col-12 banner-account bg-body border-bottom d-flex justify-content-around align-items-center flex-wrap py-4">
-                        <div>
+                    <div
+                        class="col-12 banner-account bg-body border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
+                        <div class="balance m-5 m-md-3">
+                            <h6 class="small">Account Balance</h6>
+                            <div class="amount">
+                                <span class="fs-3 fw-bold" v-show="showBal">${{totalBalance.toFixed(2)}}</span>
+                                <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
+                                <span @click="showBalance" v-show="!showBal" class="ms-2 balance-visibility">
+                                    <span class="material-icons">
+                                        visibility
+                                    </span>
+                                </span>
+                                <span @click="showBalance" v-show="showBal" class="ms-2 balance-visibility">
+                                    <span class="material-icons">
+                                        visibility_off
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="m-2 m-md-3">
                             <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
                             <p class="small">{{client.email}}</p>
                         </div>
-                        <div>
-                            <h6 class="small">Account Balance</h6>
-                            <span class="fs-1 fw-bold">${{totalBalance.toFixed(2)}}</span>
+                    </div>
+
+
+                    <div class="col-12 info-account  py-5">
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
+                            <div class="card shadow" v-for="account of accounts">
+                                <div class="row">
+                                    <div class="col-6 d-flex justify-content-center align-items-center">
+                                        <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
+                                            <span class="material-icons fs-1">
+                                                account_balance_wallet
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title"> ${{account.balance.toFixed(2)}}</h5>
+                                            <p class="card-subtitle mb-2 small">
+                                                {{account.number}}</p>
+                                            <p class="card-text text-muted">{{account.creationDate}}</p>
+                                            <a v-bind:href="'./account.html?id=' + account.id ">Go to Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
-                </div>
-                <div class="col-12 info-account  py-5">
-                    <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
-                        <div class="card shadow" v-for="account of accounts">
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-center align-items-center">
-                                    <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
-                                        <span class="material-icons fs-1">
-                                            account_balance_wallet
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="col-6">
-                                    <div class="card-body">
-                                        <h5 class="card-title"> ${{account.balance.toFixed(2)}}</h5>
-                                        <p class="card-subtitle mb-2 small">
-                                            {{account.number}}</p>
-                                        <p class="card-text text-muted">{{account.creationDate}}</p>
-                                            <a v-bind:href="'./account.html?id=' + account.id ">Go to Details</a>
+                    <div class="col-12 ">
+                        <section class="row bg-body">
+                            <h4 class="fw-bold color-claro">Details of your Loans</h4>
+                            <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans">
+                                <div class="card shadow w-100">
+                                    <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
+                                        {{loan.name}}
+                                    </div>
+                                    <div class="card-body px-4">
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Name:</span> <span>{{loan.name}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Amount:</span> <span>${{loan.amount.toLocaleString()}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Payments:</span> <span>{{loan.payments}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
+                            <h3 v-else class="text-center fw-bold text-muted">You haven't made any loan yet...</h3>
+                        </section>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </main>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
