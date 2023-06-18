@@ -90,12 +90,12 @@
                             <div class="amount">
                                 <span class="fs-3 fw-bold" v-show="showBal">${{totalBalance.toFixed(2)}}</span>
                                 <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
-                                <span @click="showBalance" v-show="!showBal" class="ms-2 balance-visibility">
+                                <span @click="showBalance" v-show="showBal" class="ms-2 balance-visibility">
                                     <span class="material-icons">
                                         visibility
                                     </span>
                                 </span>
-                                <span @click="showBalance" v-show="showBal" class="ms-2 balance-visibility">
+                                <span @click="showBalance" v-show="!showBal" class="ms-2 balance-visibility">
                                     <span class="material-icons">
                                         visibility_off
                                     </span>
