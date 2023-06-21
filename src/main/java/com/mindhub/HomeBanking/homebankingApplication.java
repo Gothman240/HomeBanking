@@ -19,7 +19,7 @@ public class homebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return args -> {
 			Client melba = new Client("Melba","Morel","melba@mindhub.com");
 			Account account = new Account("VIN001", LocalDate.now(), 5000.0);
@@ -74,6 +74,17 @@ public class homebankingApplication {
 
 			clientLoanRepository.save(clientLoan);
 			clientLoanRepository.save(clientLoan1);
+
+			Card cardMelbaGold = new Card(melba.getFirstName() + " " + melba.getLastName(), CardType.DEBIT,CardColor.GOLD, "1325-4567-7897", 129, LocalDate.now().plusYears(5), LocalDate.now());
+			Card cardMelbaTitanium = new Card(melba.getFirstName() + " " + melba.getLastName(), CardType.CREDIT,CardColor.TITANIUM, "1330-4007-1897", 128, LocalDate.now().plusYears(5), LocalDate.now());
+			//Card cardSilver = new Card(melba, CardType.CREDIT,CardColor.TITANIUM, "1330-1897-4007", (short) 127, LocalDate.now(), LocalDate.now().plusYears(5));
+
+			//cardRepository.save(cardSilver);
+			melba.addCards(cardMelbaGold);
+			melba.addCards(cardMelbaTitanium);
+
+			cardRepository.save(cardMelbaGold);
+			cardRepository.save(cardMelbaTitanium);
 
 		};
 	}

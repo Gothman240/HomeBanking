@@ -33,15 +33,15 @@
             <div class="menu d-block">
                 <a href="#" class="button text-decoration-none mb-2">
                     <span class="material-icons">
-                        credit_card
+                        account_balance                        
                     </span>
                     <span class="text">Account</span>
                 </a>
-                <a href="" class="button text-decoration-none mb-2">
+                <a href="./cards.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
-                        home
+                        credit_card
                     </span>
-                    <span class="text">Home</span>
+                    <span class="text">Cards</span>
                 </a>
                 <a href="" class="button text-decoration-none mb-2">
                     <span class="material-icons">
@@ -80,12 +80,12 @@
                 </div>
             </nav>
 
-            <div class="container-fluid ">
+            <div class="container-fluid">
                 <!-- Contenido principal -->
-                <div class="row px-0 ">
+                <div class="row px-0 gradient px-3">
                     <div
-                        class="col-12 banner-account bg-body border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
-                        <div class="balance m-5 m-md-3">
+                        class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
+                        <div class="balance text-center text-md-start m-4 m-md-3">
                             <h6 class="small">Account Balance</h6>
                             <div class="amount">
                                 <span class="fs-3 fw-bold" v-show="showBal">${{totalBalance.toFixed(2)}}</span>

@@ -3,7 +3,6 @@ package com.mindhub.HomeBanking.dtos;
 import com.mindhub.HomeBanking.models.Transaction;
 import com.mindhub.HomeBanking.models.TransactionType;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TransactionDTO {
