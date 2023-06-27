@@ -7,6 +7,16 @@
         color: var(--color-claro)!important;
     }
 }
+.loan-container{
+    min-height: 20rem;
+}
+.empty-loan{
+
+    .material-icons{
+        font-size: 4.33rem!important;
+    }
+    
+}
 
 .card{
     width: 18rem;
@@ -19,4 +29,4 @@
             color: #fff;
         }
     }
-}    
+}

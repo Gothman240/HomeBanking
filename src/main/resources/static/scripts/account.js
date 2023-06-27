@@ -38,7 +38,14 @@ createApp({
       const parsedDate = new Date(date);
       return parsedDate.toLocaleDateString("en-US", format);
     },
-
+    logout(){
+      axios.post("/api/logout")
+      .then(res => {
+          if(res.status === 200){
+              window.location.href = "/login.html"
+          }
+      })
+  }
   },
   computed: {},
 }).mount("#app");

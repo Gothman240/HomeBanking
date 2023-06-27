@@ -1,4 +1,4 @@
-const {createApp} = Vue;
+const { createApp } = Vue;
 
 createApp({
     data(){
@@ -19,7 +19,7 @@ createApp({
             this.showSide = !this.showSide;
         },
         loadData(){
-            axios.get("http://localhost:8080/api/clients/1")
+            axios.get("http://localhost:8080/api/clients/current")
             .then(response  => {
                 this.client = response.data;
                 this.accounts = response.data.accounts;
@@ -29,14 +29,30 @@ createApp({
                     return acc + item.balance
                 }, 0)
                 
-                console.log(this.client.loans)
             })
             .catch(err => console.log(err))
         },
         showBalance(){
             this.showBal = !this.showBal;
             console.log(this.showBal)
+        },
+        formatCurrency(currency){
+            const format = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            })
+
+            return format.format(currency)
+        },
+        logout(){
+            axios.post("/api/logout")
+            .then(res => {
+                if(res.status === 200){
+                    window.location.href = "/login.html"
+                }
+            })
         }
+
     },
     computed: {
        

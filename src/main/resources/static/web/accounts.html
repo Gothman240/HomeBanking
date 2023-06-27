@@ -69,9 +69,9 @@
                     <div class="" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item align-bottom">
-                                <a class="nav-link" aria-current="page" href="#">
+                                <a @click="logout" class="nav-link" aria-current="page" href="#">
                                     <span class="material-icons">
-                                        login
+                                        logout
                                     </span>
                                 </a>
                             </li>
@@ -82,13 +82,13 @@
 
             <div class="container-fluid">
                 <!-- Contenido principal -->
-                <div class="row px-0 gradient px-3">
+                <div class="row px-0 gradient px-md-3 gap-4">
                     <div
                         class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
                         <div class="balance text-center text-md-start m-4 m-md-3">
                             <h6 class="small">Account Balance</h6>
                             <div class="amount">
-                                <span class="fs-3 fw-bold" v-show="showBal">${{totalBalance.toFixed(2)}}</span>
+                                <span class="fs-3 fw-bold" v-show="showBal">{{formatCurrency(totalBalance)}}</span>
                                 <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
                                 <span @click="showBalance" v-show="showBal" class="ms-2 balance-visibility">
                                     <span class="material-icons">
@@ -109,7 +109,7 @@
                     </div>
 
 
-                    <div class="col-12 info-account  py-5">
+                    <div class="col-12 info-account">
                         <div class="d-flex justify-content-center align-items-center flex-wrap gap-5">
                             <div class="card" v-for="account of accounts">
                                 <div class="row">
@@ -122,22 +122,21 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="card-body">
-                                            <h5 class="card-title"> ${{account.balance.toFixed(2)}}</h5>
-                                            <p class="card-subtitle mb-2 small">
+                                            <h5 class="card-title">{{formatCurrency(account.balance)}}</h5>
+                                            <p class="card-subtitle mb-2 fw-bold small text-muted">
                                                 {{account.number}}</p>
                                             <p class="card-text text-muted">{{account.creationDate}}</p>
                                             <a v-bind:href="'./account.html?id=' + account.id ">Go to Details</a>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
                     <div class="col-12 ">
-                        <section class="row bg-body">
-                            <h4 class="fw-bold color-claro">Details of your Loans</h4>
+                        <section class="row bg-body loan-container rounded py-4 ">
+                            <h4 class="fw-bold color-claro ">Details of your Loans</h4>
                             <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans">
                                 <div class="card shadow w-100">
                                     <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
@@ -148,7 +147,7 @@
                                             <span>Name:</span> <span>{{loan.name}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
-                                            <span>Amount:</span> <span>${{loan.amount.toLocaleString()}}</span>
+                                            <span>Amount:</span> <span>{{formatCurrency(loan.amount)}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
                                             <span>Payments:</span> <span>{{loan.payments}}</span>
@@ -156,7 +155,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 v-else class="text-center fw-bold text-muted">You haven't made any loan yet...</h3>
+                            <div v-else class="h-100">
+                                <div class="d-flex flex-column justify-content-center align-items-center empty-loan ">
+                                    <span class="material-icons text-muted">
+                                        error_outline
+                                    </span>
+                                    <h3 class="text-center fw-bold text-muted fw-bolder ">You haven't made any loan yet</h3>
+                                    
+                                </div>
+
+                            </div>
                         </section>
                     </div>
                 </div>

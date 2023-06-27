@@ -18,7 +18,7 @@ createApp({
             this.showSide = !this.showSide;
         },
         loadData(){
-            axios.get("http://localhost:8080/api/clients/1")
+            axios.get("http://localhost:8080/api/clients/current")
             .then(response  => {
                 this.client = response.data
                 this.cards = response.data.cards.sort((a, b) => a.id - b.id)
@@ -62,8 +62,17 @@ createApp({
             if(color === "SILVER"){
                 return "grey"
             }
+        },
+        logout(){
+            axios.post("/api/logout")
+            .then(res => {
+                if(res.status === 200){
+                    window.location.href = "/login.html"
+                }
+            })
         }
     },
+    
     computed: {
        
     }
