@@ -27,9 +27,6 @@
         </span>
 
       </div>
-      <!--  <div class="menu-toggle-wrap">
-
-            </div> -->
 
       <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
       <div class="menu d-block">
@@ -84,7 +81,7 @@
 
       <div class="container-fluid ">
         <!-- Contenido principal -->
-        <div class="row px-0 px-md-3 gap-3">
+        <div class="row px-0 px-md-3 gap-1">
           <div
             class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
             <div class="balance text-center text-md-start m-4 m-md-3">
@@ -95,19 +92,20 @@
               <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
               <p class="small">{{client.email}}</p>
             </div>
-            <div v-if="!cards.length || !creditCards.length || !debitCards.length" class="col-12 border-top text-center py-4">
+            <div v-if="cards.length < 6" class="col-12 border-top text-center py-4">
               <span class="material-icons fs-2">
                 add_card
               </span>
-              <h6 v-if="!creditCards.length" class="fw-bold">You don't have credit cards yet</h6>
-              <h6 v-else-if="!debitCards.length" class="fw-bold">You don't have debit cards yet</h6>
-              <h6 v-else="!debitCards.length && !creditCards.length" class="fw-bold">You don't have cards yet</h6>
-              <a href="#">Get one</a>
+              <h6 v-if="debitCards.length < 1 && creditCards.length < 1 " class="fw-bold">You don't have cards yet</h6>
+              <h6 v-else-if="debitCards.length < 1" class="fw-bold">You don't have debit cards yet</h6>
+              <h6 v-else-if="creditCards.length < 1" class="fw-bold">You don't have credit cards yet</h6>
+              <h6 v-else class="fw-bold">Add new card?</h6>
+              <a href="./create-cards.html">Get one</a>
             </div>
           </div>
 
-          <div v-if="debitCards.length" class="col-12 rounded bg-body py-3">
-            <h3>Debit</h3>
+          <span v-show="debitCards.length"><h5 class="mt-3">Debit</h5></span>
+          <div v-if="debitCards.length" class="col-12 rounded bg-body py-3 px-0 px-md-3 d-flex flex-wrap " :class="debitCards.length <3 ? 'px-0 px-md-5 gap-5' : 'justify-content-evenly' ">
 
             <div class="creditcard my-4" v-for="card of debitCards"> <!-- clase color dinamica -->
               <div class="front">
@@ -179,7 +177,7 @@
                   </g>
                 </svg>
               </div>
-              <div class="back">
+              <!-- <div class="back">
                 <svg version="1.1" id="cardback" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 750 471"
                   style="enable-background:new 0 0 750 471;" xml:space="preserve">
@@ -214,13 +212,13 @@
                       class="st12 st13">{{card.name}}</text>
                   </g>
                 </svg>
-              </div>
+              </div> -->
             </div>
           </div>
-          <div v-if="creditCards.length" class="col-12 rounded bg-body py-3">
-            <h3>Credit</h3>
+          <span v-show="creditCards.length"><h5 class="mt-3">Credit</h5></span>
+          <div v-if="creditCards.length" class="col-12 rounded bg-body py-3 d-flex flex-wrap " :class="creditCards.length < 3 ? 'px-0 px-md-5 gap-5' : ' justify-content-evenly' ">
 
-            <div class="creditcard my-4" v-for="card of creditCards"> <!-- clase color dinamica -->
+            <div class="creditcard my-4 " v-for="card of creditCards"> <!-- clase color dinamica -->
               <div class="front ">
                 <div id="ccsingle"></div>
                 <svg version="1.1" id="cardfront" xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +288,7 @@
                   </g>
                 </svg>
               </div>
-              <div class="back">
+              <!-- <div class="back">
                 <svg version="1.1" id="cardback" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 750 471"
                   style="enable-background:new 0 0 750 471;" xml:space="preserve">
@@ -325,11 +323,14 @@
                       class="st12 st13">{{card.name}}</text>
                   </g>
                 </svg>
-              </div>
+              </div> -->
             </div>
           </div>
+          
         </div>
+        
       </div>
+      
     </div>
 
   </main>

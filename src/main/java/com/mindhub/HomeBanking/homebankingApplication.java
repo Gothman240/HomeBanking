@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 public class homebankingApplication {
@@ -26,8 +27,8 @@ public class homebankingApplication {
 		return args -> {
 			Client melba = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("melba456"));
 			Client admin = new Client("admin", "admin", "admin@admin.com", passwordEncoder.encode("admin123"));
-			Account account = new Account("VIN001", LocalDate.now(), 5000.0);
-			Account account1 = new Account("VIN002", LocalDate.now().plusDays(1), 7500.0);
+			Account account = new Account("VIN-45684",5000.0);
+			Account account1 = new Account(LocalDate.now().plusDays(1), 7500.0);
 
 			clientRepository.save(melba);
 			clientRepository.save(admin);

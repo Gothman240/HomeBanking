@@ -25,8 +25,7 @@ createApp({
                 this.debitCards = this.cards.filter(card => card.type === "DEBIT")
                 this.creditCards = this.cards.filter(card => card.type === "CREDIT")
                 console.log(this.client)
-            })
-            .catch(err => console.log(err))
+            }).catch(err => console.log(err))
         },
         formatDate(date){
             const oldDate = date;
@@ -40,7 +39,6 @@ createApp({
             return newDate;
         },
         colorCard(color){
-            console.log(color === "TITANIUM")
             if(color === "TITANIUM"){
                 return "grey"
             }
@@ -52,7 +50,6 @@ createApp({
             }
         },
         secondaryColorCard(color){
-            console.log(color === "TITANIUM")
             if(color === "TITANIUM"){
                 return "greydark"
             }
@@ -66,9 +63,8 @@ createApp({
         logout(){
             axios.post("/api/logout")
             .then(res => {
-                if(res.status === 200){
                     window.location.href = "/login.html"
-                }
+                
             })
         }
     },

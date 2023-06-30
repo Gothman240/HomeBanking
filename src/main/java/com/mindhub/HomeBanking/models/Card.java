@@ -25,6 +25,16 @@ public class Card {
     public Card() {
     }
 
+    public Card(String cardHolder, CardType type, CardColor color, String number, int cvv) {
+        this.cardHolder = cardHolder;
+        this.type = type;
+        this.color = color;
+        this.number = number;
+        this.cvv = cvv;
+        this.thruDate = LocalDate.now().plusYears(5);
+        this.fromDate = LocalDate.now();
+    }
+
     public Card(String cardHolder, CardType type, CardColor color, String number, int cvv, LocalDate thruDate, LocalDate fromDate) {
         this.cardHolder = cardHolder;
         this.type = type;

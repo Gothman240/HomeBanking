@@ -22,6 +22,7 @@ createApp({
             axios.get("http://localhost:8080/api/clients/current")
             .then(response  => {
                 this.client = response.data;
+                console.log(response)
                 this.accounts = response.data.accounts;
                 this.loans = response.data.loans
                 this.accounts.sort((a, b) => a.id - b.id);
@@ -51,6 +52,13 @@ createApp({
                     window.location.href = "/login.html"
                 }
             })
+        },
+        createAccount(){
+            axios.post("/api/accounts", "balance=0.0" ,  { headers: { "content-type": "application/x-www-form-urlencoded" } })
+            .then(res => {
+                this.loadData()
+            })
+            .catch(err => console.log(err.toJSON()))
         }
 
     },

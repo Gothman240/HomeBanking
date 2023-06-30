@@ -5,10 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Entity
@@ -17,6 +15,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
+    @Column(unique = true)
     private String number;
     private LocalDate creationDate;
     private Double balance;
@@ -27,6 +26,23 @@ public class Account {
     private Set<Transaction> transactions = new HashSet<>();
 
     public Account() {
+    }
+    public Account(String number) {
+        this.number = number;
+        this.creationDate = LocalDate.now();
+        this.balance = 0.0;
+    }
+
+    public Account(String number, Double balance) {
+        this.number = number;
+        this.creationDate = LocalDate.now();
+        this.balance = balance;
+    }
+
+    public Account(LocalDate creationDate, Double balance) {
+        this.number = "VIN-" + ThreadLocalRandom.current().nextInt(100000,999999 +1);
+        this.creationDate = creationDate;
+        this.balance = balance;
     }
 
     public Account(String number, LocalDate creationDate, Double balance) {

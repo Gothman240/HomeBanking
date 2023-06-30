@@ -106,7 +106,12 @@
                                 <tbody>
                                     <tr v-for="(transaction, index) of transactions">
                                         <td>{{index+1}}</td>
-                                        <td>{{formatDate(transaction.date)}}</td>
+                                        <td>
+                                            <span class="material-icons fs-6 me-3">
+                                                calendar_today
+                                            </span>
+                                            {{formatDate(transaction.date)}}
+                                        </td>
                                         <td>{{transaction.description}}</td>
                                         <td class="fila"><span class="fw-bold"
                                                 :class="transaction.type == 'DEBIT' ? 'DEBIT' : 'CREDIT' ">{{transaction.amount.toFixed(2)}}</span>
@@ -119,8 +124,16 @@
                             </table>
                         </div>
                     </section>
-                    <div class="col-12 d-flex bg-body flex-shrink-1 " v-else>
-                        <h4 class="text-muted fw-bold">You haven't added any transaction</h4>
+
+                    <div v-else class="h-100">
+                        <div class="d-flex flex-column justify-content-center align-items-center empty-transaction ">
+                            <span class="material-icons text-muted">
+                                error_outline
+                            </span>
+                            <h3 class="text-center fw-bold text-muted fw-bolder ">You haven't added any transaction</h3>
+                            
+                        </div>
+
                     </div>
                 </div>
             </div>

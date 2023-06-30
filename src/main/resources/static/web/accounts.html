@@ -106,12 +106,21 @@
                             <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
                             <p class="small">{{client.email}}</p>
                         </div>
+    
+                        <div v-show="accounts.length<3" class="col-12 border-top text-center py-4">
+                            <span class="material-icons fs-2">
+                                account_balance_wallet
+                            </span>
+                            <h6 class="fw-bold" v-if="!accounts.length">Don't have an account?</h6>
+                            <h6 class="fw-bold" v-else>Add new account?</h6>
+                            <a href="#" @click="createAccount">Get one</a>
+                        </div>
+                        
                     </div>
-
 
                     <div class="col-12 info-account">
                         <div class="d-flex justify-content-center align-items-center flex-wrap gap-5">
-                            <div class="card" v-for="account of accounts">
+                            <div class="card shadow" v-for="account of accounts">
                                 <div class="row">
                                     <div class="col-6 d-flex justify-content-center align-items-center">
                                         <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
@@ -128,7 +137,7 @@
                                             <p class="card-text text-muted">{{account.creationDate}}</p>
                                             <a v-bind:href="'./account.html?id=' + account.id ">Go to Details</a>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>

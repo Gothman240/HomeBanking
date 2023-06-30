@@ -21,9 +21,7 @@ createApp({
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
         .then((res) => {
-          if (res.status === 200) {
-            window.location.href = "/web/accounts.html";
-          }
+          window.location.href = "/web/accounts.html";
         })
         .catch((err) => console.log(err.toJSON()));
     },
@@ -35,25 +33,22 @@ createApp({
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
         .then((res) => {
-          if (res.status === 201) {
-            axios
-              .post(
-                "api/login",
-                `email=${this.emailSignUp}&password=${this.passwordSignUp}`,
-                {
-                  headers: {
-                    "content-type": "application/x-www-form-urlencoded",
-                  },
-                }
-              )
-              .then((res) => {
-                if (res.status === 200) {
-                  window.location.href = "/web/accounts.html";
-                }
-              })
-              .catch((err) => console.log(err.toJSON()));
-          }
-        });
+          axios
+            .post(
+              "api/login",
+              `email=${this.emailSignUp}&password=${this.passwordSignUp}`,
+              {
+                headers: {
+                  "content-type": "application/x-www-form-urlencoded",
+                },
+              }
+            )
+            .then((res) => {
+              window.location.href = "/web/accounts.html";
+            })
+            .catch((err) => console.log(err.toJSON()));
+        })
+        .catch((err) => console.log(err.toJSON()));
     },
   },
   computed: {},
