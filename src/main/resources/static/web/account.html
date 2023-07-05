@@ -52,7 +52,7 @@
         </aside>
 
 
-        <div class="container-fluid p-0">
+        <div class="container-fluid p-0 overflow-auto">
             <!-- nav -->
             <nav class="navbar navbar-expand-md ">
                 <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -97,7 +97,7 @@
                                         <th scope="col">Date</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Amount</th>
-                                        <th scope="col" class="d-none d-md-block">Type</th>
+                                        <th scope="col">Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,7 +113,7 @@
                                         <td class="fila"><span class="fw-bold"
                                                 :class="transaction.type == 'DEBIT' ? 'DEBIT' : 'CREDIT' ">{{transaction.amount.toFixed(2)}}</span>
                                         </td>
-                                        <td class="fw-bold d-none d-md-block"
+                                        <td class="fw-bold"
                                             :class="transaction.type == 'DEBIT' ? 'text-danger' : 'text-success' ">
                                             {{transaction.type}}</td>
                                     </tr>

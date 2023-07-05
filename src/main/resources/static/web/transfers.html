@@ -195,11 +195,11 @@
                           <span class="highlight"></span>
                           <span class="bar"></span>
                           <label class="label--group">Amount</label>
-                          <small class="form-text mb-2 d-flex align-items-center">
+                          <small v-for="account in showAccount" class="form-text mb-2 d-flex align-items-center" :class="account.balance > formData.originNumber ? 'bg-danger' : '' ">
                             <span class="material-icons text-muted fs-6">
                               error_outline
                               </span>
-                            Account balance: {{account.balance}}
+                            Account balance:{{account.balance}}
                           </small>
                         </div>
 

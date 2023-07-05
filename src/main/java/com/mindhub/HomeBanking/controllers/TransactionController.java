@@ -28,25 +28,11 @@ public class TransactionController {
     @Autowired
     private ClientRepository clientRepository;
 
-
+    @Transactional
     @RequestMapping(value = "/transactions", method = RequestMethod.POST)
     public ResponseEntity<Object> newTransaction(@RequestParam Double amount, @RequestParam String description,
                                                  @RequestParam String originNumber, @RequestParam String destinyNumber, Authentication authentication){
-        Account originAccount = accountRepository.findByNumber(originNumber);
-        Account destinyAccount = accountRepository.findByNumber(destinyNumber);
-        Client currentClient = clientRepository.findByEmail(authentication.getName());
 
-
-        if (originAccount == null){
-            return new ResponseEntity<>("cuenta de origin no existe", HttpStatus.FORBIDDEN);
-        }
-        if(destinyAccount == null){
-            return new ResponseEntity<>("cuenta de destino no existe", HttpStatus.FORBIDDEN);
-        }
-        Client destinyClient = destinyAccount.getClient();
-        if (destinyClient == null){
-            return new ResponseEntity<>("cuenta de destino no existe", HttpStatus.FORBIDDEN);
-        }
         if (originNumber.isBlank()){
             return new ResponseEntity<>("numero de cuenta vacio" ,HttpStatus.FORBIDDEN);
         }
@@ -62,27 +48,40 @@ public class TransactionController {
         if (originNumber.equals(destinyNumber)){
             return new ResponseEntity<>("revisa las cuentas", HttpStatus.FORBIDDEN);
         }
+
+        Account originAccount = accountRepository.findByNumber(originNumber);
+        Account destinyAccount = accountRepository.findByNumber(destinyNumber);
+        Client currentClient = clientRepository.findByEmail(authentication.getName());
+        Client destinyClient = destinyAccount.getClient();
+
+        if (originAccount == null){
+            return new ResponseEntity<>("cuenta de origin no existe", HttpStatus.FORBIDDEN);
+        }
         if (currentClient.getAccounts().stream().noneMatch(account -> account.getNumber().equals(originNumber))){
             return new ResponseEntity<>("la cuenta no coincide con el cliente actual", HttpStatus.FORBIDDEN );
         }
         if (originAccount.getBalance() < amount){
             return new ResponseEntity<>("monto no disponible", HttpStatus.FORBIDDEN);
         }
-        Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT);
-        Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
+        try {
+            Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT);
+            Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
 
-        transactionRepository.save(destinyTransaction);
-        transactionRepository.save(originTransaction);
+            transactionRepository.save(destinyTransaction);
+            transactionRepository.save(originTransaction);
 
-        originAccount.addTransactions(originTransaction);
-        destinyAccount.addTransactions(destinyTransaction);
-        originAccount.setBalance(originAccount.getBalance() - amount);
-        destinyAccount.setBalance(destinyAccount.getBalance() + amount);
+            originAccount.addTransactions(originTransaction);
+            destinyAccount.addTransactions(destinyTransaction);
+            originAccount.setBalance(originAccount.getBalance() - amount);
+            destinyAccount.setBalance(destinyAccount.getBalance() + amount);
 
-        accountRepository.save(originAccount);
-        accountRepository.save(destinyAccount);
+            accountRepository.save(originAccount);
+            accountRepository.save(destinyAccount);
 
-        return new ResponseEntity<>("transaccion realizada", HttpStatus.CREATED);
+            return new ResponseEntity<>("transaccion realizada", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating transaction: " + e.getMessage() , HttpStatus.FORBIDDEN);
+        }
 
     }
 }

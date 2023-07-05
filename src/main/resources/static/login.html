@@ -38,13 +38,13 @@
             <h2 class="form__title mb-4">Sign In</h2>
             
             <div class="group mb-4">      
-              <input class="input--group" type="email" v-model="emailSignIn">
+              <input class="input--group" type="email" v-model="emailSignIn" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label class="label--group">Email:</label>
             </div>
             <div class="group mb-3">      
-              <input class="input--group" type="password" v-model="passwordSignIn">
+              <input class="input--group" type="password" v-model="passwordSignIn" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label class="label--group">Password:</label>
@@ -61,7 +61,7 @@
             <div class="d-flex form_name">
 
               <div class="group mb-4">      
-                <input class="input--group" type="text" v-model="firstNameSignUp">
+                <input class="input--group" type="text" v-model="firstNameSignUp" required>
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label class="label--group">First name:</label>
@@ -69,7 +69,7 @@
               <!-- <input type="text" placeholder="first name" v-model="firstNameSignUp" class="input" /> -->
 
               <div class="group ms-2 mb-4">      
-                <input class="input--group" type="text" v-model="lastNameSignUp">
+                <input class="input--group" type="text" v-model="lastNameSignUp" required>
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label class="label--group">Last name:</label>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="group mb-4">      
-              <input class="input--group" type="email" v-model="emailSignUp">
+              <input class="input--group" type="email" v-model="emailSignUp" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label class="label--group">Email:</label>
@@ -88,7 +88,7 @@
             <!-- <input type="email" placeholder="Email" class="input" v-model="emailSignUp" /> -->
 
             <div class="group mb-4">      
-              <input class="input--group" type="password" v-model="passwordSignUp">
+              <input class="input--group" type="password" v-model="passwordSignUp" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label class="label--group">Password:</label>
