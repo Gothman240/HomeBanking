@@ -1,21 +1,187 @@
-:root{
+:root {
     --color-oscuro: #1B2136;
     --color-claro: #424a5b;
-    --color-secundario: #ff9f00 ;
+    --color-secundario: #ff9f00;
 }
 
-.color-oscuro{
-    color: var(--color-oscuro)!important;
+.color-oscuro {
+    color: var(--color-oscuro) !important;
 }
 
-.color-claro{
-    color: var(--color-claro)!important;
+.color-claro {
+    color: var(--color-claro) !important;
 }
 
-.bg-claro{
-    background: var(--color-claro)!important;
+.bg-claro {
+    background: var(--color-claro) !important;
 }
 
-.bg-oscuro{
-    background: var(--color-oscuro)!important;
+.bg-oscuro {
+    background: var(--color-oscuro) !important;
 }
+/* --- navtab--- */
+
+.with-arrow .nav-link.active {
+    position: relative;
+  }
+  
+  .with-arrow .nav-link.active::after {
+    content: '';
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--color-oscuro);
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+  }
+  
+  .lined .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .lined .nav-link:hover {
+    border: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .lined .nav-link.active {
+    background: none;
+    color: #555;
+    border-color: var(--color-oscuro);
+  }
+/* !--- navtab --- */
+
+
+/* --- input --- */
+
+.group {
+    position: relative;
+    margin-bottom: 45px;
+    .input--group {
+        font-size: 18px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #757575;
+    }
+    
+    .input--group:focus {
+        outline: none;
+    }
+    
+    /* .label--group ======================================= */
+    .label--group {
+        color: #999;
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+    
+    /* active state */
+    .input--group:focus~.label--group,
+    .input--group:valid~.label--group {
+        top: -20px;
+        font-size: 14px;
+        color: var(--color-oscuro);
+    }
+    
+    /* BOTTOM BARS ================================= */
+    .bar {
+        position: relative;
+        display: block;
+        width: 300px;
+    }
+    
+    .bar:before,
+    .bar:after {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 1px;
+        position: absolute;
+        background: var(--color-oscuro);
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+    
+    .bar:before {
+        left: 50%;
+    }
+    
+    .bar:after {
+        right: 50%;
+    }
+    
+    /* active state */
+    .input--group:focus~.bar:before,
+    .input--group:focus~.bar:after {
+        width: 50%;
+    }
+    
+    /* HIGHLIGHTER ================================== */
+    .highlight {
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+    
+    /* active state */
+    .input--group:focus~.highlight {
+        -webkit-animation: inputHighlighter 0.3s ease;
+        -moz-animation: inputHighlighter 0.3s ease;
+        animation: inputHighlighter 0.3s ease;
+    }
+}
+
+
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+/* !--- input --- */

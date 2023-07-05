@@ -33,7 +33,10 @@ public class AccountController {
     }
 
     @RequestMapping("/accounts/{id}")
-    public AccountDTO getAccount(@PathVariable Long id){
+    public AccountDTO getAccount(@PathVariable Long id, Authentication authentication){
+
+        Client client = clientRepository.findByEmail(authentication.getName());
+        Account account = accountRepository.findById(id).orElse(null);
         return accountRepository.findById(id)
                 .map(AccountDTO::new)
                 .orElse(null);

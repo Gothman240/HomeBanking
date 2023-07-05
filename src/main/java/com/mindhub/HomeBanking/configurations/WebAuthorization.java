@@ -17,14 +17,13 @@ import javax.servlet.http.HttpSession;
 @Configuration
 public class WebAuthorization {
     @Bean
-    protected SecurityFilterChain filterchain(HttpSecurity http) throws Exception{
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/clients").hasAuthority("ADMIN")
                 .antMatchers("/rest/**", "/admin/**", "/manager.html").hasAuthority("ADMIN")
                 .antMatchers("/web/**").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-                .antMatchers(HttpMethod.POST, "api/accounts").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST, "api/cards").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards").hasAuthority("CLIENT")
                 .antMatchers("/index.html", "/login.html").permitAll();
         http.formLogin()
                 .usernameParameter("email")
@@ -54,7 +53,7 @@ public class WebAuthorization {
         return http.build();
 
     }
-
+// sesion actual
     private void clearAuthenticationAttributes(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
@@ -64,5 +63,5 @@ public class WebAuthorization {
         }
     }
 
-    }
+}
 

@@ -1,0 +1,26 @@
+.progress {
+  height: 5px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  background-color: var(--color-oscuro);
+}
+
+
+.form-control::selection{
+  border: none!important;
+}
+.cardAccount{
+  width: 16rem;
+}
+
+.circle{
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+  .material-icons{
+      color: var(--color-oscuro);
+  }
+}

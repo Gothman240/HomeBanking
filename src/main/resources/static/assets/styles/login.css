@@ -45,10 +45,16 @@ body::before {
 	margin-bottom: 1.25rem;
 }
 .form_name{
-	.input{
+	.group{
+		.input--group{
 		
-		width: 50%!important;
+			width: 100%!important;
+		}
+		.bar{
+			width: 100%!important;
+		}
 	}
+	
 }
 .link {
 	color: var(--gray);
@@ -207,7 +213,7 @@ body::before {
 .form {
 	background-color: var(--white);
 	align-items: center;
-	padding: 0 3rem;
+
 	padding-top: 1.43rem;
 	height: 100%;
 	text-align: center;
