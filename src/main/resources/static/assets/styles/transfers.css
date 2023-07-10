@@ -11,6 +11,9 @@
 .form-control::selection{
   border: none!important;
 }
+.card-transition{
+  transition: 0.5s all ease;
+}
 .cardAccount{
   width: 16rem;
 }

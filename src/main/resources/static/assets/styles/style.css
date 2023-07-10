@@ -1,7 +1,13 @@
 :root {
-    --color-oscuro: #1B2136;
+    --color-oscuro: #162d59;
     --color-claro: #424a5b;
     --color-secundario: #ff9f00;
+}
+
+nav.navbar {
+    position: sticky!important;
+    top: 0;
+    z-index: 999;
 }
 
 .color-oscuro {
@@ -12,12 +18,27 @@
     color: var(--color-claro) !important;
 }
 
+.border-top-oscuro{
+    border-top: 210px solid var(--color-oscuro);
+    padding: 0px;
+    .border-top-content{
+        margin-top: -130px;
+    }
+
+}
+
+.color-secundario{
+    color: var(--color-secundario)
+}
 .bg-claro {
     background: var(--color-claro) !important;
 }
 
 .bg-oscuro {
     background: var(--color-oscuro) !important;
+}
+.bg-secundario{
+    background: var(--color-secundario);
 }
 /* --- navtab--- */
 

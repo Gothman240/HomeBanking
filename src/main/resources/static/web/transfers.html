@@ -82,22 +82,20 @@
 
       <div class="container-fluid">
         <div class="row px-0 gap-3">
-          <div class="col-12 banner-account bg-body d-flex align-items-center flex-wrap py-4">
-            <h5 class="fw-bold color-claro">Transfers</h5>
-          </div>
+          
 
-          <div class="container-fluid">
+          <div class="container-fluid overflow-auto">
             <div class="progress">
               <div class="progress-bar" role="progressbar" :style="{ width: progressWidth }"></div>
             </div>
-            <div class="row justify-content-center px-0 px-md-4">
-              <div class="col-12 col-md-6 p-1">
-                <div class="card">
+            <div class="row justify-content-center px-0 px-md-4 border-top-oscuro">
+              <div class="col-12 p-1 card-transition border-top-content">
+                <div class="card card-transition  ">
                   <div class="card-body px-3 px-md-5 ">
-                    <h5 class="card-title pt-4 pb-3 text-center">Payment methods</h5>
-                    <form>
+                    <h5 class="card-title fw-bold color-oscuro pb-3 text-center">Payment methods</h5>
+                    <form class="px-0 px-md-4">
                       <!-- 1 -->
-                      <div v-if="currentStep === 1" class="">
+                      <div v-if="currentStep === 0" class="">
                         <div class="form-group  mb-3">
                           <label class="pb-3 ">Select your account:</label>
                           <select class="form-select" v-model="formData.originNumber"
@@ -131,7 +129,7 @@
                           <button class="btn btn-primary" @click="nextStep">Next</button>
                         </div>
                       </div>
-                      <div v-else-if="currentStep === 2">
+                      <div v-else-if="currentStep === 1">
                         <!-- 2 -->
                         <div class="form-group">
                               <div class="bg-white shadow-sm pt-4 pl-2 pr-2 pb-2">
@@ -188,15 +186,15 @@
                           <button class="btn btn-primary ms-3" @click="nextStep">Next</button>
                         </div>
                       </div>
-                      <div v-else-if="currentStep === 3">
+                      <div v-else-if="currentStep === 2">
                         
                         <div class="group mb-4">      
                           <input class="input--group" type="number" v-model="formData.amount" required>
                           <span class="highlight"></span>
                           <span class="bar"></span>
                           <label class="label--group">Amount</label>
-                          <small v-for="account in showAccount" class="form-text mb-2 d-flex align-items-center" :class="account.balance > formData.originNumber ? 'bg-danger' : '' ">
-                            <span class="material-icons text-muted fs-6">
+                          <small v-for="account in showAccount" class="form-text mb-2 d-flex align-items-center" :class="account.balance < formData.amount  ? 'text-danger' : '' ">
+                            <span class="material-icons text-muted fs-6 ">
                               error_outline
                               </span>
                             Account balance:{{account.balance}}
@@ -215,29 +213,51 @@
                           <button class="btn btn-primary ms-3" @click="nextStep">Next</button>
                         </div>
                       </div>
-                      <div v-else-if="currentStep === 4">
-                        <div class="form-group">
+                      <div v-else-if="currentStep === 3">
+                        <div  class="alert alert-secondary" role="alert">
                           <div class="mb-3 border-bottom">
-                            <h6>desde</h6>
+                            <h6>From</h6>
                             <p>{{formData.originNumber}}</p>
                           </div>
                           <div class="mb-3 border-bottom">
-                            <h6>destinatario</h6>
+                            <h6>To</h6>
                             <p>{{formData.destinyNumber}}</p>
                           </div>
                           <div class="mb-3 border-bottom">
-                            <h6>amount</h6>
+                            <h6>Amount</h6>
                             <p>{{formData.amount}}</p>
                           </div>
                           <div class="mb-3 border-bottom">
-                            <h6>destinatario</h6>
+                            <h6>Description</h6>
                             <p>{{formData.description}}</p>
                           </div>
                         </div>
                         <!-- 4 -->
                         <div class="d-flex justify-content-center mt-3">
                           <button class="btn btn-primary" @click="prevStep">Back</button>
-                          <button class="btn btn-primary ms-3" @click.prevent="submitForm">Transfer</button>
+                          <a class="btn btn-primary ms-3" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                          :class="formData.originNumber == null || !formData.destinyNumber || !formData.amount || !formData.description ? 'disabled' : ''" aria-disabled="true"
+                          >Transfer</a>
+                        </div>
+                       
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content rounded-0">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5 fw-bold color-oscuro" id="staticBackdropLabel">Confirm Transfer</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                ...
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" @click.prevent="submitForm">Understood</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </form>

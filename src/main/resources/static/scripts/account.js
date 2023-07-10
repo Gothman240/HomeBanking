@@ -5,15 +5,18 @@ createApp({
     return {
       showSide: false,
       id: "",
+      account: "",
       transactions: [],
     };
   },
   created() {
     this.loadData();
+    this.showSide = JSON.parse(localStorage.getItem("sideBar"));
   },
   methods: {
     showSideBar() {
       this.showSide = !this.showSide;
+      localStorage.setItem("sideBar", JSON.stringify(this.showSide));
     },
     loadData() {
       let param = new URLSearchParams(location.search);
@@ -22,6 +25,7 @@ createApp({
         .get(`http://localhost:8080/api/accounts/${this.id}`)
         .then((response) => {
           this.transactions = response.data.transactions;
+          this.account = response.data
           this.transactions.sort((a, b) => b.id - a.id)          
         })
         .catch((err) => console.log(err));
@@ -38,6 +42,14 @@ createApp({
       const parsedDate = new Date(date);
       return parsedDate.toLocaleDateString("en-US", format);
     },
+    formatCurrency(currency){
+      const format = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+      })
+
+      return format.format(currency)
+  },
     logout(){
       axios.post("/api/logout")
       .then(res => {

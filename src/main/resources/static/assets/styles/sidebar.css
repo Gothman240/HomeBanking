@@ -7,7 +7,7 @@ aside {
   overflow: hidden;
   padding: 1rem;
   transition: 0.2s ease-in-out;
-  position: sticky;
+  position: sticky!important;
   top: 0;
   align-self: start;
   background-image: url("https://images.pexels.com/photos/1563256/pexels-photo-1563256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2") !important;
