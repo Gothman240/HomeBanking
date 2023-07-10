@@ -10,10 +10,10 @@
             }
         }
         .CREDIT::before{
-            content: "+$";
+            content: "+";
         }
         .DEBIT::before{
-            content: "-$";
+            content: "-";
         }
     }
 }

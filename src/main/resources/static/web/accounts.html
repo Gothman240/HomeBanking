@@ -9,8 +9,8 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="./../assets/styles/accounts.css">
     <link rel="stylesheet" href="./../assets/styles/style.css">
+    <link rel="stylesheet" href="./../assets/styles/accounts.css">
     <title>Accounts</title>
 </head>
 
@@ -80,7 +80,7 @@
                 </div>
             </nav>
 
-            <div class="container-fluid">
+            <div class="container-fluid  overflow-auto">
                 <!-- Contenido principal -->
                 <div class="row px-0 gradient px-md-3 gap-4">
                     <div
@@ -108,7 +108,7 @@
                         </div>
     
                         <div v-show="accounts.length<3" class="col-12 border-top text-center py-4">
-                            <span class="material-icons fs-2">
+                            <span class="material-icons fs-2 color-claro">
                                 account_balance_wallet
                             </span>
                             <h6 class="fw-bold" v-if="!accounts.length">Don't have an account?</h6>
@@ -121,8 +121,8 @@
                     <div class="col-12 info-account">
                         <div class="d-flex justify-content-center align-items-center flex-wrap gap-5">
                             <div class="card shadow" v-for="account of accounts">
-                                <div class="row">
-                                    <div class="col-6 d-flex justify-content-center align-items-center">
+                                <div class="row g-0 p-0">
+                                    <div class="col-6  d-flex justify-content-center align-items-center">
                                         <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
                                             <span class="material-icons fs-1">
                                                 account_balance_wallet
@@ -132,8 +132,8 @@
                                     <div class="col-6">
                                         <div class="card-body">
                                             <h5 class="card-title">{{formatCurrency(account.balance)}}</h5>
-                                            <p class="card-subtitle mb-2 fw-bold small text-muted">
-                                                {{account.number}}</p>
+                                            <a class="card-subtitle mb-2 fw-bold small text-decoration-none color-oscuro" v-bind:href="'./transfers.html?num=' + account.number ">
+                                                {{account.number}}</a>
                                             <p class="card-text text-muted">{{account.creationDate}}</p>
                                             <a v-bind:href="'./account.html?id=' + account.id ">Go to Details</a>
                                         </div>
@@ -144,8 +144,15 @@
                     </div>
 
                     <div class="col-12 ">
-                        <section class="row bg-body loan-container rounded py-4 ">
-                            <h4 class="fw-bold color-claro ">Details of your Loans</h4>
+                        <h4 class="fw-bold color-claro ">Loan Data</h4>
+                        <section class="row bg-body loan-container rounded py-4 px-4">
+                            <div class="alert alert-warning" role="alert">
+                                <div class="d-flex">
+                                    <span class="material-icons pe-3">
+                                        real_estate_agent
+                                        </span> <p class="m-0">You can request a loan at any time <a href="./loan-application.html">here</a></p>
+                                </div>
+                              </div>
                             <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans">
                                 <div class="card shadow w-100">
                                     <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
@@ -156,10 +163,13 @@
                                             <span>Name:</span> <span>{{loan.name}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
-                                            <span>Amount:</span> <span>{{formatCurrency(loan.amount)}}</span>
+                                            <span>Interest rate:</span> <span>{{formatCurrency(loan.amount)}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
                                             <span>Payments:</span> <span>{{loan.payments}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Monthly:</span> <span class="color-claro fw-medium">{{formatCurrency(loanMonthlyCalculator(loan.amount,loan.payments))}}</span>
                                         </div>
                                     </div>
                                 </div>

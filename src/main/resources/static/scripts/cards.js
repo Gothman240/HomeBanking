@@ -12,10 +12,12 @@ createApp({
     },
     created(){
         this.loadData();
+        this.showSide = JSON.parse(localStorage.getItem("sideBar"));
     },
     methods: {
         showSideBar(){
             this.showSide = !this.showSide;
+            localStorage.setItem("sideBar", JSON.stringify(this.showSide));
         },
         loadData(){
             axios.get("http://localhost:8080/api/clients/current")

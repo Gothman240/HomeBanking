@@ -8,6 +8,9 @@ import com.mindhub.HomeBanking.models.TransactionType;
 import com.mindhub.HomeBanking.repositories.AccountRepository;
 import com.mindhub.HomeBanking.repositories.ClientRepository;
 import com.mindhub.HomeBanking.repositories.TransactionRepository;
+import com.mindhub.HomeBanking.services.AccountService;
+import com.mindhub.HomeBanking.services.ClientService;
+import com.mindhub.HomeBanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +25,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class TransactionController {
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Transactional
     @RequestMapping(value = "/transactions", method = RequestMethod.POST)
@@ -49,9 +52,9 @@ public class TransactionController {
             return new ResponseEntity<>("revisa las cuentas", HttpStatus.FORBIDDEN);
         }
 
-        Account originAccount = accountRepository.findByNumber(originNumber);
-        Account destinyAccount = accountRepository.findByNumber(destinyNumber);
-        Client currentClient = clientRepository.findByEmail(authentication.getName());
+        Account originAccount = accountService.findByNumber(originNumber);
+        Account destinyAccount = accountService.findByNumber(destinyNumber);
+        Client currentClient = clientService.findByEmail(authentication.getName());
         Client destinyClient = destinyAccount.getClient();
 
         if (originAccount == null){
@@ -67,16 +70,16 @@ public class TransactionController {
             Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT);
             Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
 
-            transactionRepository.save(destinyTransaction);
-            transactionRepository.save(originTransaction);
+            transactionService.save(destinyTransaction);
+            transactionService.save(originTransaction);
 
             originAccount.addTransactions(originTransaction);
             destinyAccount.addTransactions(destinyTransaction);
             originAccount.setBalance(originAccount.getBalance() - amount);
             destinyAccount.setBalance(destinyAccount.getBalance() + amount);
 
-            accountRepository.save(originAccount);
-            accountRepository.save(destinyAccount);
+            accountService.save(originAccount);
+            accountService.save(destinyAccount);
 
             return new ResponseEntity<>("transaccion realizada", HttpStatus.CREATED);
         } catch (Exception e) {

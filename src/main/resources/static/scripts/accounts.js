@@ -13,10 +13,14 @@ createApp({
     },
     created(){
         this.loadData();
+        this.showSide = JSON.parse(localStorage.getItem("sideBar"));
+        this.showBal = JSON.parse(localStorage.getItem("eyeBalance"))
+        
     },
     methods: {
         showSideBar(){
             this.showSide = !this.showSide;
+            localStorage.setItem("sideBar", JSON.stringify(this.showSide));
         },
         loadData(){
             axios.get("http://localhost:8080/api/clients/current")
@@ -35,7 +39,7 @@ createApp({
         },
         showBalance(){
             this.showBal = !this.showBal;
-            console.log(this.showBal)
+            localStorage.setItem("eyeBalance", JSON.stringify(this.showBal));
         },
         formatCurrency(currency){
             const format = new Intl.NumberFormat('en-US', {
@@ -44,6 +48,9 @@ createApp({
             })
 
             return format.format(currency)
+        },
+        loanMonthlyCalculator(amount, payments){
+            return amount / payments;
         },
         logout(){
             axios.post("/api/logout")

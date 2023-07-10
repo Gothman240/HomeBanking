@@ -1,5 +1,5 @@
 :root {
-    --color-oscuro: #1B2136;
+    --color-oscuro: #162d59;
     --color-claro: #424a5b;
     --color-secundario: #ff9f00;
 }
@@ -12,12 +12,18 @@
     color: var(--color-claro) !important;
 }
 
+.color-secundario{
+    color: var(--color-secundario)
+}
 .bg-claro {
     background: var(--color-claro) !important;
 }
 
 .bg-oscuro {
     background: var(--color-oscuro) !important;
+}
+.bg-secundario{
+    background: var(--color-secundario);
 }
 /* --- navtab--- */
 

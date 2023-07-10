@@ -11,6 +11,7 @@ createApp({
   },
   created() {
     this.getClient()
+    this.showSide = JSON.parse(localStorage.getItem("sideBar"));
   },
   methods: {
     getClient(){
@@ -24,6 +25,7 @@ createApp({
     },
     showSideBar(){
         this.showSide = !this.showSide;
+        localStorage.setItem("sideBar", JSON.stringify(this.showSide));
     },
     logout(){
         axios.post("/api/logout")
@@ -39,11 +41,15 @@ createApp({
             .then(response  => {
 
                 console.log("send")
-                
-                location.href="./../web/cards.html";
+                this.showAlert(response.data, success)
+                setTimeout(() => {
+                    location.href="./../web/cards.html";                    
+                }, 2000);
                 
             })
-            .catch(err => console.log(err.toJSON()))
+            .catch(err => {
+                this.showAlert(err.response.data, "info")
+            })
     },
     colorCard(){
         if(this.color === "TITANIUM"){
@@ -67,6 +73,16 @@ createApp({
             return "grey"
         }
     },
+    showAlert(status, type){
+        let alerttype = type;
+        if(alerttype==="success"){
+          toastr.success(status);
+        }
+        
+        if(alerttype==="info"){
+          toastr.info(status);
+        }
+      }
   },
   computed: {},
 }).mount("#app");

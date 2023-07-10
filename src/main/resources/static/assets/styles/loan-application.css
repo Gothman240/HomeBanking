@@ -1,0 +1,19 @@
+.wave-container {
+    width: 200px;
+    height: 200px;
+    background-color: #3498db;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .wave-container::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 50%;
+  }
