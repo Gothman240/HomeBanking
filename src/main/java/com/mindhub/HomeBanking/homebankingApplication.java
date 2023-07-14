@@ -16,8 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 public class homebankingApplication {
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 	public static void main(String[] args) {
 		SpringApplication.run(homebankingApplication.class, args);
 	}

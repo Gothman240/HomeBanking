@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.mindhub.HomeBanking.utils.CardUtils.getCardNumber;
+import static com.mindhub.HomeBanking.utils.CardUtils.getCvv;
+
 @RestController
 @RequestMapping("/api")
 public class CardController {
@@ -28,15 +31,12 @@ public class CardController {
     public ResponseEntity<Object> newCard(
             @RequestParam CardType type, @RequestParam CardColor color, Authentication auth){
         Client client =  clientService.findByEmail(auth.getName());
-        int cvv = (int)Math.floor(Math.random()*999-111)+111;
-        String cardNumber = String.valueOf(ThreadLocalRandom.current().nextInt(1000, 9999 + 1));
+        int cvv = getCvv();
+        String cardNumber = getCardNumber();
 
-        do{
-            for (int i = 0; i < 3; i++) {
-                String random = String.valueOf(ThreadLocalRandom.current().nextInt(1000, 9999 + 1));
-                cardNumber = cardNumber.concat("-").concat(random);
-            }
-        }while (cardService.findByNumber(cardNumber) != null);
+        if (cardService.findByNumber(cardNumber) != null){
+            return new ResponseEntity<>("Error with number card",HttpStatus.FORBIDDEN);
+        }
 
         boolean hasDebit = client.getCards().stream().filter(card -> card.getType() == CardType.DEBIT).count() <= 3;
         boolean hasCredit = client.getCards().stream().filter(card -> card.getType() == CardType.CREDIT).count() <= 3;
@@ -76,6 +76,8 @@ public class CardController {
         }
 
     }
+
+
 
 
 }
