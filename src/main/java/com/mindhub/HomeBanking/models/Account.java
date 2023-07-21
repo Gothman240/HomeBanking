@@ -19,6 +19,8 @@ public class Account {
     private String number;
     private LocalDate creationDate;
     private Double balance;
+    private boolean isActive;
+    private AccountType accountType;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
@@ -27,28 +29,35 @@ public class Account {
 
     public Account() {
     }
-    public Account(String number) {
+    public Account(String number, boolean isActive) {
         this.number = number;
         this.creationDate = LocalDate.now();
         this.balance = 0.0;
+        this.isActive = isActive;
     }
 
-    public Account(String number, Double balance) {
+    public Account(String number, Double balance, boolean isActive, AccountType accountType) {
         this.number = number;
         this.creationDate = LocalDate.now();
         this.balance = balance;
+        this.isActive = isActive;
+        this.accountType = accountType;
     }
 
-    public Account(LocalDate creationDate, Double balance) {
-        this.number = "VIN-" + ThreadLocalRandom.current().nextInt(100000,999999 +1);
-        this.creationDate = creationDate;
-        this.balance = balance;
+    public Account(String number, boolean isActive, AccountType accountType) {
+        this.number = number;
+        this.creationDate = LocalDate.now();
+        this.balance = 0.0;
+        this.isActive = isActive;
+        this.accountType = accountType;
     }
 
-    public Account(String number, LocalDate creationDate, Double balance) {
+    public Account(String number, LocalDate creationDate, Double balance, boolean isActive, AccountType accountType) {
         this.number = number;
         this.creationDate = creationDate;
         this.balance = balance;
+        this.isActive = isActive;
+        this.accountType = accountType;
     }
 
     public long getId() {
@@ -94,5 +103,21 @@ public class Account {
     public void addTransactions(Transaction transaction) {
         transaction.setAccount(this);
         this.transactions.add(transaction);
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 }

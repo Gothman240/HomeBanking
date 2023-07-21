@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./../assets/styles/sidebar.css">
     <link rel="stylesheet" href="./../assets/styles/style.css">
     <link rel="stylesheet" href="./../assets/styles/accounts.css">
@@ -49,6 +50,13 @@
                     </span>
                     <span class="text">Transfers</span>
                 </a>
+                <a href="./adminDashboard.html" class="button text-decoration-none mb-2" v-if="client.admin">
+                    <span class="material-icons">
+                        manage_accounts
+                        </span>
+                    <span class="text">Transfers</span>
+                </a>
+              
             </div>
         </aside>
 
@@ -86,7 +94,7 @@
                     <div
                         class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
                         <div class="balance text-center text-md-start m-4 m-md-3">
-                            <h6 class="small">Account Balance</h6>
+                            <h6 class="small">Account Balance</h6>                            
                             <div class="amount">
                                 <span class="fs-3 fw-bold" v-show="showBal">{{formatCurrency(totalBalance)}}</span>
                                 <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
@@ -108,12 +116,12 @@
                         </div>
     
                         <div v-show="accounts.length<3" class="col-12 border-top text-center py-4">
-                            <span class="material-icons fs-2 color-claro">
+                            <span vif class="material-icons fs-2 color-claro">
                                 account_balance_wallet
                             </span>
                             <h6 class="fw-bold" v-if="!accounts.length">Don't have an account?</h6>
                             <h6 class="fw-bold" v-else>Add new account?</h6>
-                            <a href="#" @click="createAccount">Get one</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Get one</a>
                         </div>
                         
                     </div>
@@ -124,9 +132,12 @@
                                 <div class="row g-0 p-0">
                                     <div class="col-6  d-flex justify-content-center align-items-center">
                                         <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
-                                            <span class="material-icons fs-1">
+                                            <span v-if="account.accountType == 'CURRENT' " class="material-icons fs-1">
                                                 account_balance_wallet
                                             </span>
+                                            <span v-if="account.accountType == 'SAVINGS' " class="material-icons fs-1">
+                                                savings
+                                                </span>
                                         </span>
                                     </div>
                                     <div class="col-6">
@@ -153,7 +164,7 @@
                                         </span> <p class="m-0">You can request a loan at any time <a href="./loan-application.html">here</a></p>
                                 </div>
                               </div>
-                            <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans">
+                            <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans" :key="loan.name">
                                 <div class="card shadow w-100">
                                     <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
                                         {{loan.name}}
@@ -169,7 +180,13 @@
                                             <span>Payments:</span> <span>{{loan.payments}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Total Payments:</span> <span>{{loan.totalPayments}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
                                             <span>Monthly:</span> <span class="color-claro fw-medium">{{formatCurrency(loanMonthlyCalculator(loan.amount,loan.payments))}}</span>
+                                        </div>
+                                        <div class="mt-1 d-flex justify-content-center">
+                                            <a href="#" @click="payLoan(loan)"  data-bs-toggle="modal" data-bs-target="#modalLoan">Paid</a>
                                         </div>
                                     </div>
                                 </div>
@@ -188,12 +205,78 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal type Accounts-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Get Account</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <select class="form-select" aria-label="Default select example" v-model="accountType">
+                            <option value="CURRENT">Current</option>
+                            <option value="SAVINGS">Saving</option>
+                          </select>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"  @click="createAccount">Understood</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Modal Loan -->
+            <div class="modal fade" id="modalLoan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Loan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="me-2"><h5 class="fw-bold color-oscuro">Monthly</h5></div>
+                                <span>{{formatCurrency(loanMonthlyCalculator(loanSelected.amount, loanSelected.payments))}}</span>
+                            </div>
+                            <div class="col-6">
+                                <div class="me-2"><h5 class="fw-bold color-oscuro">Select an Account</h5></div>
+                                <div class="mb-3">
+                                    <select class="form-select form-select" name="" id=""  v-model="paidLoan.accountNumber">
+                                        <option selected>Select one</option>
+                                        <option v-for="account of accounts" :value="account.number">{{account.number}}</option>                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex pt-2 px-3" v-if="paidLoan.accountNumber != null" :class="filterAccount().balance < paidLoan.amount ? 'alert alert-warning' : 'alert alert-success'">
+                                <div class="flex-grow-1">
+                                    <h5 class="fw-bold">Account Balance</h5>
+                                </div>
+                                <span>{{formatCurrency(filterAccount().balance)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="sendPayLoan" >Understood</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>

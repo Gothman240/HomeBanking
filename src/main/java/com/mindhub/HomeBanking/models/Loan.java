@@ -18,6 +18,7 @@ public class Loan {
     private double maxAmount;
     @ElementCollection
     private List<Integer> payments;
+    private Double loanPercentage;
     @OneToMany(mappedBy = "loan")
     private List<ClientLoan> clientLoans = new ArrayList<>();
     public Loan() {
@@ -27,6 +28,13 @@ public class Loan {
         this.name = name;
         this.maxAmount = maxAmount;
         this.payments = payments;
+    }
+
+    public Loan(String name, double maxAmount, List<Integer> payments, Double loanPercentage) {
+        this.name = name;
+        this.maxAmount = maxAmount;
+        this.payments = payments;
+        this.loanPercentage = loanPercentage;
     }
 
     public Long getId() {
@@ -70,5 +78,13 @@ public class Loan {
     public void addClientLoan(ClientLoan client) {
         client.setLoan(this);
         this.clientLoans.add(client);
+    }
+
+    public Double getLoanPercentage() {
+        return loanPercentage;
+    }
+
+    public void setLoanPercentage(Double loanPercentage) {
+        this.loanPercentage = loanPercentage;
     }
 }

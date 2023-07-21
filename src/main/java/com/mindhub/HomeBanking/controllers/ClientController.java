@@ -7,6 +7,7 @@ import com.mindhub.HomeBanking.repositories.AccountRepository;
 import com.mindhub.HomeBanking.repositories.ClientRepository;
 import com.mindhub.HomeBanking.services.AccountService;
 import com.mindhub.HomeBanking.services.ClientService;
+import com.mindhub.HomeBanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,10 @@ public class ClientController {
 
         String random;
 
+        do{
+            random = CardUtils.getRandomAccountNumber();
+
+        }while (accountService.existsByNumber(random));
 
         if (firstName.isBlank()) {
             return new ResponseEntity<>("Missing firstName", HttpStatus.FORBIDDEN);
@@ -67,13 +72,10 @@ public class ClientController {
             return new ResponseEntity<>("Email already in use", HttpStatus.FORBIDDEN);
         }
 
-        do{
-            random = "VIN-" + String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999 + 1));
 
-        }while (accountService.existsByNumber(random));
 
         Client client = new Client(firstName, lastName, email, passwordEncoder.encode(password));
-        Account account = new Account(random);
+        Account account = new Account(random, true);
 
         client.addAccount(account);
 

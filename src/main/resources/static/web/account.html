@@ -85,21 +85,43 @@
                 <div class="row px-0 gap-3">
                     <div class="col-12 banner-account bg-body d-flex align-items-center justify-content-between flex-wrap py-4">
                         <h5 class="fw-bold color-claro">Transacions</h5>
-                        <div>
-                            <h3 class="fw-bold"><a class="text-decoration-none color-oscuro" v-bind:href="'./transfers.html?num=' + account.number ">{{account.number}}</a></h3>
-                            <p class="small m-0">balance {{formatCurrency(account.balance)}}</p>
-                        </div>
+                       
+                            <div>
+                                <div class="btn-group">
+                                    <button class="btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        
+                                        <h3 class="fw-bold d-inline">{{account.number}}</h3>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li><a class="text-decoration-none color-oscuro dropdown-item" v-bind:href="'./transfers.html?num=' + account.number ">transferir</a></li>
+                                      <li><a class="dropdown-item text-danger" @click="deleteAccount(account.id)">Eliminar cuenta</a></li>
+                                    </ul>
+                                </div>
+                                <p class="small m-0">balance {{formatCurrency(account.balance)}}</p>
+                            </div>
+                              
+           
                     </div>
 
                     <!-- desktop -->
                     <section v-if="transactions.length" class="col-12 bg-body my-3 d-none d-md-block">
 
+                        <div>
+                            <label for="startDate">Fecha de inicio:</label>
+                            <input type="date" id="startDate" v-model="date1">
+                        
+                            <label for="endDate">Fecha de fin:</label>
+                            <input type="date" id="endDate" v-model="date2">
+                        
+                            <button @click="downloadPDF">Descargar PDF</button>
+                          </div>
                         <div class="px-0 px-md-2 py-2 overflow-auto">
                             <table class="table text-center">
                                 <thead>
                                     <tr>
                                         <th scope="col">N°</th>
                                         <th scope="col">Date</th>
+                                        <th scope="col">Acc Balance</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Amount</th>
                                         <th scope="col">Type</th>
@@ -113,6 +135,9 @@
                                                 calendar_today
                                             </span>
                                             {{formatDate(transaction.date)}}
+                                        </td>
+                                        <td>
+                                            {{formatCurrency(transaction.currentAccountBalance)}}
                                         </td>
                                         <td>{{transaction.description}}</td>
                                         <td class="fila"><span class="fw-bold"

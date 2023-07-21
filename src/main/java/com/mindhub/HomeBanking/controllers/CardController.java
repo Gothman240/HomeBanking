@@ -1,5 +1,7 @@
 package com.mindhub.HomeBanking.controllers;
 
+import com.mindhub.HomeBanking.dtos.CardActivationDTO;
+import com.mindhub.HomeBanking.dtos.CardDTO;
 import com.mindhub.HomeBanking.models.Card;
 import com.mindhub.HomeBanking.models.CardColor;
 import com.mindhub.HomeBanking.models.CardType;
@@ -10,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static com.mindhub.HomeBanking.utils.CardUtils.getCardNumber;
 import static com.mindhub.HomeBanking.utils.CardUtils.getCvv;
@@ -38,43 +39,40 @@ public class CardController {
             return new ResponseEntity<>("Error with number card",HttpStatus.FORBIDDEN);
         }
 
-        boolean hasDebit = client.getCards().stream().filter(card -> card.getType() == CardType.DEBIT).count() <= 3;
-        boolean hasCredit = client.getCards().stream().filter(card -> card.getType() == CardType.CREDIT).count() <= 3;
-        boolean hasColorCredit = client.getCards().stream().anyMatch(card -> card.getColor() == color &&  card.getType().equals(CardType.CREDIT));
-        boolean hasColorDebit = client.getCards().stream().anyMatch(card -> card.getColor() == color && card.getType().equals(CardType.DEBIT));
+        List<Card> cardList = cardService.findByClientAndTypeAndColorAndIsActive(client, type, color, true);
 
-        if (type.equals(CardType.CREDIT)){
-            if (hasCredit) {
-                if (hasColorCredit) {
-                    return new ResponseEntity<>("You already have a " + color + " credit card.", HttpStatus.FORBIDDEN);
-                } else {
-                    Card card = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv);
-                    client.addCards(card);
-                    cardService.save(card);
-                    return new ResponseEntity<>("A new credit card has been created.", HttpStatus.CREATED);
-                }
-            }else{
-                return new ResponseEntity<>("You have reached the credit card limit.", HttpStatus.FORBIDDEN);
+        if (cardList.size() <= 3){
+            boolean hasCardColor = cardList.stream().anyMatch(card -> card.getColor().equals(color));
+            if (hasCardColor){
+                return new ResponseEntity<>("You already have a " + color + " " + type + " card.", HttpStatus.FORBIDDEN);
             }
 
-        } else if (type.equals(CardType.DEBIT)) {
-            if (hasDebit) {
-                if (hasColorDebit) {
-                    return new ResponseEntity<>("You already have a " + color + " debit card.", HttpStatus.FORBIDDEN);
-                } else {
-                    Card card = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv);
-                    client.addCards(card);
-                    cardService.save(card);
-                    return new ResponseEntity<>("A new debit card has been created.", HttpStatus.CREATED);
-                }
-            }else{
-                return new ResponseEntity<>("You have reached the credit card limit.", HttpStatus.FORBIDDEN);
-            }
+            Card card = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, true);
+            client.addCards(card);
+            cardService.save(card);
+            return new ResponseEntity<>("A new " + type + " card has been created.", HttpStatus.CREATED);
 
-        }else {
-            return new ResponseEntity<>("You have reached the cards limit.", HttpStatus.FORBIDDEN);
+        }else{
+            return new ResponseEntity<>("You have reached the credit card limit.", HttpStatus.FORBIDDEN);
         }
 
+
+    }
+
+    @RequestMapping(value = "/active/cards")
+    public List<CardDTO> getActiveCards(){
+        //current
+        return cardService.getCardActive().stream().map(CardDTO::new).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/cards/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<Object> deleteCard(@PathVariable Long id, @RequestBody CardActivationDTO cardActivationDTO){
+        try{
+            cardService.updateIsActiveById(id, cardActivationDTO.isActive());
+            return new ResponseEntity<>("updated", HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 

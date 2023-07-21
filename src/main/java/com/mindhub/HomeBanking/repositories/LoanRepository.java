@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     boolean existsById(Long id);
     Optional<Loan> findById(Long id);
+    Loan findByName(String name);
 }

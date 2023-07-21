@@ -15,7 +15,7 @@ public class ClientDTO {
     private Set<AccountDTO> accounts;
     private Set<ClientLoanDTO> loans;
     private Set<CardDTO> cards;
-
+    private boolean isAdmin;
     public ClientDTO(Client client){
         this.id = client.getId();
         this.firstName = client.getFirstName();
@@ -33,6 +33,7 @@ public class ClientDTO {
         this.cards = client.getCards()
                 .stream()
                 .map(card -> new CardDTO(card)).collect(Collectors.toSet());
+        this.isAdmin = client.isAdmin();
     }
 
     public long getId() {
@@ -61,5 +62,9 @@ public class ClientDTO {
 
     public Set<CardDTO> getCards() {
         return cards;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }

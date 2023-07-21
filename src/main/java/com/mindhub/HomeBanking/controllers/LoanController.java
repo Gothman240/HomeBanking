@@ -13,14 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,7 +26,6 @@ public class LoanController {
     private LoanService loanService;
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private ClientService clientService;
     @Autowired
@@ -46,7 +41,7 @@ public class LoanController {
 
     @Transactional
     @RequestMapping(value = "/loans", method = RequestMethod.POST)
-    public ResponseEntity<Object> newLoan(@RequestBody LoanApplicationDTO loanApplicationDTO, Authentication authentication){
+    public ResponseEntity<Object> newClientLoan(@RequestBody LoanApplicationDTO loanApplicationDTO, Authentication authentication){
 
         if (loanApplicationDTO == null){
             return new ResponseEntity<>("There are empty fields.", HttpStatus.FORBIDDEN);
@@ -75,10 +70,21 @@ public class LoanController {
             return new ResponseEntity<>("The destination account is invalid.", HttpStatus.FORBIDDEN);
         }
         try{
-            double percentage = loanApplicationDTO.getAmount()+ ( (double) 20 / 100 ) * loanApplicationDTO.getAmount();
             String message = currentLoan.getName().concat(" Loan approved.");
+            double basePercentage = currentLoan.getLoanPercentage();;
+            double base = 1.0;
+            int payments = loanApplicationDTO.getPayments();
+
+            if (payments >= 12){
+                base = 0.9;
+            } else if (payments >= 6) {
+                base = 0.8;
+            }
+            double finalPercentage = basePercentage * base;
+            double percentage = loanApplicationDTO.getAmount() + (finalPercentage / 100) * loanApplicationDTO.getAmount();
+
             ClientLoan clientLoan = new ClientLoan(percentage, loanApplicationDTO.getPayments());
-            Transaction transaction = new Transaction(loanApplicationDTO.getAmount(), message, LocalDateTime.now(), TransactionType.CREDIT);
+            Transaction transaction = new Transaction(loanApplicationDTO.getAmount(), message, LocalDateTime.now(), TransactionType.CREDIT, true);
             Account account = accountService.findByNumber(loanApplicationDTO.getNumberAccountDestiny());
             account.setBalance(account.getBalance() + loanApplicationDTO.getAmount());
             account.addTransactions(transaction);
@@ -92,4 +98,24 @@ public class LoanController {
         }
 
     }
+
+    @RequestMapping(value = "/loans/admin", method = RequestMethod.POST)
+    public ResponseEntity<Object> newLoan(@RequestBody LoanDTO loanDTO){
+        if(loanService.findByName(loanDTO.getName()) != null){
+            return new ResponseEntity<>("el nombre ya existe", HttpStatus.FORBIDDEN);
+        }
+        if (loanDTO.getMaxAmount() < 1000){
+            return new ResponseEntity<>("nada de plata", HttpStatus.BAD_REQUEST);
+        }
+        if (loanDTO.getPayments().size() < 2){
+            return new ResponseEntity<>("numero de cuotas insuficiente", HttpStatus.BAD_REQUEST);
+        }
+        if (loanDTO.getLoanPercentage() < 5){
+            return new ResponseEntity<>("número inválido", HttpStatus.BAD_REQUEST);
+        }
+        Loan loan = new Loan(loanDTO.getName(), loanDTO.getMaxAmount(), loanDTO.getPayments(), loanDTO.getLoanPercentage());
+        loanService.save(loan);
+        return new ResponseEntity<>("nuevo loan creado", HttpStatus.CREATED);
+    }
+
 }

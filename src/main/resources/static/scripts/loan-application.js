@@ -7,7 +7,7 @@ createApp({
       accounts: [],
       loans: [],
       loansApi: [],
-      loanSelected: {},
+      loanSelected: [],
       loanSelectedPayments: [],
       formData: {
         id_loan: null,
@@ -32,7 +32,7 @@ createApp({
     },
     loadData() {
       axios
-        .get("http://localhost:8080/api/clients/current")
+        .get("/api/clients/current")
         .then((response) => {
           this.client = response.data;
           this.accounts = response.data.accounts;
@@ -42,17 +42,17 @@ createApp({
     },
     getLoans() {
       axios
-        .get("http://localhost:8080/api/loans")
+        .get("/api/loans")
         .then((response) => {
           this.loansApi = response.data;
-          console.log(response);
+          console.log("los loan", response);
           console.log(this.loans);
         })
         .catch((error) => console.log(error));
     },
     showForm(id) {
       this.loanSelected = this.loansApi.filter((item) => item.id == id);
-      this.loanSelectedPayments = this.loanSelected.payments;
+      this.loanSelectedPayments = this.loanSelected[0].payments;
       this.formData.id_loan = id;
     },
     formatCurrency(currency) {
@@ -76,7 +76,6 @@ createApp({
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
-          console.log("creado");
           this.showAlert(res.data, "success");
           setTimeout(() => {
             window.location.href = "./../web/accounts.html"
@@ -103,7 +102,20 @@ createApp({
       }
   
       if(currency > maxAmount){
-        let total = currency + (20 / 100) * currency
+        let basePercentage = this.loanSelected[0].loanPercentage
+        console.log(basePercentage)
+        let payments = this.formData.payments;
+        console.log("payments ",payments)
+        let base = 1.0;
+
+        if (payments >= 12){
+            base = 0.9;
+        } else if (payments >= 6) {
+            base = 0.8;
+        }
+        let finalPercentage = basePercentage * base;
+        let total = currency + (finalPercentage / 100) * currency;
+
         return this.formatCurrency(total);
       }
     },
@@ -117,8 +129,6 @@ createApp({
       let maxAmount = selectLoan.maxAmount
       console.log('select loan: ' + maxAmount);
         return maxAmount 
-  
-      
      }
   },
   computed: {

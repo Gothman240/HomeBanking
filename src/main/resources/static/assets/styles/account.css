@@ -1,3 +1,6 @@
+.btn:active{
+    border: none;
+}
 .table {
     .fila {
         .fw-bold {

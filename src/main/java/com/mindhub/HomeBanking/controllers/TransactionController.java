@@ -1,11 +1,10 @@
 package com.mindhub.HomeBanking.controllers;
 
+import com.mindhub.HomeBanking.dtos.PayLoanDTO;
 import com.mindhub.HomeBanking.dtos.TransactionDTO;
-import com.mindhub.HomeBanking.models.Account;
-import com.mindhub.HomeBanking.models.Client;
-import com.mindhub.HomeBanking.models.Transaction;
-import com.mindhub.HomeBanking.models.TransactionType;
+import com.mindhub.HomeBanking.models.*;
 import com.mindhub.HomeBanking.repositories.AccountRepository;
+import com.mindhub.HomeBanking.repositories.ClientLoanRepository;
 import com.mindhub.HomeBanking.repositories.ClientRepository;
 import com.mindhub.HomeBanking.repositories.TransactionRepository;
 import com.mindhub.HomeBanking.services.AccountService;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -27,9 +27,13 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
     @Autowired
+    private ClientLoanRepository clientLoanRepository;
+    @Autowired
     private AccountService accountService;
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Transactional
     @RequestMapping(value = "/transactions", method = RequestMethod.POST)
@@ -67,8 +71,8 @@ public class TransactionController {
             return new ResponseEntity<>("monto no disponible", HttpStatus.FORBIDDEN);
         }
         try {
-            Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT);
-            Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
+            Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT, originAccount.getBalance() - amount, true);
+            Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT, destinyAccount.getBalance()  + amount, true);
 
             transactionService.save(destinyTransaction);
             transactionService.save(originTransaction);
@@ -87,4 +91,47 @@ public class TransactionController {
         }
 
     }
+
+    @Transactional
+    @RequestMapping(value = "/transactions/loan", method = RequestMethod.POST)
+    public ResponseEntity<Object> paidLoan(@RequestBody PayLoanDTO payLoanDTO, Authentication authentication){
+        if (payLoanDTO == null){
+            return new ResponseEntity<>("revisa los datos enviados", HttpStatus.BAD_REQUEST);
+        }
+
+        Client currentClient = clientService.findByEmail(authentication.getName());
+        List<Loan> loans = currentClient.getClientLoans().stream().map(clientLoan -> clientLoan.getLoan()).collect(Collectors.toList());
+
+        boolean hasLoan = loans.stream().anyMatch(loan -> loan.getId().equals(payLoanDTO.getLoan_id()));
+
+        if (hasLoan){
+            Account currentAccount = currentClient.getAccounts().stream().filter(account -> account.getNumber().equals(payLoanDTO.getAccountNumber())).findFirst().orElse(null);
+
+            if (currentAccount == null){
+                return new ResponseEntity<>("error al obtener la información", HttpStatus.FORBIDDEN);
+            }
+            ClientLoan clientLoan = currentClient.getClientLoans().stream().filter(clientLoan1 -> clientLoan1.getId() == payLoanDTO.getLoan_id()).findAny().orElse(null);
+            if(clientLoan == null){
+                return new ResponseEntity<>("error al obtener la información", HttpStatus.FORBIDDEN);
+            }
+            clientLoan.setTotalPayments(payLoanDTO.getPayment() - 1 );
+
+            currentAccount.setBalance(currentAccount.getBalance() - payLoanDTO.getAmount());
+            Transaction transaction = new Transaction(payLoanDTO.getAmount(), clientLoan.getLoan().getName() + " loan payment." ,LocalDateTime.now(), TransactionType.DEBIT,currentAccount.getBalance() - payLoanDTO.getAmount(), true);
+
+
+            transactionService.save(transaction);
+            currentAccount.addTransactions(transaction);
+            accountService.save(currentAccount);
+            clientLoanRepository.save(clientLoan);
+
+
+            return new ResponseEntity<>("pay", HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>("boludo", HttpStatus.BAD_REQUEST);
+        }
+
+
+  }
+
 }

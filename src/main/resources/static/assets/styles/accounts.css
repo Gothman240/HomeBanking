@@ -19,7 +19,7 @@
 }
 
 .card{
-    min-width: 16rem!important;
+    min-width: 18rem!important;
     .circle{
         width: 5rem;
         height: 5rem;
