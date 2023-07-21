@@ -13,6 +13,6 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByAccountIsActiveTrue();
     List<Transaction> findByAccountClient(Client client);
-    List<Transaction> findByDateBetween(LocalDateTime date1, LocalDateTime  date2);
+    List<Transaction> findByAccountIdAndDateBetween(Long accountId, LocalDateTime date1, LocalDateTime  date2);
 
 }

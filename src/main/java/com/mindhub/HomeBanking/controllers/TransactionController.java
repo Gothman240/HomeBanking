@@ -128,7 +128,7 @@ public class TransactionController {
 
             return new ResponseEntity<>("pay", HttpStatus.CREATED);
         }else {
-            return new ResponseEntity<>("boludo", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("problemas con los datos de la cuenta", HttpStatus.BAD_REQUEST);
         }
 
 

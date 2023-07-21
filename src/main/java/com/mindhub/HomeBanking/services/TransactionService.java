@@ -9,5 +9,5 @@ import java.util.List;
 public interface TransactionService {
     void save(Transaction transaction);
     List<Transaction> findByAccountIsActiveTrue();
-    List<Transaction> findByDateBetween(LocalDateTime date1, LocalDateTime  date2);
+    List<Transaction> findByAccountIdAndDateBetween(Long accountId, LocalDateTime date1, LocalDateTime  date2);
 }

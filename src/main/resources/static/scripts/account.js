@@ -7,8 +7,8 @@ createApp({
       id: "",
       account: "",
       transactions: [],
-        date1: null,
-        date2: null
+      date1: null,
+      date2: null
 
     };
   },
@@ -60,28 +60,29 @@ createApp({
         
       }).catch(err => console.log(err))
     },
-    downloadPDF() {
-      const date1 = this.formattedDate(this.date1)
-      console.log("asd ", typeof date1, date1)
-      const date2 = this.formattedDate(this.date2)
-      axios.post(`/api/transactions/pdf?date1=${date1}&date2=${date2}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    postPdf() {
+      console.log(this.account.id);
+      console.log(typeof this.date1, this.date1);
+      const date1 = moment(this.date1).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
+      const date2 = moment(this.date2).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
+      console.log(date1);
+      axios.post(`/api/${this.account.id}/pdf?date1=${date1}&date2=${date2}`, null,{
+        date1: date1,
+        date2: date2,
+      }, {
         responseType: 'arraybuffer',
       })
-      .then(response => {        
-        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-        const url = URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'transactions.pdf');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+      .then(response => {      
+        console.log(response.data)  
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'transactions.pdf';
+        a.click();
       })
       .catch(error => { 
-        console.log(error)
+        console.log(error);
       });
     },
     formattedDate(date) {      

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.MissingFormatArgumentException;
 
 @Service
 public class TransactionServiceImplement implements TransactionService {
@@ -25,9 +26,11 @@ public class TransactionServiceImplement implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findByDateBetween(LocalDateTime date1, LocalDateTime date2)  {
-
-        return transactionRepository.findByDateBetween(date1, date2);
-
+    public List<Transaction> findByAccountIdAndDateBetween(Long accountId, LocalDateTime date1, LocalDateTime date2) {
+        if (date1 != null && date2 != null) {
+            return transactionRepository.findByAccountIdAndDateBetween(accountId, date1, date2);
+        } else {
+            throw new MissingFormatArgumentException("revisa los datos mandados");
+        }
     }
 }
