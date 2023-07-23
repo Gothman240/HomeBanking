@@ -66,7 +66,7 @@ createApp({
       const date1 = moment(this.date1).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
       const date2 = moment(this.date2).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
       console.log(date1);
-      axios.post(`/api/${this.account.id}/pdf?date1=${date1}&date2=${date2}`, null,{
+      axios.post(`/api/${this.account.id}/pdf?date1=${date1}&date2=${date2}`,{
         date1: date1,
         date2: date2,
       }, {
@@ -79,6 +79,7 @@ createApp({
         const a = document.createElement('a');
         a.href = url;
         a.download = 'transactions.pdf';
+        document.body.appendChild(a)
         a.click();
       })
       .catch(error => { 

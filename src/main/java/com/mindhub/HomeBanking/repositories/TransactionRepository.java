@@ -1,5 +1,6 @@
 package com.mindhub.HomeBanking.repositories;
 
+import com.mindhub.HomeBanking.dtos.TransactionDTO;
 import com.mindhub.HomeBanking.models.Client;
 import com.mindhub.HomeBanking.models.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,6 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByAccountIsActiveTrue();
     List<Transaction> findByAccountClient(Client client);
-    List<Transaction> findByAccountIdAndDateBetween(Long accountId, LocalDateTime date1, LocalDateTime  date2);
+    List<TransactionDTO> findByAccountIdAndDateBetween(Long accountId, LocalDateTime date1, LocalDateTime  date2);
 
 }
