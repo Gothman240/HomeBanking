@@ -38,12 +38,10 @@ createApp({
     tryCreateCard(){
         axios.post("/api/cards", `type=${this.type}&color=${this.color}`,
         { headers: { "content-type": "application/x-www-form-urlencoded" } })
-            .then(response  => {
-
-                console.log("send")
-                this.showAlert(response.data, success)
+            .then(response  => {               
+                this.showAlert(response.data, "success");
                 setTimeout(() => {
-                    location.href="./../web/cards.html";                    
+                    location.href="./../web/cards.html";
                 }, 2000);
                 
             })
@@ -53,13 +51,13 @@ createApp({
     },
     colorCard(){
         if(this.color === "TITANIUM"){
-            return "grey"
+            return "titanium"
         }
         if(this.color === "GOLD"){
-            return "yellow"
+            return "gold"
         }
         if(this.color === "SILVER"){
-            return "grey"
+            return "silver"
         }
     },
     secondaryColorCard(){
@@ -71,6 +69,9 @@ createApp({
         }
         if(this.color === "SILVER"){
             return "grey"
+        }
+        if(this.color == ""){
+            return "bg-danger"
         }
     },
     showAlert(status, type){

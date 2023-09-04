@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 	implementation 'com.itextpdf:itextpdf:5.5.13.3'
+	implementation 'com.itextpdf:layout:8.0.0'
 
 
 	runtimeOnly 'com.h2database:h2'

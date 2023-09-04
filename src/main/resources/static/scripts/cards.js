@@ -8,6 +8,7 @@ createApp({
       cards: [],
       debitCards: [],
       creditCards: [],
+      selectedCard:[],
     };
   },
   created() {
@@ -111,6 +112,14 @@ createApp({
           console.log(err);
           this.showAlert(err.response.data, "info");
         });
+    },
+    selectedCardOffCanvas(id){
+      console.log(id)
+      this.selectedCard = this.cards.filter(card => card.id == id);
+      
+      console.log(this.selectedCard)
+      console.log("color ", this.selectedCard[0].color)
+      console.log("color ", this.selectedCard.cvv)
     },
     logout() {
       axios.post("/api/logout").then((res) => {

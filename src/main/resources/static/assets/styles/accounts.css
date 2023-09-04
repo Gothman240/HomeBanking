@@ -18,6 +18,10 @@
     
 }
 
+.amount{
+    transition: all 1s ease-in-out;
+}
+
 .card{
     min-width: 18rem!important;
     .circle{

@@ -25,38 +25,11 @@ import static com.mindhub.HomeBanking.utils.CardUtils.getCvv;
 @RequestMapping("/api")
 public class CardController {
     @Autowired
-    private ClientService clientService;
-    @Autowired
     private CardService cardService;
     @RequestMapping(value = "/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> newCard(
             @RequestParam CardType type, @RequestParam CardColor color, Authentication auth){
-        Client client =  clientService.findByEmail(auth.getName());
-        int cvv = getCvv();
-        String cardNumber = getCardNumber();
-
-        if (cardService.findByNumber(cardNumber) != null){
-            return new ResponseEntity<>("Error with number card",HttpStatus.FORBIDDEN);
-        }
-
-        List<Card> cardList = cardService.findByClientAndTypeAndColorAndIsActive(client, type, color, true);
-
-        if (cardList.size() <= 3){
-            boolean hasCardColor = cardList.stream().anyMatch(card -> card.getColor().equals(color));
-            if (hasCardColor){
-                return new ResponseEntity<>("You already have a " + color + " " + type + " card.", HttpStatus.FORBIDDEN);
-            }
-
-            Card card = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, true);
-            client.addCards(card);
-            cardService.save(card);
-            return new ResponseEntity<>("A new " + type + " card has been created.", HttpStatus.CREATED);
-
-        }else{
-            return new ResponseEntity<>("You have reached the credit card limit.", HttpStatus.FORBIDDEN);
-        }
-
-
+        return cardService.createNewCard(type, color, auth);
     }
 
     @RequestMapping(value = "/active/cards")
@@ -67,12 +40,7 @@ public class CardController {
 
     @RequestMapping(value = "/cards/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Object> deleteCard(@PathVariable Long id, @RequestBody CardActivationDTO cardActivationDTO){
-        try{
-            cardService.updateIsActiveById(id, cardActivationDTO.isActive());
-            return new ResponseEntity<>("updated", HttpStatus.ACCEPTED);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return cardService.switchBooleanIsActive(id, cardActivationDTO);
     }
 
 

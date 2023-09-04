@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-6 bg-body pb-3 z-3" v-for="loan in loanSelected" :key="loan.id"
                         v-show="formData.id_loan">
-                        <div class="d-flex justify-content-center bg-oscuro text-light ">
+                        <div class="d-flex justify-content-center bg-oscuro text-light  py-3 mb-4">
                             <div>
                                 <h4>{{loan.name}}</h4>
                             </div>
@@ -198,7 +198,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" @click="submit">Understood</button>
+                                    <button type="button" class="btn btn-primary" @click="submit">Apply Loan</button>
                                 </div>
                             </div>
                         </div>

@@ -49,7 +49,14 @@ createApp({
         })
         .catch((err) => console.log(err.toJSON()));
     },
+    formatCurrency(currency) {
+      const format = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
 
+      return format.format(currency);
+    },
     nextStep() {
       if (this.currentStep < 4) {
         this.currentStep++;

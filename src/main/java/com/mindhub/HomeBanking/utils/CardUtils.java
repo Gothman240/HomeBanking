@@ -1,5 +1,7 @@
 package com.mindhub.HomeBanking.utils;
 
+import com.mindhub.HomeBanking.dtos.LoanApplicationDTO;
+import com.mindhub.HomeBanking.models.Loan;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,5 +25,20 @@ public final class CardUtils {
     public static String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(date);
+    }
+
+    public static double getPercentage(LoanApplicationDTO loanApplicationDTO, Loan currentLoan) {
+        double basePercentage = currentLoan.getLoanPercentage();
+
+        double base = 1.0;
+        int payments = loanApplicationDTO.getPayments();
+
+        if (payments >= 12){
+            base = 0.9;
+        } else if (payments >= 6) {
+            base = 0.8;
+        }
+        double finalPercentage = basePercentage * base;
+        return loanApplicationDTO.getAmount() + (finalPercentage / 100) * loanApplicationDTO.getAmount();
     }
 }

@@ -49,4 +49,5 @@ public class AccountServiceImplement implements AccountService {
     public List<Account> findByClientAndIsActiveTrue(Client client){
         return accountRepository.findByClientAndIsActiveTrue(client);
     }
+
 }

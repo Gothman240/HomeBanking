@@ -20,10 +20,10 @@ public class WebAuthorization {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/clients").hasAuthority("ADMIN")
-                .antMatchers("/rest/**", "/admin/**", "/manager.html").hasAuthority("ADMIN")
+                .antMatchers("/rest/**", "/admin/**", "/manager.html", "/api//loans/admin").hasAuthority("ADMIN")
                 .antMatchers("/web/**").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/transactions/pdf/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/transactions/pdf/**", "/api/transactions/loan", "/api/transactions").hasAuthority("CLIENT")
                 .antMatchers("/index.html", "/login.html").permitAll();
         http.formLogin()
                 .usernameParameter("email")
