@@ -4,6 +4,7 @@ createApp({
     data(){
         return {
             showSide: false,
+            loading: true,
             paymentToPush: null,
             loanDTO: {
                 name: "",
@@ -27,12 +28,16 @@ createApp({
         getLoans(){
             axios.get("http://localhost:8080/api/loans")
             .then(response  => {
+                this.loading = false;
                 this.apiLoans = response.data;
                 console.log(this.apiLoans)
                 
                 
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                this.loading = false;
+                console.log(err)
+            })
         },
         addArray(){
             if(!isNaN(this.paymentToPush)){

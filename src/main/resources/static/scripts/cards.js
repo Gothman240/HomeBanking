@@ -4,11 +4,12 @@ createApp({
   data() {
     return {
       showSide: false,
+      loading: true,
       client: [],
       cards: [],
       debitCards: [],
       creditCards: [],
-      selectedCard:[],
+      selectedCard:{},
     };
   },
   created() {
@@ -43,8 +44,10 @@ createApp({
               (card) => card.type === "CREDIT"
             );
           }
+          this.loading = false
         })
         .catch((error) => {
+          this.loading = false
           console.log(error);
         });
     },
@@ -113,13 +116,15 @@ createApp({
           this.showAlert(err.response.data, "info");
         });
     },
-    selectedCardOffCanvas(id){
-      console.log(id)
-      this.selectedCard = this.cards.filter(card => card.id == id);
+    selectedCards(card){
+      console.log(card)
+      this.selectedCard = card;
       
+      setTimeout(() => {
+        $('#myModal').modal('show');
+      }, 100); // Puedes ajustar el tiempo según tus necesidades
+
       console.log(this.selectedCard)
-      console.log("color ", this.selectedCard[0].color)
-      console.log("color ", this.selectedCard.cvv)
     },
     logout() {
       axios.post("/api/logout").then((res) => {

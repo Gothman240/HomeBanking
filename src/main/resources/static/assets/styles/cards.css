@@ -11,6 +11,7 @@
 	perspective: 600px;
 	margin-left: 5px;
 	margin-right: 5px;
+	cursor: pointer;
 }
 
 .plastic-card__part {
@@ -170,4 +171,27 @@
 .plastic-card:hover .plastic-card__back {
 	-webkit-transform: rotateY(0deg);
 	-moz-transform: rotateY(0deg);
+}
+
+.alert.alert-danger{
+	cursor: pointer;
+}
+
+.alert.alert-danger span{
+	transition: all .4s ease-in-out;
+}
+
+.alert.alert-danger:hover span.question{
+	transition: all .4s ease-in-out;
+	display: none;
+}
+
+.alert.alert-danger span.question-hover{
+	transition: all .4s ease-in-out;
+	display: none;
+}
+
+.alert.alert-danger:hover span.question-hover{
+	transition: all .4s ease-in-out;
+	display: block;
 }

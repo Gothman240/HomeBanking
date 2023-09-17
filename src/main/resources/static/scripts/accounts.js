@@ -4,6 +4,7 @@ createApp({
   data() {
     return {
       showSide: false,
+      loading: true,
       client: [],
       accounts: [],
       loans: [],
@@ -33,31 +34,41 @@ createApp({
       localStorage.setItem("sideBar", JSON.stringify(this.showSide));
     },
     loadData() {
+
       axios
         .get("/api/clients/current")
         .then((response) => {
           this.client = response.data;
-          console.log(response);
+          this.loading = false
 
           this.loans = response.data.loans;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.loading = false
+        });
     },
     getAccount() {
+
       axios
         .get("/api/active/accounts")
         .then((response) => {
+          this.loading = false
           console.log("accounts active", response);
           this.accounts = response.data.sort((a, b) => a.id - b.id);
           this.totalBalance = this.accounts.reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.loading = false
+          console.log(err)
+        });
     },
     getApiLoan() {
+
       axios.get("/api/loans").then((res) => {
         console.log(res);
+        this.loading = false
         this.apiLoans = res.data;
       });
     },

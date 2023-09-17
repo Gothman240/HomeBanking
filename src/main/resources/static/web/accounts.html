@@ -34,7 +34,7 @@
             <div class="menu d-block">
                 <a href="#" class="button text-decoration-none mb-2">
                     <span class="material-icons">
-                        account_balance                        
+                        account_balance
                     </span>
                     <span class="text">Account</span>
                 </a>
@@ -53,10 +53,10 @@
                 <a href="./adminDashboard.html" class="button text-decoration-none mb-2" v-if="client.admin">
                     <span class="material-icons">
                         manage_accounts
-                        </span>
+                    </span>
                     <span class="text">Transfers</span>
                 </a>
-              
+
             </div>
         </aside>
 
@@ -88,13 +88,27 @@
                 </div>
             </nav>
 
-            <div class="container-fluid  ">
-                <!-- Contenido principal -->
+            <!-- spinner -->
+            <div class="sk-cube-grid position-absolute top-50 start-50 translate-middle " v-if="loading">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container-fluid" :class=" loading ? 'd-none' : 'd-block' ">
+
                 <div class="row px-0 gradient px-md-3 gap-4">
                     <div
                         class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
                         <div class="balance text-center text-md-start m-4 m-md-3">
-                            <h6 class="small">Account Balance</h6>                            
+                            <h6 class="small">Account Balance</h6>
                             <div class="amount">
                                 <span class="fs-3 fw-bold" v-show="showBal">{{formatCurrency(totalBalance)}}</span>
                                 <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
@@ -114,7 +128,7 @@
                             <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
                             <p class="small">{{client.email}}</p>
                         </div>
-    
+
                         <div v-show="accounts.length<3" class="col-12 border-top text-center py-4">
                             <span vif class="material-icons fs-2 color-claro">
                                 account_balance_wallet
@@ -123,7 +137,7 @@
                             <h6 class="fw-bold" v-else>Add new account?</h6>
                             <a class="btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Get one</a>
                         </div>
-                        
+
                     </div>
 
                     <div class="col-12 info-account">
@@ -137,23 +151,26 @@
                                             </span>
                                             <span v-if="account.accountType == 'SAVINGS' " class="material-icons fs-1">
                                                 savings
-                                                </span>
+                                            </span>
                                         </span>
                                     </div>
                                     <div class="col-7">
                                         <div class="card-body">
                                             <h5 class="card-title">{{formatCurrency(account.balance)}}</h5>
-                                            <a class=" mb-2 small text-decoration-none a-custom" v-bind:href="'./transfers.html?num=' + account.number ">
+                                            <a class=" mb-2 small text-decoration-none a-custom"
+                                                v-bind:href="'./transfers.html?num=' + account.number ">
                                                 {{account.number}}</a>
                                             <p class="card-text text-muted">{{account.creationDate}}</p>
                                             <div class="">
 
-                                                <a class="text-decoration-none a-custom d-flex justify-content-center align-content-center" v-bind:href="'./account.html?id=' + account.id ">Go to Details <span class="material-icons">
-                                                    keyboard_arrow_right
+                                                <a class="text-decoration-none a-custom d-flex justify-content-center align-content-center"
+                                                    v-bind:href="'./account.html?id=' + account.id ">Go to Details <span
+                                                        class="material-icons">
+                                                        keyboard_arrow_right
                                                     </span></a>
                                             </div>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -166,10 +183,13 @@
                                 <div class="d-flex">
                                     <span class="material-icons pe-3">
                                         real_estate_agent
-                                        </span> <p class="m-0">You can request a loan at any time <a class="alert-link" href="./loan-application.html">here</a></p>
+                                    </span>
+                                    <p class="m-0">You can request a loan at any time <a class="alert-link"
+                                            href="./loan-application.html">here</a></p>
                                 </div>
-                              </div>
-                            <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length" v-for="loan of loans" :key="loan.name">
+                            </div>
+                            <div class="col-12 col-md-6 d-flex justify-content-center py-4" v-if="loans.length"
+                                v-for="loan of loans" :key="loan.name">
                                 <div class="card shadow w-100">
                                     <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
                                         {{loan.name}}
@@ -189,11 +209,13 @@
                                                 <span>Total Payments:</span> <span>{{loan.totalPayments}}</span>
                                             </div>
                                             <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
-                                                <span class="alert-link">Monthly:</span> <span class="color-claro fw-medium">{{formatCurrency(loanMonthlyCalculator(loan.amount,loan.payments))}}</span>
+                                                <span class="alert-link">Monthly:</span> <span
+                                                    class="color-claro fw-medium">{{formatCurrency(loanMonthlyCalculator(loan.amount,loan.payments))}}</span>
                                             </div>
                                         </div>
                                         <div class="mt-1 d-flex justify-content-center">
-                                            <a class="btn" @click="payLoan(loan)"  data-bs-toggle="modal" data-bs-target="#modalLoan">Paid</a>
+                                            <a class="btn" @click="payLoan(loan)" data-bs-toggle="modal"
+                                                data-bs-target="#modalLoan">Paid</a>
                                         </div>
                                     </div>
                                 </div>
@@ -203,8 +225,9 @@
                                     <span class="material-icons text-muted">
                                         error_outline
                                     </span>
-                                    <h3 class="text-center fw-bold text-muted fw-bolder ">You haven't made any loan yet</h3>
-                                    
+                                    <h3 class="text-center fw-bold text-muted fw-bolder ">You haven't made any loan yet
+                                    </h3>
+
                                 </div>
 
                             </div>
@@ -214,71 +237,82 @@
             </div>
 
             <!-- Modal type Accounts-->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Get Account</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content rounded-0">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Get Account</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-select" aria-label="Default select example" v-model="accountType">
+                                <option value="CURRENT" selected>Current</option>
+                                <option value="SAVINGS">Saving </option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary w-100" @click="createAccount">Generate</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <select class="form-select" aria-label="Default select example" v-model="accountType">
-                            <option value="CURRENT">Current</option>
-                            <option value="SAVINGS">Saving</option>
-                          </select>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary"  @click="createAccount">Understood</button>
-                    </div>
-                </div>
                 </div>
             </div>
 
             <!-- Modal Loan -->
-            <div class="modal fade" id="modalLoan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="modalLoan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-oscuro text-center py-3">
-                    <h1 class="modal-title text-light  fs-5" id="staticBackdropLabel">{{loanSelected.name}}</h1>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="me-2"><h5 class="fw-bold color-oscuro">Monthly</h5></div>
-                                <span>{{formatCurrency(loanMonthlyCalculator(loanSelected.amount, loanSelected.payments))}}</span>
+                    <div class="modal-content">
+                        <div class="modal-header bg-oscuro text-center py-3">
+                            <h1 class="modal-title text-light  fs-5" id="staticBackdropLabel">{{loanSelected.name}}</h1>
+                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="me-2">
+                                        <h5 class="fw-bold color-oscuro">Monthly</h5>
+                                    </div>
+                                    <span>{{formatCurrency(loanMonthlyCalculator(loanSelected.amount,
+                                        loanSelected.payments))}}</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="me-2">
+                                        <h5 class="fw-bold color-oscuro">Select an Account</h5>
+                                    </div>
+                                    <div class="mb-3">
+                                        <select class="form-select form-select" name="" id=""
+                                            v-model="paidLoan.accountNumber">
+                                            <option selected>Select one</option>
+                                            <option v-for="account of accounts" :value="account.number">
+                                                {{account.number}}</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <div class="me-2"><h5 class="fw-bold color-oscuro">Select an Account</h5></div>
-                                <div class="mb-3">
-                                    <select class="form-select form-select" name="" id=""  v-model="paidLoan.accountNumber">
-                                        <option selected>Select one</option>
-                                        <option v-for="account of accounts" :value="account.number">{{account.number}}</option>                                        
-                                    </select>
+                            <div class="row">
+                                <div class="col-12 d-flex pt-2 px-3" v-if="paidLoan.accountNumber != null"
+                                    :class="filterAccount().balance < paidLoan.amount ? 'alert alert-warning' : 'alert alert-success'">
+                                    <div class="flex-grow-1">
+                                        <h5 class="fw-bold">Account Balance</h5>
+                                    </div>
+                                    <span>{{formatCurrency(filterAccount().balance)}}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 d-flex pt-2 px-3" v-if="paidLoan.accountNumber != null" :class="filterAccount().balance < paidLoan.amount ? 'alert alert-warning' : 'alert alert-success'">
-                                <div class="flex-grow-1">
-                                    <h5 class="fw-bold">Account Balance</h5>
-                                </div>
-                                <span>{{formatCurrency(filterAccount().balance)}}</span>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @click="sendPayLoan">Understood</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="sendPayLoan" >Understood</button>
-                    </div>
-                </div>
                 </div>
             </div>
 
         </div>
 
     </main>
+
+
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

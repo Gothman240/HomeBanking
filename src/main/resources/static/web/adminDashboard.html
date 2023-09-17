@@ -48,13 +48,15 @@
                         currency_exchange
                     </span>
                     <span class="text">Transfers</span>
-                </a>
+                </a>                             
+            </div>
+            <div class="menu d-block" v-if="client.isAdmin">
                 <a href="#" class="button text-decoration-none mb-2" >
                     <span class="material-icons">
                         manage_accounts
                         </span>
-                    <span class="text">Transfers</span>
-                </a>              
+                    <span class="text">Admin</span>
+                </a>
             </div>
         </aside>
 
@@ -86,12 +88,25 @@
                 </div>
             </nav>
 
-            <div class="container-fluid py-2 px-4">
-                <!-- Contenido principal -->
+            <!-- spinner -->
+            <div class="sk-cube-grid position-absolute top-50 start-50 translate-middle " v-if="loading">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container-fluid py-2 px-4"  :class=" loading ? 'd-none' : 'd-block' ">
                 <div class="row bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
                     <div class="col-12 py-2 px-4">
                         <div class="row">
-                            <h5>Create a new Loan</h5>
+                            <h5 class="fw-bold mb-3">Create a new Loan</h5>
                             <div class="col-12 col-md-6 px-4">
                                 <div class="mb-3">
                                     <label for="loanName" class="form-label">Loan name</label>
@@ -125,7 +140,7 @@
                             <div class="col-6 d-flex justify-content-center align-items-center gap-3" v-if="loanDTO.payments.length">
                                 <span class="badge text-bg-secondary" v-for="payment of loanDTO.payments" :key="payment" @click="removeFromArray(payment)">{{payment}}</span>
                             </div>
-                            <div class="btn btn-secondary" @click="createLoan">Create</div>
+                            <div class="btn btn-active mt-4" @click="createLoan">Create</div>
                         </div>
                     </div>
                 </div>

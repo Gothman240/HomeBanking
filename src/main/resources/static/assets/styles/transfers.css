@@ -1,29 +1,76 @@
 .progress {
   height: 5px;
-  margin-bottom: 20px;
 }
 
 .progress-bar {
   background-color: var(--color-oscuro);
 }
 
-
-.form-control::selection{
-  border: none!important;
+/* .banner-transfer {
+  animation: cambiarColor 1s ease-in-out;
+} */
+.banner-success {
+  right: 0;
+  opacity: 1;
+  width: 0px!important;
+  display: inline-block;
+  background: green!important;
+  transition: all 1.2s ease-in-out;
 }
-.card-transition{
+
+
+.form-control::selection {
+  border: none !important;
+}
+
+.card-transition {
   transition: 0.5s all ease;
 }
-.cardAccount{
+
+.cardAccount {
   width: 16rem;
 }
 
-.circle{
+.circle {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
   background-color: #fff;
-  .material-icons{
-      color: var(--color-oscuro);
+
+  .material-icons {
+    color: var(--color-oscuro);
+  }
+}
+.banner-success--active{
+  display: block;
+  width: 0px;
+  opacity: 1;
+  width: 100%;
+}
+@keyframes exito {
+  0%{
+    opacity: 0;
+    display: block;
+    width: 0px;
+  }
+  80%{
+    width: 100%;
+  }
+  100%{
+    
+    opacity: 1;
+  }
+}
+
+@keyframes cambiarColor {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    background-color: green!important;
+    opacity: 0;
+    /* Color final (verde) */
+    width: 0;
   }
 }
