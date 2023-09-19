@@ -97,7 +97,7 @@ public class TransactionController {
     public ResponseEntity<Object> paidLoan(@RequestBody PayLoanDTO payLoanDTO, Authentication authentication){
 
         if (payLoanDTO == null){
-            return new ResponseEntity<>("revisa los datos enviados", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Review the submitted data", HttpStatus.BAD_REQUEST);
         }
 
         Client currentClient = clientService.findByEmail(authentication.getName());
@@ -109,15 +109,15 @@ public class TransactionController {
             Account currentAccount = currentClient.getAccounts().stream().filter(account -> account.getNumber().equals(payLoanDTO.getAccountNumber())).findFirst().orElse(null);
 
             if (currentAccount == null){
-                return new ResponseEntity<>("error al obtener la información", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("Error retrieving information", HttpStatus.FORBIDDEN);
             }
             ClientLoan clientLoan = currentClient.getClientLoans().stream().filter(clientLoan1 -> clientLoan1.getId() == payLoanDTO.getLoan_id()).findAny().orElse(null);
             if(clientLoan == null){
-                return new ResponseEntity<>("error al obtener la información", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("Error retrieving information", HttpStatus.FORBIDDEN);
             }
 
             if (currentAccount.getBalance() < payLoanDTO.getAmount()){
-                return new ResponseEntity<>("error al procesar el pago", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("Payment processing error", HttpStatus.FORBIDDEN);
             }
 
             clientLoan.setTotalPayments(payLoanDTO.getPayment() - 1 );
@@ -132,9 +132,9 @@ public class TransactionController {
             clientLoanRepository.save(clientLoan);
 
 
-            return new ResponseEntity<>("pay", HttpStatus.CREATED);
+            return new ResponseEntity<>("Paid", HttpStatus.CREATED);
         }else {
-            return new ResponseEntity<>("problemas con los datos de la cuenta", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Issues with account data", HttpStatus.BAD_REQUEST);
         }
 
 

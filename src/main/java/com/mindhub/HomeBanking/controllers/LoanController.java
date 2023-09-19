@@ -70,7 +70,7 @@ public class LoanController {
             return new ResponseEntity<>("The destination account is invalid.", HttpStatus.FORBIDDEN);
         }
         try{
-            String message = currentLoan.getName().concat(" Loan approved.");
+            String message = currentLoan.getName().concat("Loan approved.");
             double basePercentage = currentLoan.getLoanPercentage();;
             double base = 1.0;
             int payments = loanApplicationDTO.getPayments();
@@ -102,20 +102,20 @@ public class LoanController {
     @RequestMapping(value = "/loans/admin", method = RequestMethod.POST)
     public ResponseEntity<Object> newLoan(@RequestBody LoanDTO loanDTO){
         if(loanService.findByName(loanDTO.getName()) != null){
-            return new ResponseEntity<>("el nombre ya existe", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The name already exists", HttpStatus.FORBIDDEN);
         }
         if (loanDTO.getMaxAmount() < 1000){
-            return new ResponseEntity<>("nada de plata", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Low balance", HttpStatus.BAD_REQUEST);
         }
         if (loanDTO.getPayments().size() < 2){
-            return new ResponseEntity<>("numero de cuotas insuficiente", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Not enough installments", HttpStatus.BAD_REQUEST);
         }
         if (loanDTO.getLoanPercentage() < 5){
-            return new ResponseEntity<>("número inválido", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Percentage is not valid", HttpStatus.BAD_REQUEST);
         }
         Loan loan = new Loan(loanDTO.getName(), loanDTO.getMaxAmount(), loanDTO.getPayments(), loanDTO.getLoanPercentage());
         loanService.save(loan);
-        return new ResponseEntity<>("nuevo loan creado", HttpStatus.CREATED);
+        return new ResponseEntity<>("New loan created", HttpStatus.CREATED);
     }
 
 }

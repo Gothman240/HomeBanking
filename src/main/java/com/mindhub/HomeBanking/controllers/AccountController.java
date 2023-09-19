@@ -59,13 +59,13 @@ public class AccountController {
         Account account = accountService.findById(id);
 
         if (!account.isActive()){
-            throw new AccessDeniedException("Cuenta no disponible");
+            throw new AccessDeniedException("Account not available");
         }
 
         if (client.getAccounts().stream().anyMatch(account1 -> account1.getNumber().equals(account.getNumber()))){
             return new AccountDTO(account);
         }
-        throw new AccessDeniedException("No tienes acceso a la cuenta solicitada.");
+        throw new AccessDeniedException("You do not have access to the requested account.");
 
 
     }
@@ -102,10 +102,10 @@ public class AccountController {
     public ResponseEntity<Object> deleteAccount(@PathVariable Long id){
             Account account = accountService.findById(id);
             if (account == null){
-                return new ResponseEntity<>("Verifica la cuenta seleccionada", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Verify the selected account", HttpStatus.BAD_REQUEST);
             }
             if (account.getBalance() > 0){
-                return new ResponseEntity<>("La cuenta tiene efectivo", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("The account has funds", HttpStatus.BAD_REQUEST);
             }
 
         try{
@@ -117,7 +117,7 @@ public class AccountController {
 
             account.setActive(false);
             accountService.save(account);
-            return new ResponseEntity<>("Cuenta eliminada", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("Account deleted", HttpStatus.ACCEPTED);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

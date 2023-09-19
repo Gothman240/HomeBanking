@@ -31,7 +31,7 @@ public class TransactionServiceImplement implements TransactionService {
         if (date1 != null && date2 != null) {
             return transactionRepository.findByAccountIdAndDateBetween(accountId, date1, date2);
         } else {
-            throw new MissingFormatArgumentException("revisa los datos mandados");
+            throw new MissingFormatArgumentException("Check the submitted data");
         }
     }
 }
