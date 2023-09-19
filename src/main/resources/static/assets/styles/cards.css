@@ -36,16 +36,16 @@
 	-moz-backface-visibility: hidden;
 }
 
-.gold-plastic-card {
-	background: linear-gradient(45deg, #ecad36, #bea328);
+.gold-plastic-card, .GOLD-plastic-card {
+	background: linear-gradient(45deg,#ecad36, #bea328 );
 }
 
-.silver-plastic-card {
-	background: linear-gradient(45deg, #adadad, #646463);
+.silver-plastic-card, .SILVER-plastic-card {
+	background: linear-gradient(45deg, #646463, #adadad );
 }
 
-.titanium-plastic-card {
-	background: linear-gradient(45deg, #6ea3e0, #185781);
+.titanium-plastic-card, .TITANIUM-plastic-card {
+	background: linear-gradient(45deg, #185781,  #6ea3e0 );
 }
 
 

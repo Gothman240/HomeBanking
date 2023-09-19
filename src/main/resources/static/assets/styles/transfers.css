@@ -1,22 +1,4 @@
-.progress {
-  height: 5px;
-}
 
-.progress-bar {
-  background-color: var(--color-oscuro);
-}
-
-/* .banner-transfer {
-  animation: cambiarColor 1s ease-in-out;
-} */
-.banner-success {
-  right: 0;
-  opacity: 1;
-  width: 0px!important;
-  display: inline-block;
-  background: green!important;
-  transition: all 1.2s ease-in-out;
-}
 
 
 .form-control::selection {

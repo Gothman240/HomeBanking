@@ -83,6 +83,17 @@ createApp({
         if(alerttype==="info"){
           toastr.info(status);
         }
+      },
+      confirmCard(){
+        if(this.type == ""){
+            $("#cardType").addClass("input-error");
+        }
+        if(this.color == ""){
+            $("#cardColor").addClass("input-error");
+        }
+        if(this.type && this.color){
+            this.tryCreateCard()
+        }
       }
   },
   computed: {},

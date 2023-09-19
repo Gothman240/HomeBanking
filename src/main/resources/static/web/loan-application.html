@@ -54,7 +54,7 @@
         </aside>
 
 
-        <div class="container-fluid p-0 ">
+        <div class="container-fluid p-0 vh-100">
             <!-- nav -->
             <nav class="navbar navbar-expand-md ">
                 <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -81,12 +81,14 @@
                 </div>
             </nav>
 
-            <div class="container-fluid overflow-hidden">
+            <div class="container-fluid overflow-hidden my-2">
                 <!-- Contenido principal -->
-                <div class="row px-0 pb-5 gradient position-relative bg-triangulo overflow-hidden vh-100 px-md-3">
-
-                    <div class="col-6 d-flex flex-column justify-content-evenly bg-body border z-3"
-                        :class="this.formData.id_loan ? 'col-6' : 'col-12' ">
+                <div class="row px-0 overflow-hidden px-md-3">
+                    <div class="col-12">
+                        <h4 class="fw-bold color-claro pb-2 my-2">Loans you can apply for</h4>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-evenly gap-4 py-2" data-bs-toggle="modal"
+                        data-bs-target="#selectLoan">
                         <div id="card-loan" class="card pointer" v-for="loan of loansApi" :key="loan.id"
                             @click="showForm(loan.id)">
                             <div class="card-body d-flex justify-content-between align-items-center">
@@ -95,99 +97,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 bg-body pb-3 z-3" v-for="loan in loanSelected" :key="loan.id"
-                        v-show="formData.id_loan">
-                        <div class="d-flex justify-content-center bg-oscuro text-light  py-3 mb-4">
-                            <div>
-                                <h4>{{loan.name}}</h4>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center px-0 px-md-5">
 
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6>Selec a payment</h6>
-                                    <select class="form-select mb-3" v-model="formData.payments">
-                                        <option selected disabled>Select payment</option>
-                                        <option :value="payment" v-for="payment in loan.payments" :key="payment">
-                                            {{payment}}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <h6>Select an account</h6>
-                                    <select class="form-select mb-3" v-model="formData.numberAccountDestiny">
-                                        <option selected disabled>Select account</option>
-                                        <option :value="account.number" v-for="account in accounts">
-                                            {{account.number}}</option>
-
-                                    </select>
-                                </div>
-
-                            </div>
-
-
-                            <div class="group mb-3">
-
-                                <input class="input--group" type="number" v-model="formData.amount" placeholder="$0,00"
-                                    @input="limitMaxValue(loan.maxAmount)" required>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label class="label--group"></label>
-                                <small class="small" :class="formData.amount > loan.maxAmount ? 'text-danger' : ''">
-                                    <p>Max {{formatCurrency(loan.maxAmount)}}</p>
-                                </small>
-                            </div>
-
-                            <div class="alert alert-warning py-3" role="alert"
-                                v-show="formData.amount && formData.payments">
-                                <div class="d-flex justify-content-between">
-                                    <span>
-                                        loan amount:
-                                    </span>
-                                    <span>
-                                        {{formatCurrency(formData.amount)}}
-
-                                    </span>
-
-
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>
-                                        monthly:
-
-                                    </span>
-                                    <span>
-                                        {{formatCurrency(formData.amount/formData.payments)}}
-
-                                    </span>
-
-                                </div>
-                                <div class="d-flex justify-content-between border-warning">
-                                    <span>
-                                        total:
-
-                                    </span>
-                                    <span>
-                                        {{totalLoan(formData.amount)}}
-
-                                    </span>
-
-                                </div>
-                            </div>
-                            <a class="btn btn-primary btn-sm rounded-0" role="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">apply</a>
-                        </div>
-
-
-
-                    </div>
-                    <!-- Modal -->
-                    <div class="modal fade rounded" id="staticBackdrop" data-bs-backdrop="static"
-                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop" aria-hidden="true">
+                    <!-- Modal confirmación-->
+                    <div class="modal fade rounded" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content rounded-0">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5 fw-bold color-oscuro" id="staticBackdrop">Confirm Loan
+                                    <h1 class="modal-title fs-5 fw-bold color-oscuro" id="confirmModal">Confirm Loan
                                     </h1>
 
                                 </div>
@@ -203,6 +120,108 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal Loan detalles -->
+                    <div class="modal fade" id="selectLoan" tabindex="-1" aria-labelledby="selectLoanLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content" v-for="loan in loanSelected" :key="loan.id"
+                                v-show="formData.id_loan">
+                                <div class="modal-header bg-oscuro text-light py-3 justify-content-center">
+                                    <h1 class="modal-title fs-4" id="selectLoanLabel">{{loan.name}}</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-column justify-content-center px-0 px-md-5">
+
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <label class="small fw-semibold" for="payments">Select a payment</label>
+                                                <select id="payments" class="form-select mb-3" v-model="formData.payments">
+                                                    <option selected disabled>Select payment</option>
+                                                    <option :value="payment" v-for="payment in loan.payments"
+                                                        :key="payment">
+                                                        {{payment}}</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="small fw-semibold" for="accounts">Select an account</label>
+                                                <select id="accounts" class="form-select mb-3 "
+                                                    v-model="formData.numberAccountDestiny">
+                                                    <option selected disabled>Select account</option>
+                                                    <option :value="account.number" v-for="account in accounts">
+                                                        {{account.number}}</option>
+
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="group mb-3">
+
+                                            <input id="amount" class="input--group " type="number" v-model="formData.amount"
+                                                placeholder="$0,00" @input="limitMaxValue(loan.maxAmount)" required>
+                                            <span class="highlight "></span>
+                                            <span class="bar"></span>
+                                            <label class="label--group"></label>
+                                            <small class="small"
+                                                :class="formData.amount > loan.maxAmount ? 'text-danger' : ''">
+                                                <p>Max {{formatCurrency(loan.maxAmount)}}</p>
+                                            </small>
+                                        </div>
+
+                                        <div class="alert alert-warning py-3" role="alert"
+                                            v-show="formData.amount > 0 && formData.payments">
+                                            <div class="d-flex justify-content-between">
+                                                <span>
+                                                    loan amount:
+                                                </span>
+                                                <span>
+                                                    {{formatCurrency(formData.amount)}}
+
+                                                </span>
+
+
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>
+                                                    monthly:
+
+                                                </span>
+                                                <span>
+                                                    {{formatCurrency(formData.amount/formData.payments)}}
+
+                                                </span>
+
+                                            </div>
+                                            <div class="d-flex justify-content-between border-warning">
+                                                <span>
+                                                    total:
+
+                                                </span>
+                                                <span>
+                                                    {{totalLoan(formData.amount)}}
+
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        <!-- <a class="btn btn-primary btn-sm rounded-0" role="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">Apply</a> -->
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer justify-content-center gap-3 border-0">
+                                    <button type="button" class="btn btn-secondary rounded-0 btn-sm"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary rounded-0 btn-sm"
+                                        @click="confirmLoan">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

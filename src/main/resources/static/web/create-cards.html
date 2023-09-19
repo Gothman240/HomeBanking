@@ -46,7 +46,7 @@
                 </a>
                 <a href="./transfers.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
-                      currency_exchange
+                        currency_exchange
                     </span>
                     <span class="text">Transfers</span>
                 </a>
@@ -83,71 +83,78 @@
 
             <div class="container-fluid">
                 <!-- Contenido principal -->
-                <div class="row px-0 gradient px-md-3 gap-4">
+                <div class="row px-0 px-md-3">
                     <div
                         class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
-
-
-
                     </div>
 
                     <div class="col-12 ">
-                        <section class="row bg-body loan-container rounded py-4 ">
+                        <section class="row bg-body loan-container rounded py-4 my-3">
                             <div class="col-12 ">
                                 <div class="row d-flex">
                                     <div class="col-12 col-md-6 ">
                                         <div class="col-12 rounded bg-body d-flex justify-content-center py-4 py-md-0">
 
-                                          <!-- === CARD === -->
-                                          <div
-                                          v-bind:class="['plastic-card__front', 'plastic-card__part', colorCard() +'-plastic-card']">
-                                          <div class="plastic-card__square">
-                                            <span class="plastic-card__label">{{ type}}  </span>
-                                          </div>
-                                          
-                                          <div class="plastic-card__front-logo plastic-card__logo">
-                                            <svg viewBox="0 0 35.31 24" xmlns="http://www.w3.org/2000/svg">
-                                              <path fill="#e60019" stroke-width="0" d="m12 24-12-12 12-12 5.66 5.66-6.34 6.34 6.34 6.34-5.66 5.66z"></path>
-                                              <path fill="#f69f24" stroke-width="0" d="m23.31 0 12 12-12 12-5.66-5.66 6.34-6.34-6.34-6.34 5.66-5.66z"></path>
-                                              <rect fill="#f85c1d" stroke-width="0" transform="translate(-3.31 16) rotate(-45)" x="13.17" y="7.52" width="8.97" height="8.97"></rect>
-                                            </svg>
-                                          </div>
-                                          <p class="plastic-card_numer">**** **** ****</p>
-                                          <div class="plastic-card__space-60">
-                                            <span class="plastic-card__label">card holder</span>
-                                            <p class="plastic-card__info">{{client.firstName}} {{client.lastName}}</p>
-                                          </div>
-                                          <div class="plastic-card__space-25">
-                                            <span class="plastic-card__label">Expires</span>
-                                            <p class="plastic-card__info"></p>
-                                          </div>
-                                        </div>
+                                            <!-- === CARD === -->
+                                            <div
+                                                v-bind:class="['plastic-card__front', 'plastic-card__part', colorCard() +'-plastic-card']" class="shadow">
+                                                <div class="plastic-card__square ">
+                                                    <span class="plastic-card__label">{{ type}} </span>
+                                                </div>
 
- 
-                                          </div>                                  
+                                                <div class="plastic-card__front-logo plastic-card__logo" v-show="type && color">
+                                                    <svg viewBox="0 0 35.31 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#e60019" stroke-width="0"
+                                                            d="m12 24-12-12 12-12 5.66 5.66-6.34 6.34 6.34 6.34-5.66 5.66z">
+                                                        </path>
+                                                        <path fill="#f69f24" stroke-width="0"
+                                                            d="m23.31 0 12 12-12 12-5.66-5.66 6.34-6.34-6.34-6.34 5.66-5.66z">
+                                                        </path>
+                                                        <rect fill="#f85c1d" stroke-width="0"
+                                                            transform="translate(-3.31 16) rotate(-45)" x="13.17"
+                                                            y="7.52" width="8.97" height="8.97"></rect>
+                                                    </svg>
+                                                </div>
+                                                <p class="plastic-card_numer">**** **** ****</p>
+                                                <div class="plastic-card__space-60">
+                                                    <span class="plastic-card__label">card holder</span>
+                                                    <p class="plastic-card__info">{{client.firstName}}
+                                                        {{client.lastName}}</p>
+                                                </div>
+                                                <div class="plastic-card__space-25">
+                                                    <span class="plastic-card__label">Expires</span>
+                                                    <p class="plastic-card__info"></p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-6 px-5 border-start">
-                                            <form action="">
-                                                <div class="mb-3">
-                                                    <p>Type</p>
-                                                    <select v-model="type" class="form-select shadow"
-                                                        aria-label="Default select example">
-                                                        <option value="DEBIT">Debit</option>
-                                                        <option value="CREDIT">Credit</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <p>Color</p>
-                                                    <select v-model="color" class="form-select shadow"
-                                                        aria-label="Default select example">
-                                                        <option value="GOLD">Gold</option>
-                                                        <option value="SILVER">Silver</option>
-                                                        <option value="TITANIUM">Titanium</option>
-                                                    </select>
-                                                </div>
-                                                
-                                                <button class="btn btn-primary" @click.prevent="tryCreateCard">Create</button>
-                                            </form>
+                                        <form action="">
+
+
+                                           
+                                            <div class="mb-3">                                                
+                                                <span class="text-danger">* </span><p class="d-inline">Color</p>
+                                                <select id="cardColor" v-model="color" class="form-select shadow"
+                                                    aria-label="Default select example">
+                                                    <option value="GOLD">Gold</option>
+                                                    <option value="SILVER">Silver</option>
+                                                    <option value="TITANIUM">Titanium</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <span class="text-danger">* </span> <p class="d-inline">Type</p>
+                                                <select id="cardType" v-model="type" class="form-select shadow"
+                                                    aria-label="Default select example">
+                                                    <option value="DEBIT">Debit</option>
+                                                    <option value="CREDIT">Credit</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-active"
+                                                @click.prevent="confirmCard">Create</button>
+                                        </form>
                                     </div>
                                 </div>
                         </section>

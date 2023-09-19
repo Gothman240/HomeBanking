@@ -1,6 +1,15 @@
 .btn:active{
     border: none;
 }
+.dropdown-menu li>a.dropdown-item{
+    cursor: pointer;
+}
+.dropdown-menu li>a.dropdown-item:active{
+    background-color: transparent;    
+}
+
+
+
 .table {
     .fila {
         .fw-bold {

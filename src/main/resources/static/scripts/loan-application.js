@@ -11,7 +11,7 @@ createApp({
       loanSelectedPayments: [],
       formData: {
         id_loan: null,
-        amount: 0,
+        amount: undefined,
         payments: null,
         numberAccountDestiny: "",
       },
@@ -22,9 +22,7 @@ createApp({
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
     this.getLoans();
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
     showSideBar() {
       this.showSide = !this.showSide;
@@ -78,7 +76,7 @@ createApp({
         .then((res) => {
           this.showAlert(res.data, "success");
           setTimeout(() => {
-            window.location.href = "./../web/accounts.html"
+            window.location.href = "./../web/accounts.html";
           }, 2000);
         })
         .catch((err) => {
@@ -95,23 +93,23 @@ createApp({
         toastr.info(status);
       }
     },
-    totalLoan(currency){
-      let maxAmount=0;      
-      if(!isNaN(this.loanSelected)){ 
-        maxAmount = this.loanSelected.maxAmount
+    totalLoan(currency) {
+      let maxAmount = 0;
+      if (!isNaN(this.loanSelected)) {
+        maxAmount = this.loanSelected.maxAmount;
       }
-  
-      if(currency > maxAmount){
-        let basePercentage = this.loanSelected[0].loanPercentage
-        console.log(basePercentage)
+
+      if (currency > maxAmount) {
+        let basePercentage = this.loanSelected[0].loanPercentage;
+        console.log(basePercentage);
         let payments = this.formData.payments;
-        console.log("payments ",payments)
+        console.log("payments ", payments);
         let base = 1.0;
 
-        if (payments >= 12){
-            base = 0.9;
+        if (payments >= 12) {
+          base = 0.9;
         } else if (payments >= 6) {
-            base = 0.8;
+          base = 0.8;
         }
         let finalPercentage = basePercentage * base;
         let total = currency + (finalPercentage / 100) * currency;
@@ -119,19 +117,41 @@ createApp({
         return this.formatCurrency(total);
       }
     },
-    limitMaxValue(value){
-      if(this.formData.amount > value){
+    limitMaxValue(value) {
+      if (this.formData.amount > value) {
         this.formData.amount = value;
       }
     },
-    maxAmountInput(id){
-      const selectLoan = this.loansApi.filter(item => item.id == id)
-      let maxAmount = selectLoan.maxAmount
-      console.log('select loan: ' + maxAmount);
-        return maxAmount 
-     }
+    maxAmountInput(id) {
+      const selectLoan = this.loansApi.filter((item) => item.id == id);
+      let maxAmount = selectLoan.maxAmount;
+      console.log("select loan: " + maxAmount);
+      return maxAmount;
+    },
+    confirmLoan(){
+      if(this.formData.amount == null || this.formData.amount.isNaN){
+        $("#amount").addClass("input-error");
+      }else{
+        $("#amount").addClass("input-success");
+      }
+      if(!this.formData.payments){
+        $("#payments").addClass("input-error");
+      }else{
+        $("#payments").addClass("input-success");
+      } 
+      if(!this.formData.numberAccountDestiny){
+        $("#accounts").addClass("input-error");
+      }else{
+        $("#accounts").addClass("input-success");
+      }
+
+      if(this.formData.amount > 1 && this.formData.payments && this.formData.numberAccountDestiny){
+        $("#selectLoan").modal("hide")
+        $("#confirmModal").modal("show")      
+
+      }
+      
+    }
   },
-  computed: {
-   
- },
+  computed: {},
 }).mount("#app");

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./../assets/styles/sidebar.css">
+  <link rel="stylesheet" href="./../assets/styles/style.css">
+  <title>Transfers</title>
+</head>
+
+<body>
+
+  <main id="app" class="container-fluid p-0 bg-dark-subtle d-flex ">
+    <!-- sidebar -->
+
+    <aside class="" :class="showSide ? 'expand-sidebar' : ''">
+      <div class="logo">
+
+        <span class="material-icons">
+          account_balance
+        </span>
+
+      </div>
+
+      <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
+      <div class="menu d-block flex-grow-1">
+        <a href="./accounts.html" class="button text-decoration-none mb-2">
+          <span class="material-icons">
+            account_balance
+          </span>
+          <span class="text">Accounts</span>
+        </a>
+        <a href="./cards.html" class="button text-decoration-none mb-2">
+          <span class="material-icons">
+            credit_card
+          </span>
+          <span class="text">Cards</span>
+        </a>
+        <a href="#" class="button text-decoration-none mb-2">
+          <span class="material-icons">
+            currency_exchange
+          </span>
+          <span class="text">Transfers</span>
+        </a>
+      </div>
+      <div class="menu d-block" v-if="client.isAdmin">
+        <a href="./adminDashboard.html" class="button text-decoration-none mb-2" >
+            <span class="material-icons">
+                manage_accounts
+                </span>
+            <span class="text">Admin</span>
+        </a>
+    </div>
+    </aside>
+
+
+    <div class="container-fluid p-0" >
+      <!-- nav -->
+      <nav class="navbar navbar-expand-md ">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+          <div class="menu-toggle-wrap" :class="showSide ? 'expand-sidebar' : ''">
+            <span class="menu-toggle" @click="showSideBar">
+              <span class="material-icons">
+                keyboard_double_arrow_right
+              </span>
+            </span>
+          </div>
+
+
+          <div class="" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item align-bottom">
+                <a @click="logout()" class="nav-link" aria-current="page" href="#">
+                  <span class="material-icons">
+                    logout
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid overflow-x-hidden p-0" v-if="originNumber != null && destinyNumber != null && amount != undefined && description != '' ">
+<!--         <audio id="audio" autoplay controls>
+            <source src="./../assets/sound/beep-6-96243.mp3" type="audio/mp3">
+          </audio> -->
+        <div class="d-flex align-items-center justify-content-center  px-0 bg-success gap-md-5 pb-3" style="height: 15rem;">                   
+            <span data-aos="fade-right" class="material-icons text-light"  style="font-size: 5rem;">
+                task_alt
+                </span>
+                <span class="fs-1 fw-bold text-light" data-aos="fade-left">Success</span>
+        </div>
+        <div data-aos="zoom-in" data-aos-delay="800" class="row gap-3 gap-md-4 mb-3 px-2" >
+            <div class="col-12 d-flex justify-content-center ">
+                <div class="card shadow" style="width:20rem; margin-top: -3%;">
+                  
+                  <div class="card-body">
+                    <h5 class="card-title mb-3">Done! Transaction complete to</h5>
+                    <div class="d-flex align-items-center mb-2 gap-2">
+                        <span class="material-icons text-success">
+                            how_to_reg
+                            </span>
+                        <h6 class="card-subtitle fw-semibold text-success ">{{destinyNumber}}</h6>
+                    </div>
+                    
+                  </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center mb-4">
+                <div class="card shadow" style="width:20rem; ">
+                  
+                  <div class="card-body">
+                    <h6 class="small text-muted mb-2">{{formatDate(dateNow)}}</h6>
+                    <h3 class="card-title fw-bold mb-4"> {{formatCurrency(amount)}} </h3>
+                    <h6 class="card-subtitle mb-2 text-muted ">Description: {{description}}</h6>                    
+                  </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="btn btn-active w-25 d-flex align-items-center justify-content-center gap-2" @click="goHome"><span class="material-icons">
+                    done_all
+                    </span> Go Home</div>
+             
+            </div>
+            
+        </div>
+      </div>
+
+
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <script src="./../scripts/summary-transfer.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+
+</html>

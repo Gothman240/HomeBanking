@@ -11,8 +11,8 @@ createApp({
       formData: {
         originNumber: null,
         destinyNumber: null,
-        amount: 0.0,
-        description: null,
+        amount: undefined,
+        description: "",
       },
     };
   },
@@ -78,6 +78,14 @@ createApp({
       }
     },
     submitForm() {
+
+      const queryParams = new URLSearchParams({
+        originNumber: this.formData.originNumber,
+        destinyNumber: this.formData.destinyNumber,
+        amount: this.formData.amount,
+        description: this.formData.description,
+      });
+
       axios
         .post(
           "/api/transactions",
@@ -85,16 +93,51 @@ createApp({
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
         .then((response) => {
-          this.showAlert(response.data, "success");
-          setTimeout(() => {
-            window.location.href = "./../web/accounts.html";
-          }, 3000);
+            window.location.href = `./../web/summary-transfer.html?${queryParams.toString()}`;
+          
         })
         .catch((err) => {
           console.log(err);
           this.showAlert(err.response.data, "warning");
         });
     },
+    clearToAccount() {
+      if (this.formData.originNumber == this.formData.destinyNumber) {
+        this.formData.destinyNumber = null;
+      }
+    },
+    formValidation(){
+      if(this.formData.originNumber == null){
+        $("#originNumber").addClass("input-error");
+      }else{
+        $("#originNumber").addClass("input-success");
+      }
+      if(this.formData.destinyNumber == null){
+        $("#destinyNumber").addClass("input-error");
+      }else{
+        $("#destinyNumber").addClass("input-success");
+      }
+      if(this.formData.destinyNumber == null){
+        $("#destinyNumberOther").addClass("input-error");
+      }else{
+        $("#destinyNumberOther").addClass("input-success");
+      }
+      if(this.formData.amount == undefined || this.formData.amount.isNaN || this.formData.amount < 1){
+        $("#amount").addClass("input-error");
+      }else{
+        $("#amount").addClass("input-success");
+      }
+      if(this.formData.description == ""){
+        $("#description").addClass("input-error");
+      }else{
+        $("#description").addClass("input-success");
+      }
+
+      if(this.formData.originNumber && this.formData.destinyNumber && this.formData.amount > 1 && this.formData.description != ""){
+        $("#modalConfirm").modal("show")
+      }
+
+    }
   },
   computed: {
     progressWidth() {
@@ -112,6 +155,6 @@ createApp({
           (account) => account.balance == this.formData.originNumber
         );
       }
-    },
+    },   
   },
 }).mount("#app");

@@ -95,6 +95,7 @@ public class TransactionController {
     @Transactional
     @RequestMapping(value = "/transactions/loan", method = RequestMethod.POST)
     public ResponseEntity<Object> paidLoan(@RequestBody PayLoanDTO payLoanDTO, Authentication authentication){
+
         if (payLoanDTO == null){
             return new ResponseEntity<>("revisa los datos enviados", HttpStatus.BAD_REQUEST);
         }
@@ -114,6 +115,11 @@ public class TransactionController {
             if(clientLoan == null){
                 return new ResponseEntity<>("error al obtener la información", HttpStatus.FORBIDDEN);
             }
+
+            if (currentAccount.getBalance() < payLoanDTO.getAmount()){
+                return new ResponseEntity<>("error al procesar el pago", HttpStatus.FORBIDDEN);
+            }
+
             clientLoan.setTotalPayments(payLoanDTO.getPayment() - 1 );
 
             currentAccount.setBalance(currentAccount.getBalance() - payLoanDTO.getAmount());

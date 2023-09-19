@@ -22,6 +22,7 @@ createApp({
     };
   },
   created() {
+    AOS.init();
     this.loadData();
     this.getAccount();
     this.getApiLoan();
@@ -131,6 +132,10 @@ createApp({
         .then((res) => {
           console.log(res);
           this.showAlert(res.data, "success");
+          $("#modalLoan").modal("hide")
+          setTimeout(() => {
+            window.location.href = "./../web/accounts.html";
+          }, 3000);
         })
         .catch((err) => {
           console.log(err);
