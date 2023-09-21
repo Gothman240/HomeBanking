@@ -23,8 +23,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-	implementation 'com.itextpdf:itextpdf:5.5.13.3'
-	implementation 'com.itextpdf:layout:8.0.0'
+
+	implementation group: 'com.github.librepdf', name: 'openpdf', version: '1.3.23'
+
+
 	// https://mvnrepository.com/artifact/org.springframework/spring-websocket
 	//implementation 'org.springframework:spring-websocket:5.3.29'
 

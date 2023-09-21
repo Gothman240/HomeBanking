@@ -131,9 +131,9 @@
                                     <h1 class="modal-title fs-4" id="selectLoanLabel">{{loan.name}}</h1>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="d-flex flex-column justify-content-center px-0 px-md-5">
+                                    <div class="d-flex flex-column justify-content-center px-0 px-md-4">
 
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-center justify-content-md-between flex-wrap">
                                             <div>
                                                 <label class="small fw-semibold" for="payments">Select a payment</label>
                                                 <select id="payments" class="form-select mb-3" v-model="formData.payments">
@@ -149,7 +149,7 @@
                                                     v-model="formData.numberAccountDestiny">
                                                     <option selected disabled>Select account</option>
                                                     <option :value="account.number" v-for="account in accounts">
-                                                        {{account.number}}</option>
+                                                        {{account.number}} || {{formatCurrency(account.balance)}}</option>
 
                                                 </select>
                                             </div>

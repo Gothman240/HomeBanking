@@ -18,6 +18,7 @@ createApp({
   },
   created() {
     this.getClient();
+    this.getActiveAccounts();
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
   },
   methods: {
@@ -31,9 +32,15 @@ createApp({
         .get("http://localhost:8080/api/clients/current")
         .then((response) => {
           this.client = response.data;
-          this.accounts = response.data.accounts;
         })
         .catch((err) => console.log(err));
+    },
+    getActiveAccounts(){
+      axios.get("http://localhost:8080/api/active/accounts")
+      .then((response) => {
+        this.accounts = response.data;
+      })
+      .catch((err) => console.log(err))
     },
     showSideBar() {
       this.showSide = !this.showSide;

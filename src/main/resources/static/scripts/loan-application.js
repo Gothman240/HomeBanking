@@ -33,10 +33,17 @@ createApp({
         .get("/api/clients/current")
         .then((response) => {
           this.client = response.data;
-          this.accounts = response.data.accounts;
           this.loans = response.data.loans;
+          this.getActiveAccounts()
         })
         .catch((err) => console.log(err));
+    },
+    getActiveAccounts(){
+      axios.get("http://localhost:8080/api/active/accounts")
+      .then((response) => {
+        this.accounts = response.data;
+      })
+      .catch((err) => console.log(err))
     },
     getLoans() {
       axios

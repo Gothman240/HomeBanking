@@ -61,7 +61,7 @@ public class TransactionController {
         Client currentClient = clientService.findByEmail(authentication.getName());
         Client destinyClient = destinyAccount.getClient();
 
-        if (originAccount == null){
+        if (originAccount == null || !originAccount.isActive()){
             return new ResponseEntity<>("cuenta de origin no existe", HttpStatus.FORBIDDEN);
         }
         if (currentClient.getAccounts().stream().noneMatch(account -> account.getNumber().equals(originNumber))){
@@ -70,9 +70,15 @@ public class TransactionController {
         if (originAccount.getBalance() < amount){
             return new ResponseEntity<>("monto no disponible", HttpStatus.FORBIDDEN);
         }
+        if (!destinyAccount.isActive()) {
+            return new ResponseEntity<>("error cuenta de destino", HttpStatus.FORBIDDEN);
+        }
+
         try {
-            Transaction originTransaction = new Transaction(amount,description, LocalDateTime.now(), TransactionType.DEBIT, originAccount.getBalance() - amount, true);
-            Transaction destinyTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT, destinyAccount.getBalance()  + amount, true);
+            String customDescription = originNumber + ": " + description;
+
+            Transaction originTransaction = new Transaction(amount, customDescription, LocalDateTime.now(), TransactionType.DEBIT, originAccount.getBalance() - amount, true);
+            Transaction destinyTransaction = new Transaction(amount, customDescription, LocalDateTime.now(), TransactionType.CREDIT, destinyAccount.getBalance()  + amount, true);
 
             transactionService.save(destinyTransaction);
             transactionService.save(originTransaction);
