@@ -16,7 +16,7 @@ createApp({
     signIn() {
       axios
         .post(
-          "api/login",
+          "/api/login",
           `email=${this.emailSignIn}&password=${this.passwordSignIn}`,
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
@@ -35,7 +35,7 @@ createApp({
         .then((res) => {
           axios
             .post(
-              "api/login",
+              "/api/login",
               `email=${this.emailSignUp}&password=${this.passwordSignUp}`,
               {
                 headers: {

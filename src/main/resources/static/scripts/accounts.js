@@ -22,8 +22,9 @@ createApp({
     };
   },
   created() {
-    AOS.init();
     this.loadData();    
+    AOS.init();
+    
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
     this.showBal = JSON.parse(localStorage.getItem("eyeBalance"));
   },

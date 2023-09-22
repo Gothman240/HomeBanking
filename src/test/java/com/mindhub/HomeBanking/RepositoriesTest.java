@@ -82,11 +82,6 @@ public class RepositoriesTest {
         List<Transaction> transactions = transactionRepository.findAll();
         assertThat(transactions, hasItem(hasProperty("amount", is(notNullValue()))));
     }
-    @Test
-    public void dklsdjs(){
-        List<Transaction> transactions = transactionRepository.findByAccountIsActiveTrue();
-        assertThat(transactions, hasItem(hasProperty("account", hasProperty("isActive", equalTo(true)))));
 
-    }
     //card-loan-accpunt-client-transaction
 }

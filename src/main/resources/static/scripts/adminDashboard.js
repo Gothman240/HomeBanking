@@ -26,7 +26,7 @@ createApp({
             localStorage.setItem("sideBar", JSON.stringify(this.showSide));
         },
         getLoans(){
-            axios.get("http://localhost:8080/api/loans")
+            axios.get("/api/loans")
             .then(response  => {
                 this.loading = false;
                 this.apiLoans = response.data;

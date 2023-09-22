@@ -40,7 +40,7 @@ createApp({
         .catch((err) => console.log(err));
     },
     getActiveAccounts(){
-      axios.get("http://localhost:8080/api/active/accounts")
+      axios.get("/api/active/accounts")
       .then((response) => {
         this.accounts = response.data;
       })

@@ -25,7 +25,7 @@ createApp({
     },
     getClient() {
       axios
-        .get("http://localhost:8080/api/clients/current")
+        .get("/api/clients/current")
         .then((response) => {
           this.loading = false;
           this.client = response.data;
@@ -36,7 +36,7 @@ createApp({
       let param = new URLSearchParams(location.search);
       this.id = parseInt(param.get("id"));
       axios
-        .get(`http://localhost:8080/api/accounts/${this.id}`)
+        .get(`/api/accounts/${this.id}`)
         .then((response) => {
           this.loading = false;
           this.transactions = response.data.transactions;

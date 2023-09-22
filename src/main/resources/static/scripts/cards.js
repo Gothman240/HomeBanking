@@ -23,7 +23,7 @@ createApp({
     },
     loadData() {
       axios
-        .get("http://localhost:8080/api/clients/current")
+        .get("/api/clients/current")
         .then((response) => {
           this.getCards();
           this.client = response.data;

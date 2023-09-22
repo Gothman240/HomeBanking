@@ -29,14 +29,14 @@ createApp({
       this.formData.originNumber = num;
       console.log(this.formData.originNumber);
       axios
-        .get("http://localhost:8080/api/clients/current")
+        .get("/api/clients/current")
         .then((response) => {
           this.client = response.data;
         })
         .catch((err) => console.log(err));
     },
     getActiveAccounts(){
-      axios.get("http://localhost:8080/api/active/accounts")
+      axios.get("/api/active/accounts")
       .then((response) => {
         this.accounts = response.data;
       })
