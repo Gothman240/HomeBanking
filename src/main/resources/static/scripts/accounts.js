@@ -23,9 +23,7 @@ createApp({
   },
   created() {
     AOS.init();
-    this.loadData();
-    this.getAccount();
-    this.getApiLoan();
+    this.loadData();    
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
     this.showBal = JSON.parse(localStorage.getItem("eyeBalance"));
   },
@@ -40,6 +38,8 @@ createApp({
         .get("/api/clients/current")
         .then((response) => {
           this.client = response.data;
+          this.getAccount();
+          this.getApiLoan();
           this.loading = false
 
           this.loans = response.data.loans;
@@ -53,7 +53,6 @@ createApp({
       axios
         .get("/api/active/accounts")
         .then((response) => {
-          this.loading = false
           console.log("accounts active", response);
           this.accounts = response.data.sort((a, b) => a.id - b.id);
           this.totalBalance = this.accounts.reduce((acc, item) => {
@@ -61,7 +60,6 @@ createApp({
           }, 0);
         })
         .catch((err) => {
-          this.loading = false
           console.log(err)
         });
     },
@@ -69,7 +67,6 @@ createApp({
 
       axios.get("/api/loans").then((res) => {
         console.log(res);
-        this.loading = false
         this.apiLoans = res.data;
       });
     },

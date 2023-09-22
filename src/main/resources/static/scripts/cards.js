@@ -14,7 +14,6 @@ createApp({
   },
   created() {
     this.loadData();
-    this.getCards();
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
   },
   methods: {
@@ -26,7 +25,9 @@ createApp({
       axios
         .get("http://localhost:8080/api/clients/current")
         .then((response) => {
+          this.getCards();
           this.client = response.data;
+          this.loading = false
           console.log(response.data.cards[0].thruDate);
         })
         .catch((err) => console.log(err));
@@ -43,11 +44,9 @@ createApp({
             this.creditCards = this.cards.filter(
               (card) => card.type === "CREDIT"
             );
-          }
-          this.loading = false
+          }          
         })
         .catch((error) => {
-          this.loading = false
           console.log(error);
         });
     },
