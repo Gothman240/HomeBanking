@@ -41,19 +41,19 @@ public class TransactionController {
                                                  @RequestParam String originNumber, @RequestParam String destinyNumber, Authentication authentication){
 
         if (originNumber.isBlank()){
-            return new ResponseEntity<>("numero de cuenta vacio" ,HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Empty account number" ,HttpStatus.BAD_REQUEST);
         }
         if (destinyNumber.isBlank()){
-            return new ResponseEntity<>("numero cuenta destino vacio", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Empty destination account number", HttpStatus.BAD_REQUEST);
         }
         if(description.isBlank()){
-            return new ResponseEntity<>("descripcion vacia", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Empty description", HttpStatus.BAD_REQUEST);
         }
         if (amount.isNaN() || amount <= 0.0){
-            return new ResponseEntity<>("revisa el numero", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Check the amount", HttpStatus.BAD_REQUEST);
         }
         if (originNumber.equals(destinyNumber)){
-            return new ResponseEntity<>("revisa las cuentas", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Check the accounts", HttpStatus.BAD_REQUEST);
         }
 
         Account originAccount = accountService.findByNumber(originNumber);
@@ -62,16 +62,16 @@ public class TransactionController {
         Client destinyClient = destinyAccount.getClient();
 
         if (originAccount == null || !originAccount.isActive()){
-            return new ResponseEntity<>("cuenta de origin no existe", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Origin account does not exist", HttpStatus.BAD_REQUEST);
         }
         if (currentClient.getAccounts().stream().noneMatch(account -> account.getNumber().equals(originNumber))){
-            return new ResponseEntity<>("la cuenta no coincide con el cliente actual", HttpStatus.FORBIDDEN );
+            return new ResponseEntity<>("The account does not match the current customer", HttpStatus.BAD_REQUEST );
         }
         if (originAccount.getBalance() < amount){
-            return new ResponseEntity<>("monto no disponible", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Balance not available", HttpStatus.BAD_REQUEST);
         }
         if (!destinyAccount.isActive()) {
-            return new ResponseEntity<>("error cuenta de destino", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The target account is inactive or does not exist", HttpStatus.BAD_REQUEST);
         }
 
         try {
@@ -91,7 +91,7 @@ public class TransactionController {
             accountService.save(originAccount);
             accountService.save(destinyAccount);
 
-            return new ResponseEntity<>("transaccion realizada", HttpStatus.CREATED);
+            return new ResponseEntity<>("Transaction completed", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error creating transaction: " + e.getMessage() , HttpStatus.FORBIDDEN);
         }
