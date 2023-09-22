@@ -1,7 +1,7 @@
 :root {
     --color-oscuro: #162d59;
     --color-claro: #424a5b;
-    --color-secundario: #ff9f00;
+    --color-secundario: #DEBE7A;
 }
 
 nav.navbar {
@@ -42,7 +42,7 @@ nav.navbar {
 }
 
 /* --- navtab--- */
-
+/* 
 .with-arrow .nav-link.active {
     position: relative;
   }
@@ -73,8 +73,16 @@ nav.navbar {
     background: none;
     color: #555;
     border-color: var(--color-oscuro);
-  }
+  } */
 /* !--- navtab --- */
+
+.nav-pills .nav-link.active{
+    background-color: #162d59;
+}
+
+.nav-pills .nav-link{
+    color: #162d59;
+}
 
 .btn{
     border: none!important;

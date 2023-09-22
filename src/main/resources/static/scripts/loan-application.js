@@ -5,6 +5,7 @@ createApp({
     return {
       showSide: false,
       accounts: [],
+      client: [],
       loans: [],
       loansApi: [],
       loanSelected: [],

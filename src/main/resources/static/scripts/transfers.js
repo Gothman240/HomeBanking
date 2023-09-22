@@ -7,10 +7,10 @@ createApp({
       client: [],
       accounts: [],
       account: [],
-      currentStep: 0,
       formData: {
         originNumber: null,
         destinyNumber: null,
+        toOtherDestinyNumber: null,
         amount: undefined,
         description: "",
       },
@@ -63,17 +63,7 @@ createApp({
       });
 
       return format.format(currency);
-    },
-    nextStep() {
-      if (this.currentStep < 4) {
-        this.currentStep++;
-      }
-    },
-    prevStep() {
-      if (this.currentStep > 0) {
-        this.currentStep--;
-      }
-    },
+    },    
     showAlert(status, type) {
       let alerttype = type;
       if (alerttype === "success") {
@@ -85,6 +75,10 @@ createApp({
       }
     },
     submitForm() {
+
+      if(this.formData.toOtherDestinyNumber != null){
+        this.formData.destinyNumber = "VIN-" + this.formData.toOtherDestinyNumber
+      }
 
       const queryParams = new URLSearchParams({
         originNumber: this.formData.originNumber,
@@ -99,13 +93,13 @@ createApp({
           `amount=${this.formData.amount}&description=${this.formData.description}&originNumber=${this.formData.originNumber}&destinyNumber=${this.formData.destinyNumber}`,
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
-        .then((response) => {
+        .then((response) => {            
             window.location.href = `./../web/summary-transfer.html?${queryParams.toString()}`;
           
         })
         .catch((err) => {
-          console.log(err);
-          this.showAlert(err.response.data, "warning");
+          
+          this.showAlert(err.response.data, "info");
         });
     },
     clearToAccount() {
@@ -124,6 +118,11 @@ createApp({
       }else{
         $("#destinyNumber").addClass("input-success");
       }
+      if(this.formData.toOtherDestinyNumber == null){
+        $("#destinyNumberOther").addClass("input-error");
+      }else{
+        $("#destinyNumberOther").addClass("input-success");
+      }
       if(this.formData.destinyNumber == null){
         $("#destinyNumberOther").addClass("input-error");
       }else{
@@ -140,17 +139,13 @@ createApp({
         $("#description").addClass("input-success");
       }
 
-      if(this.formData.originNumber && this.formData.destinyNumber && this.formData.amount > 1 && this.formData.description != ""){
+      if(this.formData.originNumber && (this.formData.destinyNumber || this.formData.toOtherDestinyNumber) && this.formData.amount > 1 && this.formData.description != ""){
         $("#modalConfirm").modal("show")
       }
 
     }
   },
   computed: {
-    progressWidth() {
-      return (this.currentStep / 3) * 100 + "%";
-    },
-
     showAccount() {
       return this.accounts.filter(
         (account) => account.number === this.formData.originNumber

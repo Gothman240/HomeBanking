@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./../assets/images/z1giwuiI.ico" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -13,22 +14,19 @@
   <link rel="stylesheet" href="./../assets/styles/sidebar.css">
   <link rel="stylesheet" href="./../assets/styles/transfers.css">
   <link rel="stylesheet" href="./../assets/styles/style.css">
-  <title>Transfers</title>
+  <title>Paez | Transfers</title>
 </head>
 
 <body>
 
-  <main id="app" class="container-fluid p-0 bg-dark-subtle d-flex ">
+  <main id="app" class="container-fluid p-0 bg-dark-subtle d-flex " v-cloak>
     <!-- sidebar -->
 
     <aside class="" :class="showSide ? 'expand-sidebar' : ''">
-      <div class="logo">
-
-        <span class="material-icons">
-          account_balance
-        </span>
-
-      </div>
+      <div class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
+        <img class="logo text-decoration-none mb-2" src="./../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
+        <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
+    </div>
 
       <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
       <div class="menu d-block flex-grow-1">
@@ -51,7 +49,7 @@
           <span class="text">Transfers</span>
         </a>
       </div>
-      <div class="menu d-block" v-if="client.isAdmin">
+      <div class="menu d-block" v-if="client.admin">
         <a href="./adminDashboard.html" class="button text-decoration-none mb-2">
           <span class="material-icons">
             manage_accounts
@@ -95,13 +93,13 @@
           <div class="col-12 card-transition ">
             <div class="card card-transition border-0">
               <div class="card-body px-3 px-md-5 ">
-                <div class="bg-white shadow-sm pl-2 pr-2 pb-2">
+                <div class="bg-white ">
                   <!-- Credit card form tabs -->
-                  <ul role="tablist" class="nav nav-tabs nav-pills with-arrow lined d-flex text-center">
-                    <li class="nav-item flex-sm-fill"> <a data-bs-toggle="pill" href="#credit-card"
-                        class="nav-link mr-sm-3 rounded-0 active ">Your acounts</a> </li>
-                    <li class="nav-item flex-sm-fill"> <a data-bs-toggle="pill" href="#net-banking"
-                        class="nav-link mr-sm-3 rounded-0">To others</a> </li>
+                  <ul role="tablist" class="nav nav-tabs nav-pills with-arrow lined  text-center">
+                    <li class="nav-item flex-fill"> <a data-bs-toggle="pill" href="#credit-card"
+                        class="nav-link rounded-0 active ">Your acounts</a> </li>
+                    <li class="nav-item flex-fill"> <a data-bs-toggle="pill" href="#net-banking"
+                        class="nav-link rounded-0">To others</a> </li>
                   </ul>
                 </div>
                 <form class="px-0 px-md-4 py-5">
@@ -144,7 +142,7 @@
                           <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">VIN-</span>
                             <input id="destinyNumberOther" type="text" class="form-control" placeholder="123501"
-                              aria-label="Username" aria-describedby="basic-addon1" v-model="formData.destinyNumber">
+                              aria-label="Username" aria-describedby="basic-addon1" v-model="formData.toOtherDestinyNumber">
                           </div>
 
                         </div>

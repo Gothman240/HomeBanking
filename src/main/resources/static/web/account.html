@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./../assets/images/z1giwuiI.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,21 +13,19 @@
     <link rel="stylesheet" href="./../assets/styles/sidebar.css">
     <link rel="stylesheet" href="./../assets/styles/style.css">
     <link rel="stylesheet" href="./../assets/styles/account.css">
-    <title>Accounts</title>
+    <title>Paez | Account</title>
 </head>
 
 <body class="vh-100">
 
-    <main id="app" class="container-fluid p-0 bg-dark-subtle d-flex">
+    <main id="app" class="container-fluid p-0 bg-dark-subtle d-flex" v-cloak>
         <!-- sidebar -->
 
         <aside class="" :class="showSide ? 'expand-sidebar' : ''">
-            <div class="logo">
-
-                <span class="material-icons">
-                    account_balance
-                </span>
-
+            <div class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
+                <img class="logo text-decoration-none mb-2" src="./../assets/images/favicon.png" alt="" srcset=""
+                    style="width: 3.5rem;">
+                <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
             </div>
 
             <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
@@ -48,6 +47,14 @@
                         currency_exchange
                     </span>
                     <span class="text">Transfers</span>
+                </a>
+            </div>
+            <div class="menu d-block" v-if="client.admin">
+                <a href="./adminDashboard.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        manage_accounts
+                    </span>
+                    <span class="text">Admin</span>
                 </a>
             </div>
         </aside>
@@ -80,8 +87,21 @@
                 </div>
             </nav>
 
-            <div class="container-fluid ">
-                <!-- Contenido principal -->
+              <!-- spinner -->
+              <div class="sk-cube-grid position-absolute top-50 start-50 translate-middle " v-if="loading">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container-fluid " :class=" loading ? 'd-none' : 'd-block' ">
                 <div class="row px-0 gap-3 px-0 px-md-3">
                     <div
                         class="col-12 banner-account bg-body d-flex align-items-center justify-content-between flex-wrap rounded-1 py-4">
@@ -89,15 +109,17 @@
 
                         <div>
                             <div class="btn-group">
-                                <button class="dropdown-toggle color-oscuro border-0" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button class="dropdown-toggle color-oscuro border-0" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
 
                                     <h3 class="fw-bold d-inline">{{account.number}}</h3>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="text-decoration-none color-oscuro dropdown-item"
                                             v-bind:href="'./transfers.html?num=' + account.number ">Transfer</a></li>
-                                    <li><a class="text-decoration-none dropdown-item text-danger" @click="deleteAccount(account.id)">Delete Account</a></li>
+                                    <li><a class="text-decoration-none dropdown-item color-oscuro" @click="PDFmodal">Download PDF</a></li>
+                                    <li><a class="text-decoration-none dropdown-item text-danger"
+                                            @click="deleteAccount(account.id)">Delete Account</a></li>
                                 </ul>
                             </div>
                             <p class="small m-0 text-end me-2">Balance {{formatCurrency(account.balance)}}</p>
@@ -107,18 +129,7 @@
                     <!-- desktop -->
                     <section v-if="transactions.length" class="col-12 bg-body my-3 d-none d-md-block rounded-1">
 
-                        <div class="d-flex justify-content-around py-3">
-                            <div class="me-3">
-                                <label for="startDate">First Date:</label>
-                                <input type="date" id="startDate" v-model="date1">
-                            </div>
-                            <div>
-                                <label for="endDate">Second Date:</label>
-                                <input type="date" id="endDate" v-model="date2">
-                            </div>
-
-                            <button class="btn" @click="postPdf" v-if="date1 && date2">Download PDF</button>
-                        </div>
+                       
                         <div class="px-0 px-md-2 py-2 overflow-auto">
                             <table class="table text-center">
                                 <thead>
@@ -135,7 +146,7 @@
                                     <tr v-for="(transaction, index) of transactions">
                                         <td>{{index+1}}</td>
                                         <td>
-                                           
+
                                             {{formatDate(transaction.date)}}
                                         </td>
                                         <td>
@@ -172,6 +183,37 @@
                         </div>
                     </section>
 
+                    <!-- MODAL PDF -->
+
+                    <div class="modal" id="modalPDF" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header bg-oscuro justify-content-center">
+                              <h5 class="modal-title fw-bold text-light fs-4">Choose Date</h5>                              
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex flex-column py-3  text-center">
+                                    <div class="mb-3 d-flex flex-column">
+                                        <label class="mb-1" for="startDate">First Date:</label>
+                                        <input class="py-1 px-3 rounded-3" type="date" id="startDate" v-model="date1">
+                                    </div>
+                                    <div class="mb-3 d-flex flex-column">
+                                        <label class="mb-1" for="endDate">Second Date:</label>
+                                        <input class="py-1 px-3 rounded-3" type="date" id="endDate" v-model="date2">
+                                    </div>        
+                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-active d-flex align-items-center" @click="postPdf"><span class="material-icons fs-6 me-1">
+                                download
+                                </span> Download</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
 
                     <div v-if="!transactions.length" class="h-100 bg-body p-5">
                         <div

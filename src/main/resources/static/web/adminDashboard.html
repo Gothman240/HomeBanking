@@ -5,27 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./../assets/images/z1giwuiI.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./../assets/styles/sidebar.css">
     <link rel="stylesheet" href="./../assets/styles/style.css">
-    <title>Accounts</title>
+    <title>Paez | Admin</title>
 </head>
 
 <body>
 
-    <main id="app" class="container-fluid p-0 d-flex bg-dark-subtle">
+    <main id="app" class="container-fluid p-0 d-flex bg-dark-subtle" v-cloak>
         <!-- sidebar -->
 
         <aside class="" :class="showSide ? 'expand-sidebar' : ''">
-            <div class="logo">
-
-                <span class="material-icons">
-                    account_balance
-                </span>
-
+            <div class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
+                <img class="logo text-decoration-none mb-2" src="./../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
+                <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
             </div>
 
 
@@ -133,7 +131,7 @@
                                 <label for="loanPayments" class="form-label">Payments</label>
                                 <div class="input-group mb-3">
                                     <input type="number" class="form-control" id="loanPayments" placeholder="Payment" @keyup.enter="addArray" aria-describedby="emailHelp" v-model="paymentToPush">
-                                    <button class="btn" @click="addArray">add</button>
+                                    <button class="btn btn-active" @click="addArray">add</button>
                                 </div>
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                             </div>
