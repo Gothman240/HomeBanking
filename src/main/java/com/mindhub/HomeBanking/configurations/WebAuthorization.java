@@ -34,9 +34,9 @@ public class WebAuthorization {
         http.formLogin()
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .loginPage("/api/login");
+                .loginPage("/api/login").successForwardUrl("/web/accounts.html");
 
-        http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/login.html");
+        http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/web/index.html");
 
         // turn off checking for CSRF tokens
         http.csrf().disable();
