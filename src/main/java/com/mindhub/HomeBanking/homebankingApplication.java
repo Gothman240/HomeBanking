@@ -16,13 +16,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 public class homebankingApplication {
-/*	@Autowired
-	private PasswordEncoder passwordEncoder;*/
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	public static void main(String[] args) {
 		SpringApplication.run(homebankingApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return args -> {
 			Client melba = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("melba456"));
@@ -93,5 +93,4 @@ public class homebankingApplication {
 
 		};
 	}
-*/
 }

@@ -72,7 +72,7 @@ createApp({
     logout() {
       axios.post("/api/logout").then((res) => {
         if (res.status === 200) {
-          window.location.href = "/login.html";
+          window.location.href = "./../index.html";
         }
       });
     },

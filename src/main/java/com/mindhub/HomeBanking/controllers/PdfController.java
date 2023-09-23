@@ -26,7 +26,7 @@ public class PdfController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping(value = "/{accountId}/pdf")
+    @PostMapping(value = "/pdf/{accountId}")
     public ResponseEntity<Object> downloadPdf(@PathVariable Long accountId,
                                               @RequestParam String date1,
                                               @RequestParam String date2) throws IOException {

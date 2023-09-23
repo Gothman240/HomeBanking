@@ -127,7 +127,7 @@ createApp({
     },
     logout() {
       axios.post("/api/logout").then((res) => {
-        window.location.href = "/login.html";
+        window.location.href = "./../index.html";
       });
     },
     cardAlertExpired(date){

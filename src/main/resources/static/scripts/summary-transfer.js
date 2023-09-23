@@ -44,7 +44,7 @@ createApp({
         .post("/api/logout")
         .then((res) => {
           if (res.status === 200) {
-            window.location.href = "/login.html";
+            window.location.href = "./../web/accounts.html";
           }
         })
         .catch((err) => console.log(err.toJSON()));

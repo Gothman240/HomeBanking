@@ -72,6 +72,7 @@ createApp({
         })
         .then((res) => {
           this.showAlert(res.data, "success");
+          window.location.href="./../index.html"
         })
         .catch((err) => {
           this.showAlert(err.response.data, "info")
@@ -128,7 +129,7 @@ createApp({
     logout() {
       axios.post("/api/logout").then((res) => {
         if (res.status === 200) {
-          window.location.href = "/login.html";
+          window.location.href = "/index.html";
         }
       });
     },

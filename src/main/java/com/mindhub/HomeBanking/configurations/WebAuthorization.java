@@ -19,12 +19,18 @@ public class WebAuthorization {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/clients").hasAuthority("ADMIN")
-                .antMatchers("/rest/**", "/admin/**", "/manager.html", "/api//loans/admin").hasAuthority("ADMIN")
+                .antMatchers("/index.html", "/assets/styles/login.css", "/assets/styles/style.css" , "/assets/images/**", "/scripts/login.js").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients", "/api/login", "/api/logout").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/clients", "/loans/admin").hasAuthority("ADMIN")
+                .antMatchers("/rest/**", "/admin/**", "/manager.html", "/api/loans/admin", "/web/admin/**", "/scripts/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/web/**").hasAnyAuthority("CLIENT", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/transactions/pdf/**", "/api/transactions/loan", "/api/transactions").hasAuthority("CLIENT")
-                .antMatchers("/index.html", "/login.html").permitAll();
+                .antMatchers("/web/**", "/sound/**", "/scripts/**", "/assets/**").hasAnyAuthority("CLIENT")
+                .antMatchers(HttpMethod.PATCH, "/api/accounts/**", "/api/cards/**", "/api/loans/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.GET, "/api/accounts/**", "/api/active/**",
+                        "/api/cards/**", "/api/loans/**", "/api/transactions/**", "/api/clients/**", "/api/pdf/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/loans", "/api/transactions/pdf/**", "/api/transactions/loan", "/api/transactions").hasAuthority("CLIENT")
+                        .anyRequest().denyAll();
+
         http.formLogin()
                 .usernameParameter("email")
                 .passwordParameter("password")
