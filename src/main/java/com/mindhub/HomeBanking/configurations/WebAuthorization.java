@@ -28,15 +28,15 @@ public class WebAuthorization {
                 .antMatchers(HttpMethod.PATCH, "/api/accounts/**", "/api/cards/**", "/api/loans/**").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.GET, "/api/accounts/**", "/api/active/**",
                         "/api/cards/**", "/api/loans/**", "/api/transactions/**", "/api/clients/**", "/api/pdf/**").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/loans", "/api/transactions/pdf/**", "/api/transactions/loan", "/api/transactions").hasAuthority("CLIENT")
-                        .anyRequest().denyAll();
+                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/loans", "/api/transactions/pdf/**", "/api/transactions/loan").hasAuthority("CLIENT")
+                        .anyRequest().authenticated();
 
         http.formLogin()
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .loginPage("/api/login").successForwardUrl("/web/accounts.html");
 
-        http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/web/index.html");
+        http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/index.html");
 
         // turn off checking for CSRF tokens
         http.csrf().disable();
