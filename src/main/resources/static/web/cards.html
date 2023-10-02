@@ -49,7 +49,7 @@
         </a>
       </div>
       <div class="menu d-block">
-        <a href="./adminDashboard.html" class="button text-decoration-none mb-2" v-if="client.admin">
+        <a href="./admin/adminDashboard.html" class="button text-decoration-none mb-2" v-if="client.admin">
             <span class="material-icons">
                 manage_accounts
             </span>
@@ -110,7 +110,7 @@
 
             </div>
             <div class="m-2 m-md-3">
-              <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
+              <h4 class="fw-bold client-name color-claro">{{client.firstName}} {{client.lastName}}</h4>
               <p class="small">{{client.email}}</p>
             </div>
             <div v-if="cards.length < 6" class="col-12 border-top text-center py-4">
@@ -286,9 +286,11 @@
                     <p>{{selectedCard.fromDate}}</p>
                   </div>
                   <div class="col-12">
-                    <div class="alert alert-danger text-center" role="alert" @click="deleteCard(selectedCard.id)"  data-bs-dismiss="modal">
+                    <div class="alert alert-danger text-center d-flex justify-content-between" role="alert"   data-bs-dismiss="modal">
                       <span class="question">Delete this card?</span>
-                      <span class="question-hover">no la podras recuperar</span>
+                      <span @click="deleteCard(selectedCard.id)" class="material-icons pointer">
+                        delete_outline
+                        </span>
                     </div>
                   </div>
                 </div>

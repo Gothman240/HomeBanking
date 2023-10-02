@@ -54,7 +54,7 @@
 
             </div>
             <div class="menu d-block" v-if="client.admin">
-                <a href="./adminDashboard.html" class="button text-decoration-none mb-2" >
+                <a href="./admin/adminDashboard.html" class="button text-decoration-none mb-2" >
                     <span class="material-icons">
                         manage_accounts
                     </span>
@@ -240,11 +240,11 @@
             <!-- Modal type Accounts-->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content rounded-0">
-                        <div class="modal-header border-0">
-                            <h1 class="modal-title fw-bold color-oscuro fs-5" id="staticBackdropLabel">Get Account</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content ">
+                        <div class="modal-header bg-oscuro justify-content-center">
+                            <h1 class="modal-title fw-bold text-light fs-5" id="staticBackdropLabel">Get Account</h1>  
+                            
                         </div>
                         <div class="modal-body">
                             <select class="form-select" aria-label="Default select example" v-model="accountType">
@@ -252,8 +252,9 @@
                                 <option value="SAVINGS">Saving </option>
                             </select>
                         </div>
-                        <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-active w-100" @click="createAccount">Generate</button>
+                        <div class="modal-footer justify-content-center border-0">
+                            <button type="button" class="btn w-25" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-active w-25" @click="createAccount">Generate</button>
                         </div>
                     </div>
                 </div>

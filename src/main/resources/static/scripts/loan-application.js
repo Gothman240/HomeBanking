@@ -18,12 +18,14 @@ createApp({
       },
     };
   },
+  mounted() {
+    this.toggleLoading(false)
+  },
   created() {
     this.loadData();
     this.showSide = JSON.parse(localStorage.getItem("sideBar"));
     this.getLoans();
   },
-  mounted() {},
   methods: {
     showSideBar() {
       this.showSide = !this.showSide;
@@ -77,6 +79,7 @@ createApp({
       });
     },
     submit() {
+      this.toggleLoading(true)
       axios
         .post("/api/loans", this.formData, {
           headers: { "Content-Type": "application/json" },
@@ -89,6 +92,7 @@ createApp({
         })
         .catch((err) => {
           this.showAlert(err.response.data, "info");
+          this.toggleLoading(false)
         });
     },
     showAlert(status, type) {
@@ -159,6 +163,15 @@ createApp({
 
       }
       
+    },
+    toggleLoading(value) {
+      if (value === true) {
+        $(".spinner-border.spinner-border-sm.me-2").show("swing");
+        $("button.btn-isLoading").prop("disabled", true);
+      } else {
+        $(".spinner-border.spinner-border-sm.me-2").hide("swing");
+        $("button.btn-isLoading").prop("disabled", false);
+      }
     }
   },
   computed: {},

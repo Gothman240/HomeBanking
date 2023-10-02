@@ -50,7 +50,7 @@
                 </a>
             </div>
             <div class="menu d-block" v-if="client.admin">
-                <a href="./adminDashboard.html" class="button text-decoration-none mb-2">
+                <a href="./admin/adminDashboard.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
                         manage_accounts
                     </span>
@@ -206,9 +206,11 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-active d-flex align-items-center" @click="postPdf"><span class="material-icons fs-6 me-1">
-                                download
-                                </span> Download</button>
+                              <button type="button" class="btn btn-active d-flex align-items-center btn-isLoading" @click="postPdf">
+                                <span class="material-icons material-icons-loading fs-6 me-1" aria-hidden="true">download</span>
+                                <span class="spinner-border spinner-border-sm me-2 " aria-hidden="true"></span>
+                                <span>Download</span>
+                            </button>
                             </div>
                           </div>
                         </div>

@@ -10,8 +10,8 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./../assets/styles/sidebar.css">
-    <link rel="stylesheet" href="./../assets/styles/style.css">
+    <link rel="stylesheet" href="./../../assets/styles/sidebar.css">
+    <link rel="stylesheet" href="./../../assets/styles/style.css">
     <title>Paez | Admin</title>
 </head>
 
@@ -22,26 +22,26 @@
 
         <aside class="" :class="showSide ? 'expand-sidebar' : ''">
             <div class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
-                <img class="logo text-decoration-none mb-2" src="./../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
+                <img class="logo text-decoration-none mb-2" src="./../../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
                 <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
             </div>
 
 
             <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
             <div class="menu d-block flex-grow-1">
-                <a href="./accounts.html" class="button text-decoration-none mb-2">
+                <a href="./../accounts.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
                         account_balance                        
                     </span>
                     <span class="text">Account</span>
                 </a>
-                <a href="./cards.html" class="button text-decoration-none mb-2">
+                <a href="./../cards.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
                         credit_card
                     </span>
                     <span class="text">Cards</span>
                 </a>
-                <a href="./transfers.html" class="button text-decoration-none mb-2">
+                <a href="./../transfers.html" class="button text-decoration-none mb-2">
                     <span class="material-icons">
                         currency_exchange
                     </span>
@@ -138,7 +138,10 @@
                             <div class="col-6 d-flex justify-content-center align-items-center gap-3" v-if="loanDTO.payments.length">
                                 <span class="badge text-bg-secondary" v-for="payment of loanDTO.payments" :key="payment" @click="removeFromArray(payment)">{{payment}}</span>
                             </div>
-                            <div class="btn btn-active mt-4" @click="createLoan">Create</div>
+                            <button class="btn btn-active mt-4" @click="createLoan">
+                                <span class="spinner-border spinner-border-sm me-2 " aria-hidden="true"></span>
+                                <span>Create</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -179,7 +182,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-        <script src="./../scripts/adminDashboard.js"></script>
+        <script src="./../../scripts/admin/adminDashboard.js"></script>
 </body>
 
 </html>

@@ -42,15 +42,16 @@ createApp({
           this.getAccount();
           this.getApiLoan();
           this.loading = false
-
+          
           this.loans = response.data.loans;
+          console.log("loans: ", this.loans)
+          console.log("client: ", this.client)
         })
         .catch((err) => {
           this.loading = false
         });
     },
     getAccount() {
-
       axios
         .get("/api/active/accounts")
         .then((response) => {
@@ -65,7 +66,6 @@ createApp({
         });
     },
     getApiLoan() {
-
       axios.get("/api/loans").then((res) => {
         console.log(res);
         this.apiLoans = res.data;
@@ -116,8 +116,7 @@ createApp({
         })
         .then((res) => {
           this.showAlert(res.data, "success");
-          this.loadData();
-          this.getAccount();
+          location.href= "./../web/accounts.html"
         })
         .catch((err) => {
           console.log(err.toJSON());
@@ -128,7 +127,6 @@ createApp({
       axios
         .post("/api/transactions/loan", this.paidLoan)
         .then((res) => {
-          console.log(res);
           this.showAlert(res.data, "success");
           $("#modalLoan").modal("hide")
           setTimeout(() => {

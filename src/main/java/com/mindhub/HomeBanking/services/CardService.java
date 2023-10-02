@@ -15,7 +15,7 @@ public interface CardService {
     Card save(Card card);
     List<Card> findByClientAndTypeAndColorAndIsActive(Client client, CardType type, CardColor color, boolean isActive);
     void updateIsActiveById(long id, boolean isActive);
-    List<Card> getCardActive();
+    List<Card> getCardActive(Client client);
 
     ResponseEntity<Object> createNewCard(CardType type, CardColor color, Authentication auth);
 

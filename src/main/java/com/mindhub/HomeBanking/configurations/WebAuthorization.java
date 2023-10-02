@@ -23,20 +23,22 @@ public class WebAuthorization {
                 .antMatchers(HttpMethod.POST, "/api/clients", "/api/login", "/api/logout").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/clients", "/loans/admin").hasAuthority("ADMIN")
                 .antMatchers("/rest/**", "/admin/**", "/manager.html", "/api/loans/admin", "/web/admin/**", "/scripts/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/web/**").hasAnyAuthority("CLIENT", "ADMIN")
-                .antMatchers("/web/**", "/sound/**", "/scripts/**", "/assets/**").hasAnyAuthority("CLIENT")
+                .antMatchers("/web/**", "/sound/**", "/scripts/**", "/assets/**").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/api/accounts/**", "/api/cards/**", "/api/loans/**").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.GET, "/api/accounts/**", "/api/active/**",
-                        "/api/cards/**", "/api/loans/**", "/api/transactions/**", "/api/clients/**", "/api/pdf/**").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/loans", "/api/transactions/pdf/**", "/api/transactions/loan").hasAuthority("CLIENT")
-                        .anyRequest().authenticated();
+                        "/api/cards/**", "/api/loans/**", "/api/transactions/**", "/api/clients/**", "/api/pdf/**").hasAnyAuthority("CLIENT", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/accounts", "/api/transactions", "/api/cards", "/api/loans", "/api/transactions/pdf/**").hasAuthority("CLIENT")
+                        .anyRequest().permitAll();
 
         http.formLogin()
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .loginPage("/api/login").successForwardUrl("/web/accounts.html");
+                .loginPage("/api/login");
+
+        http.formLogin().defaultSuccessUrl("/web/accounts.html").permitAll();
 
         http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/index.html");
+
 
         // turn off checking for CSRF tokens
         http.csrf().disable();

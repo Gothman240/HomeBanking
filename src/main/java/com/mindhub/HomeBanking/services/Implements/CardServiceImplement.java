@@ -55,8 +55,8 @@ public class CardServiceImplement implements CardService {
     }
 
     @Override
-    public List<Card> getCardActive() {
-        return cardRepository.findByIsActiveTrue();
+    public List<Card> getCardActive(Client client) {
+        return cardRepository.findByClientAndIsActiveTrue(client);
     }
     @Override
     public ResponseEntity<Object> createNewCard(CardType type, CardColor color, Authentication auth) {

@@ -173,25 +173,6 @@
 	-moz-transform: rotateY(0deg);
 }
 
-.alert.alert-danger{
+.pointer{
 	cursor: pointer;
-}
-
-.alert.alert-danger span{
-	transition: all .4s ease-in-out;
-}
-
-.alert.alert-danger:hover span.question{
-	transition: all .4s ease-in-out;
-	display: none;
-}
-
-.alert.alert-danger span.question-hover{
-	transition: all .4s ease-in-out;
-	display: none;
-}
-
-.alert.alert-danger:hover span.question-hover{
-	transition: all .4s ease-in-out;
-	display: block;
 }

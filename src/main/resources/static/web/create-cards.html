@@ -50,7 +50,7 @@
                 </a>
             </div>
             <div class="menu d-block" v-if="client.admin">
-                <a href="./adminDashboard.html" class="button text-decoration-none mb-2" >
+                <a href="./admin/adminDashboard.html" class="button text-decoration-none mb-2" >
                     <span class="material-icons">
                         manage_accounts
                     </span>
@@ -158,8 +158,11 @@
                                                     <option value="CREDIT">Credit</option>
                                                 </select>
                                             </div>
-                                            <button class="btn btn-active"
-                                                @click.prevent="confirmCard">Create</button>
+                                            <button class="btn btn-active btn-isLoading"
+                                                @click.prevent="confirmCard">
+                                                <span class="spinner-border spinner-border-sm me-2 " aria-hidden="true"></span>
+                                                <span>Create</span>
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

@@ -16,6 +16,9 @@ createApp({
       },
     };
   },
+  mounted(){
+    this.toggleLoading(false)
+  },
   created() {
     this.getClient();
     this.getActiveAccounts();
@@ -35,12 +38,13 @@ createApp({
         })
         .catch((err) => console.log(err));
     },
-    getActiveAccounts(){
-      axios.get("/api/active/accounts")
-      .then((response) => {
-        this.accounts = response.data;
-      })
-      .catch((err) => console.log(err))
+    getActiveAccounts() {
+      axios
+        .get("/api/active/accounts")
+        .then((response) => {
+          this.accounts = response.data;
+        })
+        .catch((err) => console.log(err));
     },
     showSideBar() {
       this.showSide = !this.showSide;
@@ -63,7 +67,7 @@ createApp({
       });
 
       return format.format(currency);
-    },    
+    },
     showAlert(status, type) {
       let alerttype = type;
       if (alerttype === "success") {
@@ -75,9 +79,11 @@ createApp({
       }
     },
     submitForm() {
+      this.toggleLoading(true)
 
-      if(this.formData.toOtherDestinyNumber != null){
-        this.formData.destinyNumber = "VIN-" + this.formData.toOtherDestinyNumber
+      if (this.formData.toOtherDestinyNumber != null) {
+        this.formData.destinyNumber =
+          "VIN-" + this.formData.toOtherDestinyNumber;
       }
 
       const queryParams = new URLSearchParams({
@@ -93,12 +99,11 @@ createApp({
           `amount=${this.formData.amount}&description=${this.formData.description}&originNumber=${this.formData.originNumber}&destinyNumber=${this.formData.destinyNumber}`,
           { headers: { "content-type": "application/x-www-form-urlencoded" } }
         )
-        .then((response) => {            
-            window.location.href = `./../web/summary-transfer.html?${queryParams.toString()}`;
-          
+        .then((response) => {
+          window.location.href = `./../web/summary-transfer.html?${queryParams.toString()}`;
         })
         .catch((err) => {
-          
+          this.toggleLoading(false)
           this.showAlert(err.response.data, "info");
         });
     },
@@ -107,43 +112,60 @@ createApp({
         this.formData.destinyNumber = null;
       }
     },
-    formValidation(){
-      if(this.formData.originNumber == null){
+    formValidation() {
+      if (this.formData.originNumber == null) {
         $("#originNumber").addClass("input-error");
-      }else{
+      } else {
         $("#originNumber").addClass("input-success");
       }
-      if(this.formData.destinyNumber == null){
+      if (this.formData.destinyNumber == null) {
         $("#destinyNumber").addClass("input-error");
-      }else{
+      } else {
         $("#destinyNumber").addClass("input-success");
       }
-      if(this.formData.toOtherDestinyNumber == null){
+      if (this.formData.toOtherDestinyNumber == null) {
         $("#destinyNumberOther").addClass("input-error");
-      }else{
+      } else {
         $("#destinyNumberOther").addClass("input-success");
       }
-      if(this.formData.destinyNumber == null){
+      if (this.formData.destinyNumber == null) {
         $("#destinyNumberOther").addClass("input-error");
-      }else{
+      } else {
         $("#destinyNumberOther").addClass("input-success");
       }
-      if(this.formData.amount == undefined || this.formData.amount.isNaN || this.formData.amount < 1){
+      if (
+        this.formData.amount == undefined ||
+        this.formData.amount.isNaN ||
+        this.formData.amount < 1
+      ) {
         $("#amount").addClass("input-error");
-      }else{
+      } else {
         $("#amount").addClass("input-success");
       }
-      if(this.formData.description == ""){
+      if (this.formData.description == "") {
         $("#description").addClass("input-error");
-      }else{
+      } else {
         $("#description").addClass("input-success");
       }
 
-      if(this.formData.originNumber && (this.formData.destinyNumber || this.formData.toOtherDestinyNumber) && this.formData.amount > 1 && this.formData.description != ""){
-        $("#modalConfirm").modal("show")
+      if (
+        this.formData.originNumber &&
+        (this.formData.destinyNumber || this.formData.toOtherDestinyNumber) &&
+        this.formData.amount > 1 &&
+        this.formData.description != ""
+      ) {
+        $("#modalConfirm").modal("show");
       }
-
-    }
+    },
+    toggleLoading(value) {
+      if (value === true) {
+        $(".spinner-border.spinner-border-sm.me-2").show("swing");
+        $("button.btn-isLoading").prop("disabled", true);
+      } else {
+        $(".spinner-border.spinner-border-sm.me-2").hide("swing");
+        $("button.btn-isLoading").prop("disabled", false);
+      }
+    },
   },
   computed: {
     showAccount() {
@@ -157,6 +179,6 @@ createApp({
           (account) => account.balance == this.formData.originNumber
         );
       }
-    },   
+    },
   },
 }).mount("#app");

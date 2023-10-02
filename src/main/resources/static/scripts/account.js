@@ -13,6 +13,9 @@ createApp({
       date2: null,
     };
   },
+  mounted(){
+    this.toggleLoading(false)
+  },
   created() {
     this.loadData();
     this.getClient();
@@ -72,7 +75,7 @@ createApp({
         })
         .then((res) => {
           this.showAlert(res.data, "success");
-          window.location.href="./../index.html"
+          window.location.href="./../web/accounts.html"
         })
         .catch((err) => {
           this.showAlert(err.response.data, "info")
@@ -92,14 +95,12 @@ createApp({
       $("#modalPDF").modal("show")
     },
     postPdf() {
-      console.log(this.account.id);
-      console.log(typeof this.date1, this.date1);
+      this.toggleLoading(true)
       const date1 = moment(this.date1).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
-      const date2 = moment(this.date2).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");
-      console.log(date1);
+      const date2 = moment(this.date2).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");      
       axios
         .post(
-          `/api/${this.account.id}/pdf?date1=${date1}&date2=${date2}`,
+          `/api/pdf/${this.account.id}?date1=${date1}&date2=${date2}`,
           {
             date1: date1,
             date2: date2,
@@ -110,7 +111,7 @@ createApp({
         )
         .then((response) => {
           $("#modalPDF").modal("hide")
-          console.log(response.data);
+          this.toggleLoading(false)
           const blob = new Blob([response.data], { type: "application/pdf" });
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -120,11 +121,21 @@ createApp({
           a.click();
         })
         .catch((error) => {
-          console.log(error);
+          this.toggleLoading(false);
         });
     },
     formattedDate(date) {
       return dateFns.format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    },
+    toggleLoading(value) {
+      if (value === true) {
+        $("span.material-icons-loading").hide()
+        $(".spinner-border.spinner-border-sm.me-2").show("swing");
+        $("button.btn-isLoading").prop("disabled", true);
+      } else {
+        $(".spinner-border.spinner-border-sm.me-2").hide("swing");
+        $("button.btn-isLoading").prop("disabled", false);
+      }
     },
     logout() {
       axios.post("/api/logout").then((res) => {

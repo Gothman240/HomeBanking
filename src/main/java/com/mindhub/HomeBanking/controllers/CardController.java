@@ -26,6 +26,8 @@ import static com.mindhub.HomeBanking.utils.CardUtils.getCvv;
 public class CardController {
     @Autowired
     private CardService cardService;
+    @Autowired
+    private ClientService clientService;
     @RequestMapping(value = "/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> newCard(
             @RequestParam CardType type, @RequestParam CardColor color, Authentication auth){
@@ -33,9 +35,10 @@ public class CardController {
     }
 
     @RequestMapping(value = "/active/cards")
-    public List<CardDTO> getActiveCards(){
+    public List<CardDTO> getActiveCards(Authentication authentication){
+        Client client = clientService.findByEmail(authentication.getName());
         //current
-        return cardService.getCardActive().stream().map(CardDTO::new).collect(Collectors.toList());
+        return cardService.getCardActive(client).stream().map(CardDTO::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/cards/{id}", method = RequestMethod.PATCH)

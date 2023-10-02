@@ -13,5 +13,5 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<Card, Long> {
      Card findByNumber(String number);
      List<Card> findByClientAndTypeAndColorAndIsActive(Client client, CardType type, CardColor color, boolean isActive);
-     List<Card>findByIsActiveTrue();
+     List<Card> findByClientAndIsActiveTrue(Client client);
 }

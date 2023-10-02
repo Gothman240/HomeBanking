@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -107,11 +108,13 @@ public class TransactionController {
         }
 
         Client currentClient = clientService.findByEmail(authentication.getName());
-        List<Loan> loans = currentClient.getClientLoans().stream().map(clientLoan -> clientLoan.getLoan()).collect(Collectors.toList());
+        List<ClientLoan> allLoansForClient = currentClient.getClientLoans().stream().collect(Collectors.toList());
 
-        boolean hasLoan = loans.stream().anyMatch(loan -> loan.getId().equals(payLoanDTO.getLoan_id()));
 
-        if (hasLoan){
+        boolean isValidLoan = allLoansForClient.stream().anyMatch(clientLoan -> clientLoan.getId() == payLoanDTO.getLoan_id());
+
+
+        if (isValidLoan){
             Account currentAccount = currentClient.getAccounts().stream().filter(account -> account.getNumber().equals(payLoanDTO.getAccountNumber())).findFirst().orElse(null);
 
             if (currentAccount == null){
