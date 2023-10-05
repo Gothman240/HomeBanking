@@ -100,7 +100,7 @@ createApp({
       const date2 = moment(this.date2).format("YYYY-MM-DD HH:mm:ss.SSSSSSSSS");      
       axios
         .post(
-          `/api/pdf/${this.account.id}?date1=${date1}&date2=${date2}`,
+          `/api/pdf/${this.account.id}/?date1=${date1}&date2=${date2}`,
           {
             date1: date1,
             date2: date2,
@@ -121,7 +121,8 @@ createApp({
           a.click();
         })
         .catch((error) => {
-          this.toggleLoading(false);
+          this.showAlert(error.response.data, "info")
+          this.toggleLoading(false);          
         });
     },
     formattedDate(date) {

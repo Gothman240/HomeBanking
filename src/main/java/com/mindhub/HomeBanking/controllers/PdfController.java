@@ -30,7 +30,7 @@ public class PdfController {
     public ResponseEntity<Object> downloadPdf(@PathVariable Long accountId,
                                               @RequestParam String date1,
                                               @RequestParam String date2) throws IOException {
-        try {
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
             LocalDateTime dateTime1 = LocalDateTime.parse(date1, formatter);
             LocalDateTime dateTime2 = LocalDateTime.parse(date2, formatter);
@@ -40,14 +40,17 @@ public class PdfController {
 
             List<TransactionDTO> transactions = transactionService.findByAccountIdAndDateBetween(accountId, startOfDayDateTime1, endOfDayDateTime2);
 
+            if (transactions.isEmpty()){
+                return new ResponseEntity<>("No transactions found for the given criteria", HttpStatus.BAD_REQUEST);
+            }
+
+        try {
             // Crear un documento PDF
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            // Agregar título
-            document.add(new Paragraph("Transacciones cuenta con ID: " + accountId));
 
             // Crear una tabla para mostrar las transacciones
             PdfPTable table = new PdfPTable(4); // 4 columnas para amount, description, date y type
