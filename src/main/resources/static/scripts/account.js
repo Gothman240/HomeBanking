@@ -11,6 +11,7 @@ createApp({
       transactions: [],
       date1: null,
       date2: null,
+      activeAlert: false,
     };
   },
   mounted(){
@@ -112,6 +113,7 @@ createApp({
         .then((response) => {
           $("#modalPDF").modal("hide")
           this.toggleLoading(false)
+          this.activeAlert=false
           const blob = new Blob([response.data], { type: "application/pdf" });
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -121,7 +123,7 @@ createApp({
           a.click();
         })
         .catch((error) => {
-          this.showAlert(error.response.data, "info")
+          this.activeAlert = true
           this.toggleLoading(false);          
         });
     },
@@ -137,6 +139,9 @@ createApp({
         $(".spinner-border.spinner-border-sm.me-2").hide("swing");
         $("button.btn-isLoading").prop("disabled", false);
       }
+    },
+    showInfoPdf(value) {
+      this.activeAlert = value
     },
     logout() {
       axios.post("/api/logout").then((res) => {

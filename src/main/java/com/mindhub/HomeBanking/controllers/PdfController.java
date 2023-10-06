@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import com.lowagie.text.*;
@@ -31,20 +32,29 @@ public class PdfController {
                                               @RequestParam String date1,
                                               @RequestParam String date2) throws IOException {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
-            LocalDateTime dateTime1 = LocalDateTime.parse(date1, formatter);
-            LocalDateTime dateTime2 = LocalDateTime.parse(date2, formatter);
-
-            LocalDateTime startOfDayDateTime1 = dateTime1.with(LocalTime.MIN);
-            LocalDateTime endOfDayDateTime2 = dateTime2.with(LocalTime.MAX);
-
-            List<TransactionDTO> transactions = transactionService.findByAccountIdAndDateBetween(accountId, startOfDayDateTime1, endOfDayDateTime2);
-
-            if (transactions.isEmpty()){
-                return new ResponseEntity<>("No transactions found for the given criteria", HttpStatus.BAD_REQUEST);
-            }
+        if (date1.isEmpty() || date2.isEmpty()) {
+            return new ResponseEntity<>("Date fields cannot be empty", HttpStatus.BAD_REQUEST);
+        }
 
         try {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
+        LocalDateTime dateTime1 = LocalDateTime.parse(date1, formatter);
+        LocalDateTime dateTime2 = LocalDateTime.parse(date2, formatter);
+
+        if (dateTime1.isAfter(dateTime2)) {
+            return new ResponseEntity<>("Date 1 should be before Date 2", HttpStatus.BAD_REQUEST);
+        }
+
+        LocalDateTime startOfDayDateTime1 = dateTime1.with(LocalTime.MIN);
+        LocalDateTime endOfDayDateTime2 = dateTime2.with(LocalTime.MAX);
+
+        List<TransactionDTO> transactions = transactionService.findByAccountIdAndDateBetween(accountId, startOfDayDateTime1, endOfDayDateTime2);
+
+        if (transactions.isEmpty()) {
+                return new ResponseEntity<>("No transactions found for the given criteria", HttpStatus.BAD_REQUEST);
+        }
+
+
             // Crear un documento PDF
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

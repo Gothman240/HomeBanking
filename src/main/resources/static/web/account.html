@@ -117,7 +117,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="text-decoration-none color-oscuro dropdown-item"
                                             v-bind:href="'./transfers.html?num=' + account.number ">Transfer</a></li>
-                                    <li><a class="text-decoration-none dropdown-item color-oscuro" @click="PDFmodal">Download PDF</a></li>
+                                    <li><a class="text-decoration-none dropdown-item color-oscuro"  @click="PDFmodal" @click="showInfoPdf(false)">Download PDF</a></li>
                                     <li><a class="text-decoration-none dropdown-item text-danger"
                                             @click="deleteAccount(account.id)">Delete Account</a></li>
                                 </ul>
@@ -192,6 +192,10 @@
                               <h5 class="modal-title fw-bold text-light fs-4">Choose Date</h5>                              
                             </div>
                             <div class="modal-body">
+                                <div class="alert alert-primary  rounded-0 border-5 border-top-0 border-end-0 border-bottom-0" :class=" activeAlert ? 'd-flex' : 'd-none fade' " role="alert">
+                                    <span class="material-icons me-2">help</span>
+                                    No transactions found for the given criteria.
+                                </div>
                                 <div class="d-flex flex-column py-3  text-center">
                                     <div class="mb-3 d-flex flex-column">
                                         <label class="mb-1" for="startDate">First Date:</label>
