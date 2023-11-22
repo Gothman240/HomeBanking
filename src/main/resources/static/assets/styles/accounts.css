@@ -1,0 +1,36 @@
+.banner-account{
+    .balance-visibility{
+        cursor: pointer;
+    }
+
+    .client-name{
+        color: var(--color-claro)!important;
+    }
+}
+.loan-container{
+    min-height: 20rem;
+}
+.empty-loan{
+
+    .material-icons{
+        font-size: 4.33rem!important;
+    }
+    
+}
+
+.amount{
+    transition: all 2s linear;    
+}
+
+.card{
+    min-width: 18rem!important;
+    .circle{
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background-color: var(--color-oscuro);
+        .material-icons{
+            color: #fff;
+        }
+    }
+}

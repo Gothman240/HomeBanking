@@ -1,0 +1,323 @@
+:root {
+    --color-oscuro: #162d59;
+    --color-claro: #424a5b;
+    --color-secundario: #DEBE7A;
+}
+
+nav.navbar {
+    position: sticky !important;
+    top: 0;
+    z-index: 999;
+}
+
+.color-oscuro {
+    color: var(--color-oscuro) !important;
+}
+
+.color-claro {
+    color: var(--color-claro) !important;
+}
+
+.border-top-oscuro {
+    border-top: 210px solid var(--color-oscuro);
+    padding: 0px;
+
+    .border-top-content {
+        margin-top: -130px;
+    }
+
+}
+
+.color-secundario {
+    color: var(--color-secundario)
+}
+
+.bg-claro {
+    background: var(--color-claro) !important;
+}
+
+.bg-oscuro {
+    background: var(--color-oscuro) !important;
+}
+
+.bg-secundario {
+    background: var(--color-secundario);
+}
+
+
+.nav-pills .nav-link.active {
+    background-color: #162d59;
+}
+
+.nav-pills .nav-link {
+    color: #162d59;
+}
+
+.btn {
+    border: none !important;
+    background-color: #fff;
+    font-weight: bold !important;
+    color: var(--color-oscuro);
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.btn.btn-active {
+    background-color: var(--color-oscuro) !important;
+    color: #fff;
+}
+
+.btn.btn-active:hover {
+    background-color: #fff !important;
+    color: var(--color-oscuro);
+    outline: 2px solid var(--color-oscuro) !important;
+}
+
+.btn:hover {
+    background-color: var(--color-oscuro);
+    color: #fff;
+}
+
+button.btn:disabled{
+    background-color: var(--color-claro)!important;
+}
+
+.a-custom {
+    font-weight: 500;
+    color: var(--color-claro);
+}
+
+
+/* --- input --- */
+select,
+input {
+    border-color: var(--color-oscuro) !important;
+}
+
+.input-error {
+    border-color: red !important;
+}
+
+.input-success {
+    border-color: green !important;
+}
+
+
+.group {
+    position: relative;
+    margin-bottom: 45px;
+
+    .input--group {
+        font-size: 18px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #757575;
+    }
+
+    .input--group:focus {
+        outline: none;
+    }
+
+    /* .label--group ======================================= */
+    .label--group {
+        color: #999;
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    /* active state */
+    .input--group:focus~.label--group,
+    .input--group:valid~.label--group {
+        top: -20px;
+        font-size: 14px;
+        color: var(--color-oscuro);
+    }
+
+    /* BOTTOM BARS ================================= */
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .bar:before,
+    .bar:after {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 1px;
+        position: absolute;
+        background: var(--color-oscuro);
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    .bar:before {
+        left: 50%;
+    }
+
+    .bar:after {
+        right: 50%;
+    }
+
+    /* active state */
+    .input--group:focus~.bar:before,
+    .input--group:focus~.bar:after {
+        width: 50%;
+    }
+
+    /* HIGHLIGHTER ================================== */
+    .highlight {
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    /* active state */
+    .input--group:focus~.highlight {
+        -webkit-animation: inputHighlighter 0.3s ease;
+        -moz-animation: inputHighlighter 0.3s ease;
+        animation: inputHighlighter 0.3s ease;
+    }
+}
+
+
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: var(--color-oscuro);
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+/* !--- input --- */
+
+.sk-cube-grid {
+    width: 40px;
+    height: 40px;
+}
+
+.sk-cube-grid .sk-cube {
+    width: 33%;
+    height: 33%;
+    background-color: var(--color-oscuro);
+    float: left;
+    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+
+.sk-cube-grid .sk-cube1 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+.sk-cube-grid .sk-cube2 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+}
+
+.sk-cube-grid .sk-cube3 {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+
+.sk-cube-grid .sk-cube4 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+}
+
+.sk-cube-grid .sk-cube5 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+.sk-cube-grid .sk-cube6 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+}
+
+.sk-cube-grid .sk-cube7 {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.sk-cube-grid .sk-cube8 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+}
+
+.sk-cube-grid .sk-cube9 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+
+    0%,
+    70%,
+    100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    }
+
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+    }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+
+    0%,
+    70%,
+    100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    }
+
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+    }
+}

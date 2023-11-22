@@ -1,0 +1,58 @@
+
+
+
+.form-control::selection {
+  border: none !important;
+}
+
+.card-transition {
+  transition: 0.5s all ease;
+}
+
+.cardAccount {
+  width: 16rem;
+}
+
+.circle {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+
+  .material-icons {
+    color: var(--color-oscuro);
+  }
+}
+.banner-success--active{
+  display: block;
+  width: 0px;
+  opacity: 1;
+  width: 100%;
+}
+@keyframes exito {
+  0%{
+    opacity: 0;
+    display: block;
+    width: 0px;
+  }
+  80%{
+    width: 100%;
+  }
+  100%{
+    
+    opacity: 1;
+  }
+}
+
+@keyframes cambiarColor {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    background-color: green!important;
+    opacity: 0;
+    /* Color final (verde) */
+    width: 0;
+  }
+}

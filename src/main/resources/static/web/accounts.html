@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./../assets/images/z1giwuiI.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="./../assets/styles/sidebar.css">
+    <link rel="stylesheet" href="./../assets/styles/style.css">
+    <link rel="stylesheet" href="./../assets/styles/accounts.css">
+    <title>Paez | Home</title>
+</head>
+
+<body>
+
+    <main id="app" class="container-fluid p-0 d-flex bg-dark-subtle" v-cloak>
+        <!-- sidebar -->
+
+        <aside class="" :class="showSide ? 'expand-sidebar' : ''">
+
+            <div href="#" class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
+                <img class="logo text-decoration-none mb-2" src="./../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
+                <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
+            </div>
+
+
+            <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
+            <div class="menu d-block flex-grow-1">
+                <a href="#" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        account_balance
+                    </span>
+                    <span class="text">Account</span>
+                </a>
+                <a href="./cards.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        credit_card
+                    </span>
+                    <span class="text">Cards</span>
+                </a>
+                <a href="./transfers.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        currency_exchange
+                    </span>
+                    <span class="text">Transfers</span>
+                </a>
+               
+
+            </div>
+            <div class="menu d-block" v-if="client.admin">
+                <a href="./admin/adminDashboard.html" class="button text-decoration-none mb-2" >
+                    <span class="material-icons">
+                        manage_accounts
+                    </span>
+                    <span class="text">Admin</span>
+                </a>
+            </div>
+        </aside>
+
+
+        <div class="container-fluid p-0 " :class="!showSide ? 'overflow-auto' : '' ">
+            <!-- nav -->
+            <nav class="navbar navbar-expand-md ">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
+                    <div class="menu-toggle-wrap" :class="showSide ? 'expand-sidebar' : ''">
+                        <span class="menu-toggle" @click="showSideBar">
+                            <span class="material-icons">
+                                keyboard_double_arrow_right
+                            </span>
+                        </span>
+                    </div>
+
+
+                    <div class="" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item align-bottom">
+                                <a @click="logout" class="nav-link" aria-current="page" href="#">
+                                    <span class="material-icons">
+                                        logout
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- spinner -->
+            <div class="sk-cube-grid position-absolute top-50 start-50 translate-middle " v-if="loading">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container-fluid" :class=" loading ? 'd-none' : 'd-block' " v-cloak>
+
+                <div class="row px-0 gradient px-md-3 gap-4">
+                    <div
+                        class="col-12 banner-account bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
+                        <div class="balance text-center text-md-start m-4 m-md-3">
+                            <h6 class="small">Account Balance</h6>
+                            <div class="amount">
+                                <span class="fs-3 fw-bold" v-show="showBal">{{formatCurrency(totalBalance)}}</span>
+                                <span class="fs-3 fw-bold align-self-end" v-show="!showBal">$ ***</span>
+                                <span @click="showBalance" v-show="showBal" class="ms-2 balance-visibility">
+                                    <span class="material-icons">
+                                        visibility
+                                    </span>
+                                </span>
+                                <span @click="showBalance" v-show="!showBal" class="ms-2 balance-visibility">
+                                    <span class="material-icons">
+                                        visibility_off
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="m-2 m-md-3">
+                            <h4 class="fw-bold client-name">{{client.firstName}} {{client.lastName}}</h4>
+                            <p class="small">{{client.email}}</p>
+                        </div>
+
+                        <div v-show="accounts.length<3" class="col-12 border-top text-center py-4">
+                            <span vif class="material-icons fs-2 color-claro">
+                                account_balance_wallet
+                            </span>
+                            <h6 class="fw-bold" v-if="!accounts.length">Don't have an account?</h6>
+                            <h6 class="fw-bold" v-else>Add new account?</h6>
+                            <a class="btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Get one</a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 info-account">
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
+                            <div class="card shadow" v-for="account of accounts" data-aos="zoom-out">
+                                <div class="row g-0 p-0">
+                                    <div class="col-5 d-flex justify-content-center align-items-center">
+                                        <span class="circle bg-oscuro d-flex justify-content-center align-items-center">
+                                            <span v-if="account.accountType == 'CURRENT' " class="material-icons fs-1">
+                                                account_balance_wallet
+                                            </span>
+                                            <span v-if="account.accountType == 'SAVINGS' " class="material-icons fs-1">
+                                                savings
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{formatCurrency(account.balance)}}</h5>
+                                            <a class=" mb-2 small text-decoration-none a-custom"
+                                                v-bind:href="'./transfers.html?num=' + account.number ">
+                                                {{account.number}}</a>
+                                            <p class="card-text text-muted">{{account.creationDate}}</p>
+                                            <div class="">
+
+                                                <a class="text-decoration-none a-custom d-flex justify-content-center align-content-center"
+                                                    v-bind:href="'./account.html?id=' + account.id ">Go to Details <span
+                                                        class="material-icons">
+                                                        keyboard_arrow_right
+                                                    </span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <h4 class="fw-bold color-claro ">Loan Data</h4>
+                        <section class="row bg-body loan-container rounded py-4 px-4">
+                            <div class="alert alert-warning mb-0 d-flex align-items-center" role="alert">
+                                
+                                    <span class="material-icons pe-3">
+                                        real_estate_agent
+                                    </span>
+                                    <p class="m-0">You can request a loan at any time <a class="alert-link"
+                                            href="./loan-application.html">here</a></p>
+                                
+                            </div>
+                            <div class="col-12 col-md-6 d-flex justify-content-center py-4 flex-shrink-1" v-if="loans.length"
+                                v-for="loan of loans" :key="loan.name">
+                                <div class="card shadow w-100">
+                                    <div class="card-header text-uppercase fw-bold bg-oscuro text-light">
+                                        {{loan.name}}
+                                    </div>
+                                    <div class="card-body px-4">
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Name:</span> <span>{{loan.name}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                            <span>Interest rate:</span> <span>{{formatCurrency(loan.amount)}}</span>
+                                        </div>
+                                        <div class="alert alert-secondary px-3">
+                                            <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                                <span>Payments:</span> <span>{{loan.payments}}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                                <span>Total Payments:</span> <span>{{loan.totalPayments}}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between pb-1 mb-2 border-bottom">
+                                                <span class="alert-link">Monthly:</span> <span
+                                                    class="color-claro fw-medium">{{formatCurrency(loanMonthlyCalculator(loan.amount,loan.payments))}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-1 d-flex justify-content-center">
+                                            <a class="btn" @click="payLoan(loan)" data-bs-toggle="modal"
+                                                data-bs-target="#modalLoan">Paid</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                <div v-else class="d-flex flex-column justify-content-center align-items-center empty-loan g-5">
+                                    <span class="material-icons text-muted">
+                                        error_outline
+                                    </span>
+                                    <h3 class="text-center fw-bold text-muted fw-bolder ">You haven't made any loan yet
+                                    </h3>
+                                </div>
+                            
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal type Accounts-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content ">
+                        <div class="modal-header bg-oscuro justify-content-center">
+                            <h1 class="modal-title fw-bold text-light fs-5" id="staticBackdropLabel">Get Account</h1>  
+                            
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-select" aria-label="Default select example" v-model="accountType">
+                                <option value="CURRENT" selected>Current</option>
+                                <option value="SAVINGS">Saving </option>
+                            </select>
+                        </div>
+                        <div class="modal-footer justify-content-center border-0">
+                            <button type="button" class="btn w-25" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-active w-25" @click="createAccount">Generate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Loan -->
+            <div class="modal fade" id="modalLoan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-oscuro text-center py-3">
+                            <h1 class="modal-title text-light  fs-5" id="staticBackdropLabel">{{loanSelected.name}}</h1>
+                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="me-2">
+                                        <h5 class="fw-bold color-oscuro">Monthly</h5>
+                                    </div>
+                                    <span class="fw-bold fs-6">{{formatCurrency(loanMonthlyCalculator(loanSelected.amount,
+                                        loanSelected.payments))}}</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="me-2">
+                                        <h5 class="fw-bold color-oscuro">Select an Account</h5>
+                                    </div>
+                                    <div class="mb-3">
+                                        <select class="form-select form-select" name="" id=""
+                                            v-model="paidLoan.accountNumber">
+                                            <option selected>Select one</option>
+                                            <option v-for="account of accounts" :value="account.number">
+                                                {{account.number}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex pt-2 px-3" v-if="paidLoan.accountNumber != null"
+                                    :class="filterAccount().balance < paidLoan.amount ? 'alert alert-warning' : 'alert alert-success'">
+                                    <div class="flex-grow-1">
+                                        <h5 class="fw-bold">Account Balance</h5>
+                                    </div>
+                                    <span>{{formatCurrency(filterAccount().balance)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @click="sendPayLoan">Understood</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="./../scripts/accounts.js"></script>
+</body>
+
+</html>

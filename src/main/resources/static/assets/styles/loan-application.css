@@ -1,0 +1,9 @@
+.card{
+  cursor: pointer;
+}
+
+#card-loan:active{
+  background-color: var(--color-oscuro);
+  opacity: .9;
+  color: #fff;
+}

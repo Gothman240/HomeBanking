@@ -1,0 +1,42 @@
+.btn:active{
+    border: none;
+}
+.dropdown-menu li>a.dropdown-item{
+    cursor: pointer;
+}
+.dropdown-menu li>a.dropdown-item:active{
+    background-color: transparent;    
+}
+
+input[type="date"]#startDate, input[type="date"]#endDate{
+    width: 10.5rem !important;
+    margin: auto;
+    border: 2px solid var(--color-oscuro) !important;
+}
+
+.table {
+    .fila {
+        .fw-bold {
+            &.DEBIT {
+                color: red;
+
+            }
+            &.CREDIT{
+                color: green;
+            }
+        }
+        .CREDIT::before{
+            content: "+";
+        }
+        .DEBIT::before{
+            content: "-";
+        }
+    }
+}
+.empty-transaction{
+
+    .material-icons{
+        font-size: 4.33rem!important;
+    }
+    
+}

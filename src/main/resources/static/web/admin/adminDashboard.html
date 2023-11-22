@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./../assets/images/z1giwuiI.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./../../assets/styles/sidebar.css">
+    <link rel="stylesheet" href="./../../assets/styles/style.css">
+    <title>Paez | Admin</title>
+</head>
+
+<body>
+
+    <main id="app" class="container-fluid p-0 d-flex bg-dark-subtle" v-cloak>
+        <!-- sidebar -->
+
+        <aside class="" :class="showSide ? 'expand-sidebar' : ''">
+            <div class=" button text-decoration-none mb-2 d-flex align-items-center flex-nowrap">
+                <img class="logo text-decoration-none mb-2" src="./../../assets/images/favicon.png" alt="" srcset="" style="width: 3.5rem;">
+                <span class="text menu-tittle fw-bold text-uppercase">Paez</span>
+            </div>
+
+
+            <h3 class="menu-tittle fw-bold text-uppercase small">Menu</h3>
+            <div class="menu d-block flex-grow-1">
+                <a href="./../accounts.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        account_balance                        
+                    </span>
+                    <span class="text">Account</span>
+                </a>
+                <a href="./../cards.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        credit_card
+                    </span>
+                    <span class="text">Cards</span>
+                </a>
+                <a href="./../transfers.html" class="button text-decoration-none mb-2">
+                    <span class="material-icons">
+                        currency_exchange
+                    </span>
+                    <span class="text">Transfers</span>
+                </a>                             
+            </div>
+            <div class="menu d-block" >
+                <a href="#" class="button text-decoration-none mb-2" >
+                    <span class="material-icons">
+                        manage_accounts
+                        </span>
+                    <span class="text">Admin</span>
+                </a>
+            </div>
+        </aside>
+
+
+        <div class="container-fluid p-0 " :class="!showSide ? 'overflow-auto' : '' ">
+            <!-- nav -->
+            <nav class="navbar navbar-expand-md ">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
+                    <div class="menu-toggle-wrap" :class="showSide ? 'expand-sidebar' : ''">
+                        <span class="menu-toggle" @click="showSideBar">
+                            <span class="material-icons">
+                                keyboard_double_arrow_right
+                            </span>
+                        </span>
+                    </div>
+
+
+                    <div class="" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item align-bottom">
+                                <a @click="logout" class="nav-link" aria-current="page" href="#">
+                                    <span class="material-icons">
+                                        logout
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- spinner -->
+            <div class="sk-cube-grid position-absolute top-50 start-50 translate-middle " v-if="loading">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="container-fluid py-2 px-4"  :class=" loading ? 'd-none' : 'd-block' ">
+                <div class="row bg-body rounded border-bottom d-flex justify-content-center justify-content-md-between align-items-center flex-wrap">
+                    <div class="col-12 py-2 px-4">
+                        <div class="row">
+                            <h5 class="fw-bold mb-3">Create a new Loan</h5>
+                            <div class="col-12 col-md-6 px-4">
+                                <div class="mb-3">
+                                    <label for="loanName" class="form-label">Loan name</label>
+                                    <input type="text" class="form-control" placeholder="ej: Personal" id="loanName" aria-describedby="emailHelp" v-model="loanDTO.name">                                    
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-3 px-4">
+                                <div class="mb-3">
+                                    <label for="loanMaxAmount" class="form-label">Max amount</label>
+                                    <input type="number" min="0" class="form-control" id="loanMaxAmount" placeholder="$0" aria-describedby="emailHelp" v-model="loanDTO.maxAmount">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-3 px-4">
+                                <div class="mb-3">
+                                    <label for="loanPercentage" class="form-label">Loan percentage</label>
+                                    <input type="number" min="0" class="form-control" id="loanPercentage" placeholder="5%" aria-describedby="emailHelp" v-model="loanDTO.loanPercentage">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="loanPayments" class="form-label">Payments</label>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" id="loanPayments" placeholder="Payment" @keyup.enter="addArray" aria-describedby="emailHelp" v-model="paymentToPush">
+                                    <button class="btn btn-active" @click="addArray">add</button>
+                                </div>
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center align-items-center gap-3" v-if="loanDTO.payments.length">
+                                <span class="badge text-bg-secondary" v-for="payment of loanDTO.payments" :key="payment" @click="removeFromArray(payment)">{{payment}}</span>
+                            </div>
+                            <button class="btn btn-active mt-4" @click="createLoan">
+                                <span class="spinner-border spinner-border-sm me-2 " aria-hidden="true"></span>
+                                <span>Create</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-12">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Payments</th>
+                                    <th scope="col">Percentage</th>
+                                    <th scope="col">Max Amount</th>                                        
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="loan of apiLoans">
+                                    <td>{{loan.name}}</td>
+                                    <td>
+                                        <span v-for="payment in loan.payments">{{payment + "  "}} </span>
+                                    </td>
+                                    <td>{{loan.loanPercentage}}%</td>
+                                    <td>{{formatCurrency(loan.maxAmount)}}</td>                                        
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+    </main>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+        <script src="./../../scripts/admin/adminDashboard.js"></script>
+</body>
+
+</html>
